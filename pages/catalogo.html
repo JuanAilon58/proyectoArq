@@ -58,6 +58,7 @@
 
   <script src="../data/products.js"></script>
   <script src="../js/products.js"></script>
+  <script src="../js/recommendation.js"></script>
   <script src="../js/catalog.js"></script>
   <script src="../js/filters.js"></script>
   <script src="../js/search.js"></script>
@@ -183,6 +184,42 @@
         "</div>";
       }
 
+      function compareGroup(g, items) {
+        if (items.length < 2) return gamaBlock(g, items);
+        var keys = [], seen = {};
+        items.forEach(function (p) {
+          Object.keys(p.specifications || {}).forEach(function (key) {
+            if (!seen[key]) { seen[key] = true; keys.push(key); }
+          });
+        });
+        var header = items.map(function (p) {
+          return '<th class="prod"><span class="compare-head-card"><strong>' + esc(p.brand + " " + p.model) + '</strong><span>' + esc(TA.store.formatPrice(p.price)) + '</span></span></th>';
+        }).join("");
+        var rows = keys.map(function (key) {
+          return '<tr><th scope="row">' + esc(key) + '</th>' + items.map(function (p) {
+            var value = (p.specifications || {})[key];
+            return '<td>' + (value == null ? '—' : esc(value)) + '</td>';
+          }).join("") + '</tr>';
+        }).join("");
+        var lowest = Math.min.apply(null, items.map(function (p) { return Number(p.price) || 0; }));
+        rows += '<tr><th scope="row">Precio de referencia</th>' + items.map(function (p) {
+          return '<td' + (Number(p.price) === lowest ? ' class="best"' : '') + '>' + esc(TA.store.formatPrice(p.price)) + (Number(p.price) === lowest ? ' · más económico' : '') + '</td>';
+        }).join("") + '</tr>';
+        rows += '<tr><th scope="row">Aspectos destacados</th>' + items.map(function (p) {
+          return '<td>' + esc((p.highlights || []).join(' · ')) + '</td>';
+        }).join("") + '</tr>';
+        var rec = TA.recommendation.recommend(items);
+        return '<section class="gama-block catalog-comparison" aria-label="Comparativa de ' + esc(g.label.toLowerCase()) + '">' +
+          '<h3 class="gama-title"><span class="badge badge-range-' + g.id + '">' + g.label + '</span> <small style="color:var(--muted)">Comparativa · ' + items.length + ' productos</small></h3>' +
+          '<p class="section-sub" style="margin-top:0">' + g.desc + ' Revisa las diferencias entre estas opciones equivalentes.</p>' +
+          '<div class="catalog-compare-products">' + items.map(function (p) {
+            return '<article class="catalog-compare-product"><img src="' + esc(imgSrc(p.image)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"><div><span>' + esc(p.brand) + '</span><h4>' + esc(p.model) + '</h4><strong>' + esc(TA.store.formatPrice(p.price)) + '</strong></div></article>';
+          }).join('<span class="catalog-compare-vs" aria-hidden="true">VS</span>') + '</div>' +
+          '<div class="table-wrap"><table class="compare catalog-compare-table"><thead><tr><th scope="col">Especificación</th>' + header + '</tr></thead><tbody>' + rows + '</tbody></table></div>' +
+          '<section class="verdict catalog-verdict" aria-label="Recomendación de esta comparativa"><h4>Recomendamos: ' + esc(rec.winner.brand + " " + rec.winner.model) + '</h4><p class="winner">' + esc(TA.store.formatPrice(rec.winner.price)) + '</p><p>' + esc(rec.verdict) + '</p><h5>Dos razones para escoger esta opción</h5><ul>' + rec.reasons.map(function (reason) { return '<li>' + esc(reason) + '</li>'; }).join('') + '</ul><p class="formula">Guía académica basada en rendimiento, precio relativo y características.</p></section>' +
+        '</section>';
+      }
+
       function bindDetailButtons() {
         results.querySelectorAll("[data-detail-btn]").forEach(function (btn) {
           btn.addEventListener("click", function () {
@@ -220,7 +257,7 @@
           var items = all.filter(function (p) { return p.category === sel; });
           var bloques = gamasDe(sel, items).map(function (b) {
             total += b.items.length;
-            return gamaBlock(b.gama, b.items);
+            return compareGroup(b.gama, b.items);
           }).join("");
           html = '<section class="cat-section">' +
             '<div class="cat-section-head"><span class="cat-icon" aria-hidden="true">' + c.icon + "</span>" +

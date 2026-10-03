@@ -38,14 +38,16 @@ window.TechAlbum = window.TechAlbum || {};
     var reasons = [];
     var cheapest = items.slice().sort(function (a, b) { return a.price - b.price; })[0];
     if (winner.product.id === cheapest.id) {
-      reasons.push("Es el de menor precio del conjunto (" + TA.store.formatPrice(winner.product.price) + ").");
+      reasons.push("Tiene el menor precio entre las opciones (" + TA.store.formatPrice(winner.product.price) + ").");
     } else {
       var over = Number(winner.product.price) - Number(cheapest.price);
-      reasons.push("Cuesta " + TA.store.formatPrice(over) + " más que la opción más barata, pero lo compensa con mejor puntaje global.");
+      reasons.push("Cuesta " + TA.store.formatPrice(over) + " más que la opción más barata, pero obtuvo el puntaje global más alto.");
     }
-    if (winner.performance >= 8) reasons.push("Rendimiento alto (calificación " + winner.product.rating + "/5).");
-    var top = (winner.product.highlights || []).slice(0, 2);
-    top.forEach(function (h) { reasons.push(h + "."); });
+    var highlight = (winner.product.highlights || [])[0];
+    var featureReason = highlight
+      ? "Su calificación de rendimiento es " + winner.product.rating + "/5 y destaca: " + highlight + "."
+      : "Su calificación de rendimiento es " + winner.product.rating + "/5 y ofrece " + Object.keys(winner.product.specifications || {}).length + " especificaciones para considerar.";
+    reasons.push(featureReason);
     var ratio = (winner.performance + winner.features) / Math.max(1, Number(winner.product.price) / 1000);
     return {
       winner: winner.product, rows: rows, reasons: reasons,
