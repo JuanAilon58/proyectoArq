@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Smartphones por gama: baja, media y alta, con comparativas por marca.">
+  <title>Smartphones por gama — TechAlbum</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="TechAlbum inicio">
+        <span class="brand-logo" aria-hidden="true">💻</span>
+        <span><span class="brand-name">TechAlbum</span> <span class="brand-tag">Álbum Tech</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Componentes</a>
+        <a href="smartphones.html">Smartphones</a>
+        <a href="catalogo.html?group=Periféricos">Periféricos</a>
+        <a href="catalogo.html?group=Otros">Tecnología</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="contenido">
+    <h1 class="page-title">Smartphones por gama</h1>
+    <p class="page-sub">Álbum por gamas: elige baja, media o alta y pulsa Ver detalles para ver especificaciones abajo.</p>
+
+    <div class="tabs" role="tablist" aria-label="Filtrar por gama">
+      <button class="tab" role="tab" data-range="" aria-selected="true">Todas</button>
+      <button class="tab" role="tab" data-range="baja" aria-selected="false">Gama baja</button>
+      <button class="tab" role="tab" data-range="media" aria-selected="false">Gama media</button>
+      <button class="tab" role="tab" data-range="alta" aria-selected="false">Gama alta</button>
+    </div>
+
+    <div class="toolbar" role="search">
+      <input type="search" id="q" placeholder="🔍 Buscar teléfonos (marca, modelo)…" aria-label="Buscar teléfonos">
+    </div>
+
+    <div id="rangeSections"></div>
+
+    <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad.</aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span><strong>TechAlbum</strong> — Smartphones por gama · Proyecto académico.</span>
+      <span><a href="../index.html">← Volver al inicio</a> · Fotos: Pexels</span>
+    </div>
+  </footer>
+
+  <script src="../data/products.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="../js/pexels.js"></script>
+  <script src="../js/catalog.js"></script>
+  <script src="../js/filters.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var TA = window.TechAlbum;
+      var RANGES = [
+        { id: "baja", title: "Gama baja", desc: "Económicos para lo esencial: redes, clases y fotos casuales." },
+        { id: "media", title: "Gama media", desc: "El equilibrio: pantallas fluidas, 5G y buenas cámaras." },
+        { id: "alta", title: "Gama alta", desc: "Lo máximo: cámaras pro, potencia tope e IA." }
+      ];
+      var activeRange = "";
+      var term = "";
+      var host = document.getElementById("rangeSections");
+
+      function phones() { return TA.store.products().filter(function (p) { return p.category === "smartphones"; }); }
+
+      function render() {
+        var list = phones().filter(function (p) { return TA.search.matches(p, term); });
+        var sections = RANGES.filter(function (r) { return !activeRange || r.id === activeRange; });
+        host.innerHTML = sections.map(function (r) {
+          var items = list.filter(function (p) { return p.range === r.id; });
+          var brands = TA.store.brandsOf(items).join(" vs ");
+          var cards = items.length
+            ? '<div class="grid grid-products">' + items.slice(0, 2).map(function (p) {
+                var specs = Object.keys(p.specifications || {}).map(function (k) {
+                  return "<li><span class='spec-k'>" + k + "</span><span>" + p.specifications[k] + "</span></li>";
+                }).join("");
+                var hls = (p.highlights || []).map(function (h) { return "<li>" + h + "</li>"; }).join("");
+                return '<article class="product-card"><div class="product-media"><img src="' + (((p.image || "").indexOf("assets/") === 0) ? "../" + p.image : p.image) + '" data-cat="' + p.category + '" alt="' + p.brand + " " + p.model + '" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"></div>' +
+                  '<div class="product-body"><span class="product-brand">' + p.brand + '</span><h3 class="product-model">' + p.model + '</h3>' +
+                  '<div class="product-price">' + TA.store.formatPrice(p.price) + '</div>' +
+                  '<div class="product-actions"><button class="btn btn-small btn-primary" type="button" data-sp-det="' + p.id + '">Ver detalles</button></div></div>' +
+                  '<div class="inline-detail" id="sp-' + p.id + '" hidden><ul class="hl-list">' + hls + '</ul><ul class="spec-list">' + specs + '</ul>' +
+                  '<p><a class="btn btn-small btn-ghost" href="producto.html?id=' + p.id + '">Abrir ficha →</a></p></div></article>';
+              }).join("") + "</div>"
+            : '<div class="empty"><span class="big">📱</span><p>Sin teléfonos en esta gama para esa búsqueda.</p></div>';
+          return (
+            '<section aria-label="' + r.title + '">' +
+              '<h2 class="section-title">' + r.title + ' <span class="badge">' + brands + "</span></h2>" +
+              '<p class="section-sub">' + r.desc + "</p>" +
+              
+              cards +
+            "</section>"
+          );
+        }).join("");
+        if (TA.catalog.bindCompareButtons) TA.catalog.bindCompareButtons(host);
+        host.querySelectorAll("[data-sp-det]").forEach(function (btn) {
+          btn.addEventListener("click", function () {
+            var panel = host.querySelector("#sp-" + btn.getAttribute("data-sp-det"));
+            if (!panel) return;
+            panel.hidden = !panel.hidden;
+            btn.textContent = panel.hidden ? "Ver detalles" : "Ocultar detalles";
+          });
+        });
+      }
+
+      document.querySelectorAll(".tab").forEach(function (tab) {
+        tab.addEventListener("click", function () {
+          document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", "false"); });
+          tab.setAttribute("aria-selected", "true");
+          activeRange = tab.getAttribute("data-range");
+          render();
+        });
+      });
+      TA.search.bindLive(document.getElementById("q"), function (v) { term = v; render(); });
+      // Soporte ?range=media|baja|alta
+      try {
+        var r = new URLSearchParams(location.search).get("range");
+        if (r) {
+          var btn = document.querySelector('.tab[data-range="' + r + '"]');
+          if (btn) btn.click();
+        }
+      } catch (e) {}
+      render();
+    })();
+  </script>
+</body>
+</html>

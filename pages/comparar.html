@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Comparador de productos: tabla lado a lado y recomendación con puntaje transparente.">
+  <title>Comparador — TechAlbum</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="TechAlbum inicio">
+        <span class="brand-logo" aria-hidden="true">💻</span>
+        <span><span class="brand-name">TechAlbum</span> <span class="brand-tag">Álbum Tech</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Componentes</a>
+        <a href="smartphones.html">Smartphones</a>
+        <a href="catalogo.html?group=Periféricos">Periféricos</a>
+        <a href="catalogo.html?group=Otros">Tecnología</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="contenido">
+    <h1 class="page-title">Comparar productos</h1>
+    <p class="page-sub">Agrega de 2 a 4 productos (idealmente de la misma categoría o gama). La tabla se adapta a sus especificaciones y debajo verás la recomendación con el puntaje de cada uno.</p>
+
+    <h2 class="section-title" style="margin-top:0">Tu selección (<span id="trayCount">0</span>/4)</h2>
+    <div class="compare-tray" id="tray" aria-live="polite"></div>
+    <p style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px">
+      <button class="btn btn-small btn-ghost" id="clearTray" type="button">Vaciar selección</button>
+      <a class="btn btn-small" href="catalogo.html">＋ Agregar desde el álbum</a>
+    </p>
+
+    <div class="toolbar">
+      <input type="search" id="addQ" placeholder="🔍 Buscar para agregar (ej: Ryzen, RTX, A55)…" aria-label="Buscar producto para agregar">
+      <select id="addSelect" aria-label="Elegir producto para agregar"></select>
+      <button class="btn btn-small btn-primary" id="addBtn" type="button">Agregar</button>
+    </div>
+
+    <div class="toolbar" aria-label="Comparaciones sugeridas">
+      <span style="font-size:.82rem;color:var(--muted)">Sugerencias:</span>
+      <button class="btn btn-small" type="button" data-pair="1,2">Intel i5 vs i7</button>
+      <button class="btn btn-small" type="button" data-pair="3,4">Ryzen 5 vs 7</button>
+      <button class="btn btn-small" type="button" data-pair="5,7">RTX 4060 vs RX 7600</button>
+      <button class="btn btn-small" type="button" data-pair="58,59">Gama baja</button>
+      <button class="btn btn-small" type="button" data-pair="60,61">Gama media</button>
+      <button class="btn btn-small" type="button" data-pair="62,63">Gama alta</button>
+    </div>
+
+    <div id="compareZone"></div>
+    <div id="verdictZone"></div>
+
+    <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad.</aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span><strong>TechAlbum</strong> — Comparador · Proyecto académico.</span>
+      <span><a href="../index.html">← Volver al inicio</a> · Fotos: Pexels</span>
+    </div>
+  </footer>
+
+  <script src="../data/products.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="../js/pexels.js"></script>
+  <script src="../js/recommendation.js"></script>
+  <script src="../js/comparator.js"></script>
+  <script src="../js/catalog.js"></script>
+  <script src="../js/filters.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var TA = window.TechAlbum;
+      var tray = document.getElementById("tray");
+      var trayCount = document.getElementById("trayCount");
+      var addQ = document.getElementById("addQ");
+      var addSelect = document.getElementById("addSelect");
+      var compareZone = document.getElementById("compareZone");
+      var verdictZone = document.getElementById("verdictZone");
+      var esc = TA.catalog.esc;
+
+      function img(p) {
+        var s = p.image || "";
+        if (s.indexOf("assets/") === 0) s = "../" + s;
+        return s;
+      }
+      function inTray() { return TA.comparator.list(); }
+
+      function fillOptions(term) {
+        var ids = inTray().map(function (p) { return p.id; });
+        var items = TA.store.products().filter(function (p) {
+          return ids.indexOf(p.id) === -1 && TA.search.matches(p, term);
+        }).slice(0, 60);
+        addSelect.innerHTML = items.map(function (p) {
+          return '<option value="' + p.id + '">' + esc(p.brand + " " + p.model + " — " + TA.store.formatPrice(p.price)) + "</option>";
+        }).join("") || '<option value="">Sin resultados</option>';
+      }
+
+      function renderTray() {
+        var items = inTray();
+        trayCount.textContent = items.length;
+        if (!items.length) {
+          tray.innerHTML = '<div class="tray-slot"><span style="color:var(--muted);font-size:.85rem">Vacío — agrega productos con el buscador o desde el álbum.</span></div>';
+        } else {
+          tray.innerHTML = items.map(function (p) {
+            return '<div class="tray-slot filled">' +
+              '<img src="' + esc(img(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" onerror="TechAlbum.store.imgFallback(this)">' +
+              '<div><p class="t">' + esc(p.brand + " " + p.model) + '</p><p class="p">' + esc(TA.store.formatPrice(p.price)) + "</p></div>" +
+              '<button class="tray-remove" type="button" data-remove="' + p.id + '" aria-label="Quitar ' + esc(p.model) + '">✕</button>' +
+            "</div>";
+          }).join("");
+          tray.querySelectorAll("[data-remove]").forEach(function (b) {
+            b.addEventListener("click", function () { TA.comparator.remove(b.getAttribute("data-remove")); renderAll(); });
+          });
+        }
+      }
+
+      function specKeys(items) {
+        var keys = [], seen = {};
+        items.forEach(function (p) {
+          Object.keys(p.specifications || {}).forEach(function (k) {
+            if (!seen[k]) { seen[k] = 1; keys.push(k); }
+          });
+        });
+        return keys;
+      }
+
+      function renderCompare() {
+        var items = inTray();
+        if (items.length < 2) {
+          compareZone.innerHTML = '<div class="empty"><span class="big">⚖️</span><p>Agrega al menos <strong>2 productos</strong> para ver la tabla comparativa.</p></div>';
+          verdictZone.innerHTML = "";
+          return;
+        }
+        var keys = specKeys(items);
+        var head = "<thead><tr><th>Característica</th>" + items.map(function (p) {
+          return '<th class="prod"><span class="compare-head-card">' +
+            '<img src="' + esc(img(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" onerror="TechAlbum.store.imgFallback(this)">' +
+            esc(p.brand + " " + p.model) + "<br><span style='color:var(--accent);font-family:var(--mono)'>" + esc(TA.store.formatPrice(p.price)) + "</span></span></th>";
+        }).join("") + "</tr></thead>";
+        var rows = keys.map(function (k) {
+          var cells = items.map(function (p) {
+            var v = (p.specifications || {})[k];
+            return "<td>" + (v == null ? "—" : esc(v)) + "</td>";
+          }).join("");
+          return "<tr><th>" + esc(k) + "</th>" + cells + "</tr>";
+        }).join("");
+        // Fila de precio + destacados
+        rows += "<tr><th>Precio (Q)</th>" + items.map(function (p) {
+          var cheapest = Math.min.apply(null, items.map(function (x) { return x.price; }));
+          var cls = p.price === cheapest ? ' class="best"' : "";
+          return "<td" + cls + ">" + esc(TA.store.formatPrice(p.price)) + (p.price === cheapest ? " ★ mejor precio" : "") + "</td>";
+        }).join("") + "</tr>";
+        rows += "<tr><th>Lo sobresaliente</th>" + items.map(function (p) {
+          return "<td>" + esc((p.highlights || []).join(" · ")) + "</td>";
+        }).join("") + "</tr>";
+        compareZone.innerHTML = '<h2 class="section-title">Tabla comparativa</h2><div class="table-wrap"><table class="compare">' + head + "<tbody>" + rows + "</tbody></table></div>";
+        renderVerdict(items);
+      }
+
+      function renderVerdict(items) {
+        var rec = TA.recommendation.recommend(items);
+        if (!rec) { verdictZone.innerHTML = ""; return; }
+        var w = TA.store;
+        var scoreRows = rec.rows.map(function (r, i) {
+          return "<tr" + (i === 0 ? ' class="winner-row"' : "") + "><td>" + esc(r.product.brand + " " + r.product.model) + (i === 0 ? " 🏆" : "") + "</td>" +
+            "<td>" + r.performance.toFixed(1) + "</td><td>" + r.priceScore.toFixed(1) + "</td><td>" + r.features.toFixed(1) + "</td><td>" + r.total.toFixed(2) + "</td></tr>";
+        }).join("");
+        verdictZone.innerHTML =
+          '<section class="verdict" aria-label="Recomendación de la comparación">' +
+            "<h2>🏆 Nuestra recomendación</h2>" +
+            '<p class="winner">' + esc(rec.winner.brand + " " + rec.winner.model) + " — " + esc(w.formatPrice(rec.winner.price)) + "</p>" +
+            "<p><strong>" + esc(rec.headline) + "</strong></p>" +
+            "<p>" + esc(rec.verdict) + "</p>" +
+            "<ul>" + rec.reasons.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + "</ul>" +
+            '<table class="score-table"><thead><tr><th>Producto</th><th>Rendimiento (40%)</th><th>Precio rel. (35%)</th><th>Características (25%)</th><th>Total</th></tr></thead>' +
+            "<tbody>" + scoreRows + "</tbody></table>" +
+            '<p class="formula">Puntaje = 0.40 × rendimiento (rating×2) + 0.35 × precio relativo (10 = más barato del conjunto) + 0.25 × características. El precio se normaliza dentro de cada comparación, por eso la recomendación cambia según los productos elegidos.</p>' +
+          "</section>";
+      }
+
+      function renderAll() { renderTray(); fillOptions(addQ.value); renderCompare(); }
+
+      document.getElementById("addBtn").addEventListener("click", function () {
+        var id = Number(addSelect.value);
+        if (!id) return;
+        var r = TA.comparator.add(id);
+        if (!r.ok && r.reason === "max") alert("Máximo 4 productos en el comparador.");
+        renderAll();
+      });
+      TA.search.bindLive(addQ, function () { fillOptions(addQ.value); });
+      document.getElementById("clearTray").addEventListener("click", function () { TA.comparator.clear(); renderAll(); });
+      document.querySelectorAll("[data-pair]").forEach(function (b) {
+        b.addEventListener("click", function () {
+          TA.comparator.clear();
+          b.getAttribute("data-pair").split(",").forEach(function (id) { TA.comparator.add(Number(id)); });
+          renderAll();
+        });
+      });
+      renderAll();
+    })();
+  </script>
+</body>
+</html>

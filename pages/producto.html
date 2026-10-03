@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Detalle del producto: imagen, especificaciones, características sobresalientes y álbum.">
+  <title>Detalle del producto — TechAlbum</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+  <a class="skip-link" href="#contenido">Saltar al contenido</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="../index.html" aria-label="TechAlbum inicio">
+        <span class="brand-logo" aria-hidden="true">💻</span>
+        <span><span class="brand-name">TechAlbum</span> <span class="brand-tag">Álbum Tech</span></span>
+      </a>
+      <nav class="main-nav" aria-label="Navegación principal">
+        <a href="../index.html">Inicio</a>
+        <a href="catalogo.html">Componentes</a>
+        <a href="smartphones.html">Smartphones</a>
+        <a href="catalogo.html?group=Periféricos">Periféricos</a>
+        <a href="catalogo.html?group=Otros">Tecnología</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="contenido">
+    <p><a href="catalogo.html">← Volver al álbum</a></p>
+    <div id="detail"></div>
+    <h2 class="section-title">Relacionados</h2>
+    <p class="section-sub">Más productos de la misma categoría.</p>
+    <div class="grid grid-products" id="related"></div>
+    <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad.</aside>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <span><strong>TechAlbum</strong> — Detalle del producto · Proyecto académico.</span>
+      <span><a href="../index.html">← Volver al inicio</a> · Fotos: Pexels</span>
+    </div>
+  </footer>
+
+  <script src="../data/products.js"></script>
+  <script src="../js/products.js"></script>
+  <script src="../js/pexels.js"></script>
+  <script src="../js/catalog.js"></script>
+  <script src="../js/filters.js"></script>
+  <script src="../js/search.js"></script>
+  <script src="../js/app.js"></script>
+  <script>
+    (function () {
+      var TA = window.TechAlbum;
+      var esc = TA.catalog.esc;
+      var host = document.getElementById("detail");
+      var id = null;
+      try { id = Number(new URLSearchParams(location.search).get("id")); } catch (e) {}
+      var p = TA.store.getById(id);
+
+      function imgSrc(src) {
+        if (src && src.indexOf("assets/") === 0) return "../" + src;
+        return src;
+      }
+
+      if (!p) {
+        document.title = "Producto no encontrado — TechAlbum";
+        host.innerHTML = '<div class="empty"><span class="big">📦</span><p>Producto no encontrado.</p><p><a class="btn" href="catalogo.html">Volver al álbum</a></p></div>';
+        document.getElementById("related").innerHTML = "";
+        return;
+      }
+      document.title = p.brand + " " + p.model + " — TechAlbum";
+      var cat = TA.store.categoryById(p.category);
+      var range = p.range ? ' <span class="badge badge-range-' + esc(p.range) + '">' + esc(TA.store.rangeLabel(p.range)) + "</span>" : "";
+      var specs = Object.keys(p.specifications || {}).map(function (k) {
+        return "<li><span class='spec-k'>" + esc(k) + "</span><span>" + esc(p.specifications[k]) + "</span></li>";
+      }).join("");
+      host.innerHTML =
+        '<article class="detail">' +
+          '<div class="detail-media"><img src="' + esc(imgSrc(p.image)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" onerror="TechAlbum.store.imgFallback(this)"></div>' +
+          '<div class="detail-info">' +
+            '<span class="badge">' + esc(cat.label) + "</span>" + range +
+            "<h1>" + esc(p.brand + " " + p.model) + "</h1>" +
+            '<p class="product-price" style="font-size:1.4rem">' + esc(TA.store.formatPrice(p.price)) + ' <span style="font-size:.75rem;color:var(--muted)">GTQ · precio de referencia</span></p>' +
+            '<p><span class="stars">' + TA.store.stars(p.rating) + '</span> <span style="color:var(--muted);font-size:.82rem">' + p.rating + "/5</span></p>" +
+            '<h2 class="section-title" style="margin-top:10px">Características sobresalientes</h2>' +
+            '<ul class="hl-list">' + (p.highlights || []).map(function (h) { return "<li>" + esc(h) + "</li>"; }).join("") + "</ul>" +
+            '<p style="display:flex;gap:8px;flex-wrap:wrap">' +
+              '<a class="btn btn-small btn-primary" href="catalogo.html?cat=' + p.category + '">Ver su gama en el álbum →</a>' +
+            "</p>" +
+            '<h2 class="section-title">Especificaciones</h2>' +
+            '<ul class="spec-list">' + specs + "</ul>" +
+          "</div>" +
+        "</article>";
+      if (TA.catalog.bindCompareButtons) TA.catalog.bindCompareButtons(host);
+
+      var rel = TA.store.products().filter(function (x) { return x.category === p.category && x.id !== p.id; }).slice(0, 4);
+      TA.catalog.renderInto(document.getElementById("related"), rel, { base: "../" });
+    })();
+  </script>
+</body>
+</html>
