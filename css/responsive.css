@@ -5,20 +5,49 @@
 /* Tablet: 2 columnas de productos */
 @media (max-width: 899px) and (min-width: 600px) {
   .grid-products { grid-template-columns: repeat(2, 1fr); }
+  .audience-grid { grid-template-columns: repeat(2, 1fr); }
+  .header-inner { position: relative; }
+  .main-nav { order: 3; width: 100%; margin-left: 0; }
+  .theme-toggle { margin-left: auto; }
 }
 /* Móvil: 1 columna, tablas con scroll horizontal */
 @media (max-width: 599px) {
   .grid-products { grid-template-columns: 1fr; }
   .grid-cats { grid-template-columns: repeat(2, 1fr); }
-  .header-inner { gap: 8px; }
+  .header-inner { gap: 8px; position: relative; }
+  .brand { max-width: calc(100% - 52px); }
+  .brand-name { font-size: 1rem; }
+  .theme-toggle { position: absolute; right: 12px; top: 13px; width: 38px; height: 38px; justify-content: center; padding: 0; }
+  .theme-label { display: none; }
   .main-nav { margin-left: 0; width: 100%; }
   .main-nav a { flex: 1; text-align: center; font-size: 0.78rem; padding: 8px 6px; }
   .container { padding: 16px 12px 44px; }
   .hero { padding: 22px 18px; }
+  .hero h1 { font-size: 2rem; }
+  .hero-stats { margin-top: 24px; }
+  .hero-stats div { padding: 0 13px; }
+  .hero-stats div:first-child { padding-left: 0; }
+  .academic-badge { max-width: 100%; font-size: .62rem; }
   .product-actions { flex-direction: column; }
   .filters { grid-template-columns: 1fr; }
   .spec-list li { flex-direction: column; gap: 2px; }
+  .verdict-metrics { grid-template-columns: repeat(2, 1fr); }
+  .section-heading { align-items: start; flex-direction: column; gap: 6px; }
+  .audience-grid { grid-template-columns: 1fr; }
+  .audience-card { min-height: 170px; }
+  .cat-orbit { flex-basis: 118px; }
+  .cat-orbit-media { width: 106px; height: 106px; }
+  .compare-intro { padding-top: 38px; }
+  .compare-intro h1 { max-width: 12ch; font-size: clamp(2.2rem, 12vw, 3.35rem); }
+  .comparison-rule span { border-right: 0; border-bottom: 1px solid var(--border); }
+  .comparison-rule span:last-child { border-bottom: 0; }
+  .workbench-heading { align-items: start; flex-direction: column; }
+  .compare-tray, .pair-list { grid-template-columns: 1fr; }
+  .guided-pairs { grid-template-columns: 1fr; gap: 20px; margin-top: 60px; }
+  .compare-search { flex-direction: column; align-items: stretch; }
+  .compare-search input, .compare-search select { width: 100%; }
 }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; scroll-behavior: auto !important; }
+  [data-reveal] { opacity: 1; transform: none; }
 }

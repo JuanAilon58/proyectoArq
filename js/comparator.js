@@ -1,15 +1,18 @@
-/* TechAlbum — js/comparator.js | Bandeja de comparación (máx. 4) */
+/* TechAlbum — js/comparator.js | Bandeja de comparación guiada (máx. 3) */
 window.TechAlbum = window.TechAlbum || {};
 (function (TA) {
   "use strict";
   var KEY = "techalbum_compare_v1";
-  var MAX = 4;
+  var MAX = 3;
 
   function load() {
     try {
       var raw = localStorage.getItem(KEY);
       var arr = raw ? JSON.parse(raw) : [];
-      return arr.map(Number).filter(function (id) { return TA.store.getById(id); }).slice(0, MAX);
+      var valid = arr.map(Number).filter(function (id) { return TA.store.getById(id); }).slice(0, MAX);
+      return valid.filter(function (id, index) {
+        return index === 0 || TA.store.compatibleWith(TA.store.getById(valid[0]), TA.store.getById(id));
+      });
     } catch (e) { return []; }
   }
   function save(ids) {
@@ -23,7 +26,12 @@ window.TechAlbum = window.TechAlbum || {};
     var ids = load();
     if (ids.indexOf(id) !== -1) return { ok: true, ids: ids, existed: true };
     if (ids.length >= MAX) return { ok: false, reason: "max", ids: ids };
-    if (!TA.store.getById(id)) return { ok: false, reason: "not-found", ids: ids };
+    var product = TA.store.getById(id);
+    if (!product) return { ok: false, reason: "not-found", ids: ids };
+    var selected = list();
+    if (selected.length && !TA.store.compatibleWith(selected[0], product)) {
+      return { ok: false, reason: "incompatible", ids: ids, required: TA.store.comparisonMeta(selected[0]) };
+    }
     ids.push(id);
     save(ids);
     return { ok: true, ids: ids };
@@ -45,6 +53,10 @@ window.TechAlbum = window.TechAlbum || {};
       res = add(id);
       if (!res.ok && res.reason === "max") {
         alert("Puedes comparar hasta " + MAX + " productos. Quita uno para agregar otro.");
+        return res;
+      }
+      if (!res.ok && res.reason === "incompatible") {
+        alert("Elige productos de la misma subcategoría y gama para obtener una comparación justa.");
         return res;
       }
       res.added = true;

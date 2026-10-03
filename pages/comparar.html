@@ -3,209 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Comparador de productos: tabla lado a lado y recomendación con puntaje transparente.">
-  <title>Comparador — TechAlbum</title>
+  <meta name="description" content="Laboratorio de comparación de dos o tres productos equivalentes por subcategoría y gama.">
+  <title>Laboratorio de comparación — Álbum Tecnológico</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="../index.html" aria-label="TechAlbum inicio">
-        <span class="brand-logo" aria-hidden="true">💻</span>
-        <span><span class="brand-name">TechAlbum</span> <span class="brand-tag">Álbum Tech</span></span>
-      </a>
-      <nav class="main-nav" aria-label="Navegación principal">
-        <a href="../index.html">Inicio</a>
-        <a href="catalogo.html">Componentes</a>
-        <a href="smartphones.html">Smartphones</a>
-        <a href="catalogo.html?group=Periféricos">Periféricos</a>
-        <a href="catalogo.html?group=Otros">Tecnología</a>
-      </nav>
-    </div>
-  </header>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="../index.html" aria-label="Álbum Tecnológico, inicio"><span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 9.5h20a4.5 4.5 0 0 1 4.5 4.5v14A4.5 4.5 0 0 1 34 32.5H14A4.5 4.5 0 0 1 9.5 28V14A4.5 4.5 0 0 1 14 9.5Z" stroke="currentColor" stroke-width="3"/><path d="m19 21 3.2 3.2L29 17.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">Álbum Tecnológico</span></a>
+    <nav class="main-nav" aria-label="Navegación principal"><a href="../index.html">Inicio</a><a href="catalogo.html">Componentes</a><a href="smartphones.html">Smartphones</a><a href="catalogo.html?group=Periféricos">Periféricos</a><a href="catalogo.html?group=Otros">Tecnología</a></nav>
+    <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Activar modo claro"><span aria-hidden="true">☀</span><span class="theme-label">Modo claro</span></button>
+  </div></header>
 
-  <main class="container" id="contenido">
-    <h1 class="page-title">Comparar productos</h1>
-    <p class="page-sub">Agrega de 2 a 4 productos (idealmente de la misma categoría o gama). La tabla se adapta a sus especificaciones y debajo verás la recomendación con el puntaje de cada uno.</p>
+  <main class="container compare-page" id="contenido">
+    <section class="compare-intro" data-reveal>
+      <h1>Una comparación útil comienza con opciones equivalentes.</h1>
+      <p>Selecciona dos o tres productos de la misma categoría, subcategoría y gama. Así el análisis de precio, rendimiento y características tendrá contexto.</p>
+      <div class="comparison-rule" aria-label="Reglas de una comparación justa"><span>1. Elige una subcategoría</span><span>2. Mantén la misma gama</span><span>3. Revisa la recomendación</span></div>
+    </section>
 
-    <h2 class="section-title" style="margin-top:0">Tu selección (<span id="trayCount">0</span>/4)</h2>
-    <div class="compare-tray" id="tray" aria-live="polite"></div>
-    <p style="display:flex;gap:8px;flex-wrap:wrap;margin:0 0 16px">
-      <button class="btn btn-small btn-ghost" id="clearTray" type="button">Vaciar selección</button>
-      <a class="btn btn-small" href="catalogo.html">＋ Agregar desde el álbum</a>
-    </p>
+    <section class="compare-workbench" aria-labelledby="selection-title" data-reveal>
+      <div class="workbench-heading"><div><h2 id="selection-title"><span id="trayCount">0</span> de 3 productos</h2></div><button class="text-button" id="clearTray" type="button">Reiniciar selección</button></div>
+      <div class="comparison-context" id="comparisonContext" aria-live="polite">Elige un primer producto para definir la subcategoría y la gama.</div>
+      <div class="compare-tray" id="tray" aria-live="polite"></div>
+      <div class="selection-controls"><label for="addQ">Buscar en el álbum</label><div class="toolbar compare-search"><input type="search" id="addQ" placeholder="Marca o modelo" aria-label="Buscar producto para agregar"><select id="addSelect" aria-label="Producto compatible para agregar"></select><button class="btn btn-primary" id="addBtn" type="button">Añadir opción</button></div><p class="selection-hint">Después del primer producto, solo se mostrarán alternativas compatibles.</p></div>
+    </section>
 
-    <div class="toolbar">
-      <input type="search" id="addQ" placeholder="🔍 Buscar para agregar (ej: Ryzen, RTX, A55)…" aria-label="Buscar producto para agregar">
-      <select id="addSelect" aria-label="Elegir producto para agregar"></select>
-      <button class="btn btn-small btn-primary" id="addBtn" type="button">Agregar</button>
-    </div>
-
-    <div class="toolbar" aria-label="Comparaciones sugeridas">
-      <span style="font-size:.82rem;color:var(--muted)">Sugerencias:</span>
-      <button class="btn btn-small" type="button" data-pair="1,2">Intel i5 vs i7</button>
-      <button class="btn btn-small" type="button" data-pair="3,4">Ryzen 5 vs 7</button>
-      <button class="btn btn-small" type="button" data-pair="5,7">RTX 4060 vs RX 7600</button>
-      <button class="btn btn-small" type="button" data-pair="58,59">Gama baja</button>
-      <button class="btn btn-small" type="button" data-pair="60,61">Gama media</button>
-      <button class="btn btn-small" type="button" data-pair="62,63">Gama alta</button>
-    </div>
-
-    <div id="compareZone"></div>
-    <div id="verdictZone"></div>
-
-    <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad.</aside>
+    <section class="guided-pairs" aria-labelledby="pairs-title" data-reveal><div><h2 id="pairs-title">Comparaciones listas para explorar</h2></div><div id="suggestedPairs" class="pair-list"></div></section>
+    <div id="compareZone" aria-live="polite"></div><div id="verdictZone" aria-live="polite"></div>
+    <aside class="price-note" role="note"><strong>Referencia académica.</strong> Los precios se muestran en quetzales y pueden variar según fecha, disponibilidad y establecimiento.</aside>
   </main>
+  <footer class="site-footer"><div class="footer-inner"><span><strong>Álbum Tecnológico</strong> — Proyecto académico.</span><span><a href="../index.html">Volver al inicio</a> · Imágenes locales</span></div></footer>
 
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span><strong>TechAlbum</strong> — Comparador · Proyecto académico.</span>
-      <span><a href="../index.html">← Volver al inicio</a> · Fotos: Pexels</span>
-    </div>
-  </footer>
-
-  <script src="../data/products.js"></script>
-  <script src="../js/products.js"></script>
-  <script src="../js/pexels.js"></script>
-  <script src="../js/recommendation.js"></script>
-  <script src="../js/comparator.js"></script>
-  <script src="../js/catalog.js"></script>
-  <script src="../js/filters.js"></script>
-  <script src="../js/search.js"></script>
-  <script src="../js/app.js"></script>
+  <script src="../data/products.js"></script><script src="../js/products.js"></script><script src="../js/recommendation.js"></script><script src="../js/comparator.js"></script><script src="../js/catalog.js"></script><script src="../js/filters.js"></script><script src="../js/search.js"></script><script src="../js/app.js"></script>
   <script>
     (function () {
-      var TA = window.TechAlbum;
-      var tray = document.getElementById("tray");
-      var trayCount = document.getElementById("trayCount");
-      var addQ = document.getElementById("addQ");
-      var addSelect = document.getElementById("addSelect");
-      var compareZone = document.getElementById("compareZone");
-      var verdictZone = document.getElementById("verdictZone");
-      var esc = TA.catalog.esc;
-
-      function img(p) {
-        var s = p.image || "";
-        if (s.indexOf("assets/") === 0) s = "../" + s;
-        return s;
-      }
-      function inTray() { return TA.comparator.list(); }
-
+      var TA = window.TechAlbum, esc = TA.catalog.esc;
+      var tray = document.getElementById("tray"), addQ = document.getElementById("addQ"), addSelect = document.getElementById("addSelect"), context = document.getElementById("comparisonContext"), compareZone = document.getElementById("compareZone"), verdictZone = document.getElementById("verdictZone");
+      function image(p) { return (p.image || "").indexOf("assets/") === 0 ? "../" + p.image : p.image; }
+      function selected() { return TA.comparator.list(); }
+      function meta(p) { return TA.store.comparisonMeta(p); }
+      function name(p) { return p.brand + " " + p.model; }
       function fillOptions(term) {
-        var ids = inTray().map(function (p) { return p.id; });
-        var items = TA.store.products().filter(function (p) {
-          return ids.indexOf(p.id) === -1 && TA.search.matches(p, term);
-        }).slice(0, 60);
-        addSelect.innerHTML = items.map(function (p) {
-          return '<option value="' + p.id + '">' + esc(p.brand + " " + p.model + " — " + TA.store.formatPrice(p.price)) + "</option>";
-        }).join("") || '<option value="">Sin resultados</option>';
+        var items = TA.store.products().filter(function (p) { return !TA.comparator.contains(p.id) && (!selected().length || TA.store.compatibleWith(selected()[0], p)) && TA.search.matches(p, term); }).slice(0, 60);
+        addSelect.innerHTML = items.map(function (p) { return '<option value="' + p.id + '">' + esc(name(p) + " — " + TA.store.formatPrice(p.price)) + "</option>"; }).join("") || '<option value="">No hay opciones compatibles</option>';
       }
-
       function renderTray() {
-        var items = inTray();
-        trayCount.textContent = items.length;
-        if (!items.length) {
-          tray.innerHTML = '<div class="tray-slot"><span style="color:var(--muted);font-size:.85rem">Vacío — agrega productos con el buscador o desde el álbum.</span></div>';
-        } else {
-          tray.innerHTML = items.map(function (p) {
-            return '<div class="tray-slot filled">' +
-              '<img src="' + esc(img(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" onerror="TechAlbum.store.imgFallback(this)">' +
-              '<div><p class="t">' + esc(p.brand + " " + p.model) + '</p><p class="p">' + esc(TA.store.formatPrice(p.price)) + "</p></div>" +
-              '<button class="tray-remove" type="button" data-remove="' + p.id + '" aria-label="Quitar ' + esc(p.model) + '">✕</button>' +
-            "</div>";
-          }).join("");
-          tray.querySelectorAll("[data-remove]").forEach(function (b) {
-            b.addEventListener("click", function () { TA.comparator.remove(b.getAttribute("data-remove")); renderAll(); });
-          });
-        }
+        var items = selected(); document.getElementById("trayCount").textContent = items.length;
+        context.textContent = items.length ? "Comparación activa: " + meta(items[0]).category + " / " + meta(items[0]).subcategory + " / " + TA.store.rangeLabel(meta(items[0]).range) + "." : "Elige un primer producto para definir la subcategoría y la gama.";
+        tray.innerHTML = items.length ? items.map(function (p) { return '<article class="tray-slot filled"><img src="' + esc(image(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(name(p)) + '" onerror="TechAlbum.store.imgFallback(this)"><div><p class="t">' + esc(name(p)) + '</p><p class="p">' + esc(TA.store.formatPrice(p.price)) + '</p><small>' + esc(TA.store.rangeLabel(meta(p).range)) + '</small></div><button class="tray-remove" type="button" data-remove="' + p.id + '">Quitar</button></article>'; }).join("") : '<div class="tray-slot"><strong>Sin opciones seleccionadas</strong><span>El primer producto marcará el marco de una comparación justa.</span></div>';
+        tray.querySelectorAll("[data-remove]").forEach(function (button) { button.addEventListener("click", function () { TA.comparator.remove(button.dataset.remove); renderAll(); }); });
       }
-
-      function specKeys(items) {
-        var keys = [], seen = {};
-        items.forEach(function (p) {
-          Object.keys(p.specifications || {}).forEach(function (k) {
-            if (!seen[k]) { seen[k] = 1; keys.push(k); }
-          });
-        });
-        return keys;
-      }
-
+      function specKeys(items) { var seen = {}, keys = []; items.forEach(function (p) { Object.keys(p.specifications || {}).forEach(function (key) { if (!seen[key]) { seen[key] = true; keys.push(key); } }); }); return keys; }
       function renderCompare() {
-        var items = inTray();
-        if (items.length < 2) {
-          compareZone.innerHTML = '<div class="empty"><span class="big">⚖️</span><p>Agrega al menos <strong>2 productos</strong> para ver la tabla comparativa.</p></div>';
-          verdictZone.innerHTML = "";
-          return;
-        }
-        var keys = specKeys(items);
-        var head = "<thead><tr><th>Característica</th>" + items.map(function (p) {
-          return '<th class="prod"><span class="compare-head-card">' +
-            '<img src="' + esc(img(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" onerror="TechAlbum.store.imgFallback(this)">' +
-            esc(p.brand + " " + p.model) + "<br><span style='color:var(--accent);font-family:var(--mono)'>" + esc(TA.store.formatPrice(p.price)) + "</span></span></th>";
-        }).join("") + "</tr></thead>";
-        var rows = keys.map(function (k) {
-          var cells = items.map(function (p) {
-            var v = (p.specifications || {})[k];
-            return "<td>" + (v == null ? "—" : esc(v)) + "</td>";
-          }).join("");
-          return "<tr><th>" + esc(k) + "</th>" + cells + "</tr>";
-        }).join("");
-        // Fila de precio + destacados
-        rows += "<tr><th>Precio (Q)</th>" + items.map(function (p) {
-          var cheapest = Math.min.apply(null, items.map(function (x) { return x.price; }));
-          var cls = p.price === cheapest ? ' class="best"' : "";
-          return "<td" + cls + ">" + esc(TA.store.formatPrice(p.price)) + (p.price === cheapest ? " ★ mejor precio" : "") + "</td>";
-        }).join("") + "</tr>";
-        rows += "<tr><th>Lo sobresaliente</th>" + items.map(function (p) {
-          return "<td>" + esc((p.highlights || []).join(" · ")) + "</td>";
-        }).join("") + "</tr>";
-        compareZone.innerHTML = '<h2 class="section-title">Tabla comparativa</h2><div class="table-wrap"><table class="compare">' + head + "<tbody>" + rows + "</tbody></table></div>";
-        renderVerdict(items);
+        var items = selected();
+        if (items.length < 2) { compareZone.innerHTML = '<section class="comparison-empty"><h2>La tabla aparecerá al seleccionar dos opciones.</h2><p>Usa una de las sugerencias o busca un producto para iniciar.</p></section>'; verdictZone.innerHTML = ""; return; }
+        var lowest = Math.min.apply(null, items.map(function (p) { return p.price; }));
+        var rows = specKeys(items).map(function (key) { return "<tr><th>" + esc(key) + "</th>" + items.map(function (p) { var value = (p.specifications || {})[key]; return "<td>" + (value == null ? "—" : esc(value)) + "</td>"; }).join("") + "</tr>"; }).join("");
+        rows += "<tr><th>Precio de referencia</th>" + items.map(function (p) { return '<td' + (p.price === lowest ? ' class="best"' : "") + ">" + esc(TA.store.formatPrice(p.price)) + (p.price === lowest ? " · menor precio" : "") + "</td>"; }).join("") + "</tr>";
+        rows += "<tr><th>Aspectos sobresalientes</th>" + items.map(function (p) { return "<td>" + esc((p.highlights || []).join(" · ")) + "</td>"; }).join("") + "</tr>";
+        var header = items.map(function (p) { return '<th class="prod"><span class="compare-head-card"><img src="' + esc(image(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(name(p)) + '" onerror="TechAlbum.store.imgFallback(this)"><strong>' + esc(name(p)) + "</strong><span>" + esc(TA.store.formatPrice(p.price)) + "</span></span></th>"; }).join("");
+        compareZone.innerHTML = '<section class="comparison-result"><h2>Lo que cambia entre tus opciones</h2><p>Las opciones pertenecen al mismo marco de comparación; observa qué especificación responde mejor a tu uso.</p><div class="table-wrap"><table class="compare"><thead><tr><th>Característica</th>' + header + "</tr></thead><tbody>" + rows + "</tbody></table></div></section>";
+        var rec = TA.recommendation.recommend(items), winner = rec.rows[0];
+        verdictZone.innerHTML = '<section class="verdict" aria-label="Recomendación"><h2>La opción sugerida es ' + esc(name(rec.winner)) + '</h2><p class="winner">' + esc(TA.store.formatPrice(rec.winner.price)) + '</p><p>' + esc(rec.verdict) + '</p><div class="verdict-metrics"><div><span>Puntaje global</span><strong>' + winner.total.toFixed(2) + '<small>/10</small></strong></div><div><span>Rendimiento</span><strong>' + winner.performance.toFixed(1) + '<small>/10</small></strong></div><div><span>Valor relativo</span><strong>' + winner.priceScore.toFixed(1) + '<small>/10</small></strong></div></div><ul>' + rec.reasons.map(function (reason) { return "<li>" + esc(reason) + "</li>"; }).join("") + '</ul><p class="formula">Puntaje: rendimiento 40%, precio relativo 35% y características 25%. Es una guía de estudio; decide según el uso que necesitas.</p></section>';
       }
-
-      function renderVerdict(items) {
-        var rec = TA.recommendation.recommend(items);
-        if (!rec) { verdictZone.innerHTML = ""; return; }
-        var w = TA.store;
-        var scoreRows = rec.rows.map(function (r, i) {
-          return "<tr" + (i === 0 ? ' class="winner-row"' : "") + "><td>" + esc(r.product.brand + " " + r.product.model) + (i === 0 ? " 🏆" : "") + "</td>" +
-            "<td>" + r.performance.toFixed(1) + "</td><td>" + r.priceScore.toFixed(1) + "</td><td>" + r.features.toFixed(1) + "</td><td>" + r.total.toFixed(2) + "</td></tr>";
-        }).join("");
-        verdictZone.innerHTML =
-          '<section class="verdict" aria-label="Recomendación de la comparación">' +
-            "<h2>🏆 Nuestra recomendación</h2>" +
-            '<p class="winner">' + esc(rec.winner.brand + " " + rec.winner.model) + " — " + esc(w.formatPrice(rec.winner.price)) + "</p>" +
-            "<p><strong>" + esc(rec.headline) + "</strong></p>" +
-            "<p>" + esc(rec.verdict) + "</p>" +
-            "<ul>" + rec.reasons.map(function (r) { return "<li>" + esc(r) + "</li>"; }).join("") + "</ul>" +
-            '<table class="score-table"><thead><tr><th>Producto</th><th>Rendimiento (40%)</th><th>Precio rel. (35%)</th><th>Características (25%)</th><th>Total</th></tr></thead>' +
-            "<tbody>" + scoreRows + "</tbody></table>" +
-            '<p class="formula">Puntaje = 0.40 × rendimiento (rating×2) + 0.35 × precio relativo (10 = más barato del conjunto) + 0.25 × características. El precio se normaliza dentro de cada comparación, por eso la recomendación cambia según los productos elegidos.</p>' +
-          "</section>";
+      function renderPairs() {
+        var groups = {}; TA.store.products().forEach(function (p) { var key = meta(p).key; (groups[key] || (groups[key] = [])).push(p); });
+        var choices = Object.keys(groups).map(function (key) { return groups[key].slice(0, 3); }).filter(function (group) { return group.length >= 2; }).slice(0, 6);
+        document.getElementById("suggestedPairs").innerHTML = choices.map(function (group) { var info = meta(group[0]); return '<button type="button" class="pair-option" data-pair="' + group.map(function (p) { return p.id; }).join(",") + '"><span>' + esc(info.subcategory) + " · " + esc(TA.store.rangeLabel(info.range)) + '</span><strong>' + esc(group.map(function (p) { return p.brand; }).join(" / ")) + '</strong><small>' + esc(group.map(function (p) { return p.model; }).join(" · ")) + "</small></button>"; }).join("");
+        document.querySelectorAll("[data-pair]").forEach(function (button) { button.addEventListener("click", function () { TA.comparator.clear(); button.dataset.pair.split(",").forEach(function (id) { TA.comparator.add(Number(id)); }); renderAll(); document.querySelector(".compare-workbench").scrollIntoView({ behavior: "smooth", block: "start" }); }); });
       }
-
       function renderAll() { renderTray(); fillOptions(addQ.value); renderCompare(); }
-
-      document.getElementById("addBtn").addEventListener("click", function () {
-        var id = Number(addSelect.value);
-        if (!id) return;
-        var r = TA.comparator.add(id);
-        if (!r.ok && r.reason === "max") alert("Máximo 4 productos en el comparador.");
-        renderAll();
-      });
-      TA.search.bindLive(addQ, function () { fillOptions(addQ.value); });
-      document.getElementById("clearTray").addEventListener("click", function () { TA.comparator.clear(); renderAll(); });
-      document.querySelectorAll("[data-pair]").forEach(function (b) {
-        b.addEventListener("click", function () {
-          TA.comparator.clear();
-          b.getAttribute("data-pair").split(",").forEach(function (id) { TA.comparator.add(Number(id)); });
-          renderAll();
-        });
-      });
-      renderAll();
+      document.getElementById("addBtn").addEventListener("click", function () { var result = TA.comparator.add(Number(addSelect.value)); if (!result.ok && result.reason === "max") alert("Puedes analizar hasta tres productos."); if (!result.ok && result.reason === "incompatible") alert("Selecciona opciones de la misma subcategoría y gama."); renderAll(); });
+      document.getElementById("clearTray").addEventListener("click", function () { TA.comparator.clear(); renderAll(); }); TA.search.bindLive(addQ, function () { fillOptions(addQ.value); });
+      try { var initial = Number(new URLSearchParams(location.search).get("producto")); if (initial && !selected().length) TA.comparator.add(initial); } catch (e) {}
+      renderPairs(); renderAll();
     })();
   </script>
 </body>

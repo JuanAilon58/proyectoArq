@@ -21,8 +21,9 @@ window.TechAlbum = window.TechAlbum || {};
   function cardHTML(p, opts) {
     opts = opts || {};
     var cat = TA.store.categoryById(p.category);
-    var range = p.range
-      ? '<span class="badge badge-range-' + esc(p.range) + '">' + esc(TA.store.rangeLabel(p.range)) + "</span>"
+    var productRange = TA.store.rangeOf(p);
+    var range = productRange
+      ? '<span class="badge badge-range-' + esc(productRange) + '">' + esc(TA.store.rangeLabel(productRange)) + "</span>"
       : "";
     var detailHref = (opts.base || "") + "pages/producto.html?id=" + p.id;
     return (
@@ -36,7 +37,7 @@ window.TechAlbum = window.TechAlbum || {};
           '<div class="product-price">' + esc(TA.store.formatPrice(p.price)) + "</div>" +
           '<p class="product-highlight">' + esc((p.highlights && p.highlights[0]) || "") + "</p>" +
           '<div class="product-actions">' +
-            '<a class="btn btn-small btn-primary" href="' + detailHref + '">Ver detalles</a>' +
+            '<a class="btn btn-small btn-primary" href="' + detailHref + '">Ver ficha</a>' +
           "</div>" +
         "</div>" +
       "</article>"
@@ -71,6 +72,15 @@ window.TechAlbum = window.TechAlbum || {};
     TA.store.products().forEach(function (p) { counts[p.category] = (counts[p.category] || 0) + 1; });
     el.innerHTML = TA.store.categories().map(function (c) {
       var href = (opts && opts.base ? opts.base : "") + "pages/catalogo.html?cat=" + encodeURIComponent(c.id);
+      var sample = TA.store.products().filter(function (p) { return p.category === c.id; })[0];
+      if (opts && opts.rail) {
+        return (
+          '<a class="cat-orbit" href="' + href + '">' +
+            '<span class="cat-orbit-media"><img src="' + esc(imgSrc(sample ? sample.image : TA.store.PLACEHOLDER)) + '" data-cat="' + esc(c.id) + '" alt="" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"></span>' +
+            '<strong>' + esc(c.label) + '</strong><small>' + (counts[c.id] || 0) + ' opciones</small>' +
+          '</a>'
+        );
+      }
       return (
         '<a class="cat-card" href="' + href + '">' +
           '<span class="cat-icon" aria-hidden="true">' + c.icon + "</span>" +

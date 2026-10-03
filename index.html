@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="TechAlbum — Álbum de tecnología: explora componentes, smartphones, periféricos y cables por categoría y gama.">
-  <title>TechAlbum — Álbum de Tecnología</title>
+  <meta name="description" content="Álbum Tecnológico: explora componentes, smartphones, periféricos y cables por categoría y gama.">
+  <title>Álbum Tecnológico — Inicio</title>
   <link rel="stylesheet" href="css/style.css">
   <link rel="stylesheet" href="css/components.css">
   <link rel="stylesheet" href="css/responsive.css">
@@ -13,9 +13,9 @@
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="index.html" aria-label="TechAlbum inicio">
-        <span class="brand-logo" aria-hidden="true">💻</span>
-        <span><span class="brand-name">TechAlbum</span> <span class="brand-tag">Álbum Tech</span></span>
+      <a class="brand" href="index.html" aria-label="Álbum Tecnológico inicio">
+        <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 9.5h20a4.5 4.5 0 0 1 4.5 4.5v14A4.5 4.5 0 0 1 34 32.5H14A4.5 4.5 0 0 1 9.5 28V14A4.5 4.5 0 0 1 14 9.5Z" stroke="currentColor" stroke-width="3"/><path d="M18 38.5h12M24 32.5v6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="m19 21 3.2 3.2L29 17.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand-name">Álbum Tecnológico</span>
       </a>
       <nav class="main-nav" aria-label="Navegación principal">
         <a href="index.html">Inicio</a>
@@ -24,15 +24,17 @@
         <a href="pages/catalogo.html?group=Periféricos">Periféricos</a>
         <a href="pages/catalogo.html?group=Otros">Tecnología</a>
       </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Activar modo claro"><span aria-hidden="true">☀</span><span class="theme-label">Modo claro</span></button>
     </div>
   </header>
 
   <main class="container" id="contenido">
     <section class="hero" aria-labelledby="hero-title">
+      <div class="academic-badge"><img src="assets/images/umg-logo.svg" alt="Escudo de la Universidad Mariano Gálvez de Guatemala"><span>Proyecto académico<br><strong>Universidad Mariano Gálvez</strong></span></div>
       <h1 id="hero-title">Explora y <span>descubre tecnología</span></h1>
-      <p>Álbum digital de componentes de PC, smartphones, periféricos, audio y cables. Mira características y precios de referencia por categoría y gama antes de elegir.</p>
+      <p>Álbum digital de componentes de PC, smartphones, periféricos, audio y cables. Explora sus características y precios de referencia antes de decidir.</p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="pages/catalogo.html">🔍 Explorar productos</a>
+        <a class="btn btn-primary magnetic" href="pages/catalogo.html">🔍 Explorar productos</a>
       </div>
       <div class="hero-stats" aria-label="Resumen del catálogo">
         <div><strong data-stat="products">–</strong><span>productos</span></div>
@@ -41,32 +43,61 @@
       </div>
     </section>
 
-    <h2 class="section-title" id="categorias">Buscar por categoría</h2>
-    <p class="section-sub">Elige una categoría para ver 2 o 3 productos del álbum.</p>
-    <div class="grid grid-cats" id="homeCats"></div>
+    <section class="discover" aria-labelledby="discover-title" data-reveal>
+      <div class="section-heading">
+        <div><h2 class="section-title" id="discover-title">¿Qué quieres explorar?</h2></div>
+        <p class="section-sub">Elige una ruta y revisa productos que se adaptan a ese contexto.</p>
+      </div>
+      <div class="audience-grid">
+        <a class="audience-card audience-pc" href="pages/catalogo.html?group=Componentes%20internos"><span class="audience-image"><img src="assets/images/products/2105927.jpg" alt="" loading="lazy"></span><strong>Armar o mejorar una PC</strong><small>Procesadores, gráficas, memoria y más.</small><b>Ver componentes →</b></a>
+        <a class="audience-card audience-study" href="pages/catalogo.html?group=Hogar%20y%20oficina"><span class="audience-image"><img src="assets/images/products/12432703.jpg" alt="" loading="lazy"></span><strong>Estudiar y trabajar</strong><small>Equipos y accesorios para tu día a día.</small><b>Ver opciones →</b></a>
+        <a class="audience-card audience-play" href="pages/catalogo.html?cat=graficas"><span class="audience-image"><img src="assets/images/products/33798621.jpg" alt="" loading="lazy"></span><strong>Jugar y crear</strong><small>Potencia visual, audio y periféricos.</small><b>Ver tecnología →</b></a>
+        <a class="audience-card audience-mobile" href="pages/smartphones.html"><span class="audience-image"><img src="assets/images/products/5053767.jpg" alt="" loading="lazy"></span><strong>Elegir un smartphone</strong><small>Opciones de gama baja, media y alta.</small><b>Ver teléfonos →</b></a>
+      </div>
+    </section>
 
-    <h2 class="section-title">¿Cómo funciona?</h2>
-    <p class="section-sub">Mira características y precios de referencia por categoría y gama.</p>
+    <section aria-labelledby="featured-title" data-reveal>
+      <div class="section-heading">
+        <div><h2 class="section-title" id="featured-title">Productos destacados</h2></div>
+        <a class="text-link" href="pages/catalogo.html">Ver catálogo completo →</a>
+      </div>
+      <div class="grid grid-products featured-products" id="featuredProducts"></div>
+    </section>
+
+    <section class="category-showcase" aria-labelledby="categorias" data-reveal>
+      <div class="section-heading">
+        <div><h2 class="section-title" id="categorias">Explora por categoría</h2></div>
+        <div class="rail-controls" aria-label="Controles del carrusel de categorías">
+          <button class="rail-button" id="catPrev" type="button" aria-label="Ver categorías anteriores">←</button>
+          <button class="rail-button" id="catNext" type="button" aria-label="Ver más categorías">→</button>
+        </div>
+      </div>
+      <p class="section-sub">Desliza o usa las flechas para descubrir componentes, periféricos y dispositivos.</p>
+      <div class="category-rail" id="homeCats" tabindex="0" aria-label="Categorías del álbum"></div>
+    </section>
+
+    <section class="learning-path" data-reveal>
+    <h2 class="section-title">Tu ruta para elegir mejor</h2>
+    <p class="section-sub">Una experiencia simple para descubrir, revisar y comparar tecnología.</p>
     <div class="how">
-      <div><strong>1. Explora 🔍</strong>Navega el álbum con el buscador por categoría.</div>
-      <div><strong>2. Elige categoría 🖱️</strong>Usa el buscador por categoría y abre sus gamas (baja, media y alta).</div>
-      <div><strong>3. Mira detalles 🔍</strong>Pulsa Ver detalles para ver especificaciones abajo.</div>
-      
+      <div><span class="step-number">01</span><strong>Explora</strong>Navega el álbum según la categoría que te interesa.</div>
+      <div><span class="step-number">02</span><strong>Revisa</strong>Abre cada ficha para conocer precio y especificaciones clave.</div>
+      <div><span class="step-number">03</span><strong>Compara</strong>Contrasta productos y consulta la recomendación final.</div>
     </div>
+    </section>
 
     <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad. Las especificaciones son datos de demostración para fines académicos.</aside>
   </main>
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span><strong>TechAlbum</strong> — Álbum de tecnología · Proyecto académico (informar + detallar).</span>
-      <span>Sin carrito ni ventas · Datos de demostración · Fotos: Pexels</span>
+      <span><strong>Álbum Tecnológico</strong> — Catálogo de tecnología · Proyecto académico.</span>
+      <span>Sin carrito ni ventas · Datos de demostración · Imágenes locales</span>
     </div>
   </footer>
 
   <script src="data/products.js"></script>
   <script src="js/products.js"></script>
-  <script src="js/pexels.js"></script>
   <script src="js/catalog.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/search.js"></script>
@@ -74,11 +105,23 @@
   <script>
     (function () {
       var TA = window.TechAlbum;
-      TechAlbum.catalog.categoryCards(document.getElementById("homeCats"), { base: "" });
+      TechAlbum.catalog.categoryCards(document.getElementById("homeCats"), { base: "", rail: true });
       var all = TA.store.products();
+      var featured = all.slice().sort(function (a, b) { return b.rating - a.rating || a.price - b.price; }).slice(0, 4);
+      TA.catalog.renderInto(document.getElementById("featuredProducts"), featured, { base: "" });
       document.querySelector('[data-stat="products"]').textContent = all.length;
       document.querySelector('[data-stat="categories"]').textContent = TA.store.categories().length;
       document.querySelector('[data-stat="brands"]').textContent = TA.store.brandsOf(all).length;
+      var rail = document.getElementById("homeCats");
+      function moveRail(direction) {
+        rail.scrollBy({ left: direction * Math.max(260, rail.clientWidth * 0.72), behavior: "smooth" });
+      }
+      document.getElementById("catPrev").addEventListener("click", function () { moveRail(-1); });
+      document.getElementById("catNext").addEventListener("click", function () { moveRail(1); });
+      rail.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowLeft") { event.preventDefault(); moveRail(-1); }
+        if (event.key === "ArrowRight") { event.preventDefault(); moveRail(1); }
+      });
     })();
   </script>
 </body>

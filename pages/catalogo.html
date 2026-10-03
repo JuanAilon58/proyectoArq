@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Álbum tecnológico: busca por categoría y mira 2 o 3 productos con detalles abajo.">
-  <title>Álbum tecnológico — TechAlbum</title>
+  <title>Catálogo — Álbum Tecnológico</title>
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/components.css">
   <link rel="stylesheet" href="../css/responsive.css">
@@ -13,9 +13,9 @@
   <a class="skip-link" href="#contenido">Saltar al contenido</a>
   <header class="site-header">
     <div class="header-inner">
-      <a class="brand" href="../index.html" aria-label="TechAlbum inicio">
-        <span class="brand-logo" aria-hidden="true">💻</span>
-        <span><span class="brand-name">TechAlbum</span> <span class="brand-tag">Álbum Tech</span></span>
+      <a class="brand" href="../index.html" aria-label="Álbum Tecnológico inicio">
+        <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 9.5h20a4.5 4.5 0 0 1 4.5 4.5v14A4.5 4.5 0 0 1 34 32.5H14A4.5 4.5 0 0 1 9.5 28V14A4.5 4.5 0 0 1 14 9.5Z" stroke="currentColor" stroke-width="3"/><path d="M18 38.5h12M24 32.5v6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="m19 21 3.2 3.2L29 17.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <span class="brand-name">Álbum Tecnológico</span>
       </a>
       <nav class="main-nav" aria-label="Navegación principal">
         <a href="../index.html">Inicio</a>
@@ -24,18 +24,23 @@
         <a href="catalogo.html?group=Periféricos">Periféricos</a>
         <a href="catalogo.html?group=Otros">Tecnología</a>
       </nav>
+      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Activar modo claro"><span aria-hidden="true">☀</span><span class="theme-label">Modo claro</span></button>
     </div>
   </header>
 
   <main class="container" id="contenido">
-    <h1 class="page-title">Álbum tecnológico</h1>
-    <p class="page-sub">Álbum de componentes al estilo Intelaf: elige una categoría con el buscador y mira 2 o 3 productos con sus detalles abajo. Sin filtros ni tienda, solo para informar y ver detalles.</p>
+    <h1 class="page-title">Explora por categoría, subcategoría y gama</h1>
+    <p class="page-sub">Empieza por el área tecnológica que necesitas. Cada subcategoría organiza opciones equivalentes por gama para que la comparación posterior sea justa.</p>
 
-    <div class="toolbar cat-search" role="search">
-      <label for="fCat"><strong>🔍 Buscar por categoría</strong></label>
+    <div class="toolbar cat-search catalog-controls" role="search">
+      <label for="fCat"><strong>Categoría</strong></label>
       <select id="fCat" aria-label="Buscar por categoría"></select>
-      <button class="btn btn-primary btn-small" id="searchBtn" type="button">Buscar</button>
-      <button class="btn btn-small btn-ghost" id="allBtn" type="button">Ver todo</button>
+      <label class="sr-only" for="catalogQ">Buscar por marca, modelo o uso</label>
+      <input type="search" id="catalogQ" placeholder="Buscar marca, modelo o uso…" autocomplete="off">
+      <label class="sr-only" for="brandFilter">Filtrar por marca</label>
+      <select id="brandFilter" aria-label="Filtrar por marca"></select>
+      <button class="btn btn-primary btn-small" id="searchBtn" type="button">Aplicar</button>
+      <button class="btn btn-small btn-ghost" id="allBtn" type="button">Limpiar</button>
     </div>
 
     <p class="result-meta" aria-live="polite"><strong id="count">0</strong>&nbsp;productos en álbum&nbsp;<span id="catName"></span></p>
@@ -46,14 +51,13 @@
 
   <footer class="site-footer">
     <div class="footer-inner">
-      <span><strong>TechAlbum</strong> — Álbum de tecnología · Proyecto académico.</span>
-      <span><a href="../index.html">← Volver al inicio</a> · Fotos: Pexels</span>
+      <span><strong>Álbum Tecnológico</strong> — Catálogo de tecnología · Proyecto académico.</span>
+      <span><a href="../index.html">← Volver al inicio</a> · Imágenes locales</span>
     </div>
   </footer>
 
   <script src="../data/products.js"></script>
   <script src="../js/products.js"></script>
-  <script src="../js/pexels.js"></script>
   <script src="../js/catalog.js"></script>
   <script src="../js/filters.js"></script>
   <script src="../js/search.js"></script>
@@ -71,6 +75,8 @@
       var initialCat = getParam("cat");
 
       var fCat = document.getElementById("fCat");
+      var catalogQ = document.getElementById("catalogQ");
+      var brandFilter = document.getElementById("brandFilter");
       var searchBtn = document.getElementById("searchBtn");
       var allBtn = document.getElementById("allBtn");
       var results = document.getElementById("results");
@@ -96,6 +102,23 @@
         if (initialCat) fCat.value = initialCat;
       }
 
+      function fillBrands() {
+        var list = TA.store.products();
+        if (group) list = list.filter(function (p) { return TA.store.categoryById(p.category).group === group; });
+        var brands = TA.store.brandsOf(list);
+        brandFilter.innerHTML = '<option value="">Todas las marcas</option>' + brands.map(function (brand) {
+          return '<option value="' + esc(brand) + '">' + esc(brand) + '</option>';
+        }).join("");
+      }
+
+      function productsInScope() {
+        var list = TA.store.products();
+        if (group) list = list.filter(function (p) { return TA.store.categoryById(p.category).group === group; });
+        if (brandFilter.value) list = list.filter(function (p) { return p.brand === brandFilter.value; });
+        if (catalogQ.value.trim()) list = list.filter(function (p) { return TA.search.matches(p, catalogQ.value); });
+        return list;
+      }
+
       // Detalles que se muestran ABAJO de cada producto (desplegable, sin salir de la página).
       function detailHTML(p) {
         var specs = Object.keys(p.specifications || {}).map(function (k) {
@@ -115,8 +138,9 @@
 
       function cardWithDetail(p) {
         var cat = TA.store.categoryById(p.category);
-        var range = p.range
-          ? '<span class="badge badge-range-' + esc(p.range) + '">' + esc(TA.store.rangeLabel(p.range)) + "</span>"
+        var productRange = TA.store.rangeOf(p);
+        var range = productRange
+          ? '<span class="badge badge-range-' + esc(productRange) + '">' + esc(TA.store.rangeLabel(productRange)) + "</span>"
           : "";
         return (
           '<article class="product-card" data-product-card data-id="' + p.id + '">' +
@@ -143,20 +167,11 @@
         { id: "alta", label: "Gama alta", desc: "Lo máximo de la categoría (2 productos)." }
       ];
 
-      // Agrupa una categoría en 3 gamas de 2 productos.
-      // Smartphones usa su gama real; el resto se ordena por precio: 2 más baratos = baja, 2 siguientes = media, 2 siguientes = alta.
+      // Comparte la misma clasificación por gama que usa el comparador.
       function gamasDe(catId, items) {
-        var list = items.slice().sort(function (a, b) { return a.price - b.price; });
-        if (catId === "smartphones") {
-          return GAMAS.map(function (g) {
-            return { gama: g, items: list.filter(function (p) { return p.range === g.id; }).slice(0, 2) };
-          });
-        }
-        return [
-          { gama: GAMAS[0], items: list.slice(0, 2) },
-          { gama: GAMAS[1], items: list.slice(2, 4) },
-          { gama: GAMAS[2], items: list.slice(4, 6) }
-        ];
+        return GAMAS.map(function (g) {
+          return { gama: g, items: items.filter(function (p) { return TA.store.rangeOf(p) === g.id; }) };
+        });
       }
 
       function gamaBlock(g, items) {
@@ -194,8 +209,7 @@
         var sel = fCat.value || null;
         if (sel) cats = cats.filter(function (c) { return c.id === sel; });
 
-        var all = TA.store.products();
-        if (group) all = all.filter(function (p) { return TA.store.categoryById(p.category).group === group; });
+        var all = productsInScope();
 
         var html = "";
         var total = 0;
@@ -242,9 +256,17 @@
 
       searchBtn.addEventListener("click", render);
       fCat.addEventListener("change", render);
-      allBtn.addEventListener("click", function () { fCat.value = ""; render(); });
+      brandFilter.addEventListener("change", render);
+      TA.search.bindLive(catalogQ, render);
+      allBtn.addEventListener("click", function () {
+        fCat.value = "";
+        catalogQ.value = "";
+        brandFilter.value = "";
+        render();
+      });
 
       fillSelect();
+      fillBrands();
       render();
     })();
   </script>

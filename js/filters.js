@@ -1,4 +1,4 @@
-/* TechAlbum — js/filters.js | Filtrado por categoría, marca, precio y gama */
+/* TechAlbum — js/filters.js | Filtrado por categoría, marca y gama */
 window.TechAlbum = window.TechAlbum || {};
 (function (TA) {
   "use strict";
@@ -19,8 +19,6 @@ window.TechAlbum = window.TechAlbum || {};
       if (f.cat && p.category !== f.cat) return false;
       if (f.range && p.range !== f.range) return false;
       if (f.brands && f.brands.length && f.brands.indexOf(p.brand) === -1) return false;
-      if (f.min != null && f.min !== "" && Number(p.price) < Number(f.min)) return false;
-      if (f.max != null && f.max !== "" && Number(p.price) > Number(f.max)) return false;
       if (q) {
         var hay = (p.brand + " " + p.model + " " + TA.store.categoryById(p.category).label + " " + p.category).toLowerCase();
         if (hay.indexOf(q) === -1) return false;
