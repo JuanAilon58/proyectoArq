@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Guía para leer especificaciones, entender el comparador y consultar fuentes del álbum tecnológico."
+    />
+    <meta name="theme-color" content="#173e35" />
+    <title>Cómo elegir — Álbum Tecnológico</title>
+    <link
+      rel="icon"
+      href="../assets/images/album-mark.svg"
+      type="image/svg+xml"
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/manrope-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/newsreader-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body data-page="guide">
+    <script>
+      try {
+        document.body.dataset.theme =
+          localStorage.getItem("album-tecnologico-theme") ||
+          (matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+      } catch (e) {
+        document.body.dataset.theme = "light";
+      }
+    </script>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a
+          class="brand"
+          href="../index.html"
+          aria-label="Álbum Tecnológico, inicio"
+          ><span class="brand-mark"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 6c-3-2-7-2-9-1v14c2-1 6-1 9 1 3-2 7-2 9-1V5c-2-1-6-1-9 1Zm0 0v14"
+              /></svg></span
+          ><span class="brand-name"
+            >Álbum Tecnológico<small>EXPLORA · ENTIENDE · COMPARA</small></span
+          ></a
+        >
+        <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+          <a href="../index.html">Inicio</a
+          ><a href="../pages/catalogo.html">El álbum</a
+          ><a href="../pages/smartphones.html">Smartphones</a
+          ><a href="../pages/guia.html" aria-current="page">Cómo elegir</a>
+        </nav>
+        <div class="header-actions">
+          <a
+            class="compare-link"
+            href="../pages/comparar.html"
+            aria-label="Abrir comparador"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 4v16M16 4v16M4 8h8m0 8h8" /></svg
+            ><span>Comparador</span
+            ><span
+              class="compare-count"
+              data-compare-count
+              aria-label="Productos seleccionados"
+              >0</span
+            ></a
+          ><button
+            class="icon-button"
+            type="button"
+            data-theme-toggle
+            aria-label="Activar modo oscuro"
+            aria-pressed="false"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z" />
+            </svg></button
+          ><button
+            class="icon-button menu-toggle"
+            type="button"
+            id="menuToggle"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="container" id="contenido">
+      <section class="page-intro">
+        <h1>Entender también es elegir.</h1>
+        <p>
+          Una guía breve para leer las fichas, hacer comparaciones útiles y
+          reconocer los límites de la información.
+        </p>
+      </section>
+      <div class="guide-layout">
+        <nav class="guide-index" aria-label="En esta guía">
+          <a href="#comparaciones">Comparar con contexto</a
+          ><a href="#gamas">Qué significa una gama</a
+          ><a href="#fuentes">Fuentes y revisión</a
+          ><a href="#glosario">Glosario de tecnología</a>
+        </nav>
+        <div class="guide-content">
+          <section id="comparaciones">
+            <h2>Compara cosas que hacen el mismo trabajo.</h2>
+            <p>
+              El álbum organiza el recorrido en categoría, subcategoría, tipo y
+              gama. Dentro de almacenamiento, por ejemplo, un SSD NVMe interno
+              se compara con otro SSD NVMe, mientras un disco portátil pertenece
+              a un grupo diferente.
+            </p>
+            <h3>Una recomendación que puedas revisar</h3>
+            <p>
+              La tabla reúne especificaciones, indica datos ausentes y permite
+              mostrar solo diferencias. La conclusión explica ventajas concretas
+              únicamente cuando existen datos verificados para todas las
+              opciones. Puedes priorizar un criterio disponible, como
+              almacenamiento, para obtener una recomendación condicional.
+            </p>
+            <p>
+              Sin pruebas equivalentes no declaramos una CPU o GPU más rápida.
+              Más memoria de video no equivale a más FPS, más GHz no garantiza
+              más rendimiento y más megapíxeles no asegura una mejor cámara.
+            </p>
+            <h3>Guarda, comparte y vuelve</h3>
+            <p>
+              El marcador guarda fichas en este dispositivo. La bandeja conserva
+              hasta tres modelos equivalentes. El comparador permite copiar un
+              enlace con la selección e imprimir la tabla desde el navegador.
+            </p>
+          </section>
+          <section id="gamas">
+            <h2>La gama es una orientación.</h2>
+            <p>
+              Es una clasificación editorial según el segmento y el uso
+              previsto, independiente del orden de los precios. En teléfonos, la
+              gama baja reúne opciones para uso esencial; la media, funciones
+              avanzadas para uso diario; y la alta, propuestas de segmento
+              premium. En otros productos, las gamas se interpretan dentro de su
+              propio tipo.
+            </p>
+            <p>
+              Compartir gama no significa tener idéntico rendimiento,
+              compatibilidad o tamaño. Antes de elegir revisa las diferencias,
+              la variante exacta y lo que necesitas hacer.
+            </p>
+          </section>
+          <section id="fuentes">
+            <h2>Conoce de dónde viene cada dato.</h2>
+            <p>
+              <strong>Fuente verificada</strong> identifica fichas cuyas
+              especificaciones seleccionadas se contrastaron con documentación
+              oficial. La fecha indica cuándo se revisaron; no promete
+              disponibilidad en Guatemala.
+            </p>
+            <p>
+              <strong>Ficha académica</strong> identifica los datos
+              demostrativos del catálogo original, conservados para consulta. Su
+              precio y sus especificaciones necesitan validación antes de
+              orientar una compra.
+            </p>
+            <p>
+              El año de lanzamiento aparece cuando está confirmado. Un modelo de
+              años anteriores puede seguir siendo útil en 2026; el álbum
+              distingue ese año de la fecha de revisión. Los precios locales
+              pendientes se muestran como «Por verificar». Los precios de
+              referencia no intervienen en la recomendación.
+            </p>
+            <p>
+              Las fotografías locales son ilustrativas salvo indicación expresa
+              de fotografía del modelo. Revisa el enlace oficial de la ficha
+              para conocer su apariencia exacta y sus variantes.
+            </p>
+            <p>
+              El catálogo funciona localmente; fuentes y especificaciones no se
+              actualizan de forma automática. La revisión actual corresponde al
+              9 de octubre de 2026.
+            </p>
+          </section>
+          <section id="imagenes">
+            <h2>Las imágenes del álbum.</h2>
+            <p>
+              Estas imágenes tienen una fuente y licencia registradas. Las
+              fotografías de modelos de Wikimedia Commons se muestran como
+              miniaturas sin retoque. La fotografía de laptop de Pexels es
+              ilustrativa; el resto conserva las referencias del proyecto
+              original.
+            </p>
+            <ul id="imageCredits"></ul>
+          </section>
+          <section id="glosario">
+            <h2>Las palabras detrás de las cifras.</h2>
+            <div class="glossary" id="glossary"></div>
+          </section>
+        </div>
+      </div>
+      <noscript
+        ><p class="notice">
+          Activa JavaScript para explorar las fichas y usar el comparador. La
+          guía de lectura permanece disponible.
+        </p></noscript
+      >
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a class="footer-brand" href="../index.html">Álbum Tecnológico</a>
+          <p>
+            Una colección para comprender la tecnología y elegir con contexto.
+          </p>
+          <div class="footer-links">
+            <a href="../pages/catalogo.html?saved=1">Mis guardados</a
+            ><a href="../pages/guia.html#fuentes">Fuentes y metodología</a
+            ><a href="../pages/guia.html#glosario">Glosario</a
+            ><a href="../pages/guia.html#imagenes">Créditos visuales</a>
+          </div>
+        </div>
+        <div>
+          <div class="academic">
+            <img
+              src="../assets/images/umg-logo.svg"
+              alt="Emblema de la Universidad Mariano Gálvez de Guatemala"
+              width="38"
+              height="38"
+            /><span
+              >Proyecto académico<br /><strong
+                >Universidad Mariano Gálvez de Guatemala</strong
+              ></span
+            >
+          </div>
+          <p>
+            Edición 2026 · Precios de referencia en quetzales.<br />Consulta la
+            fuente y la fecha en cada ficha.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <aside
+      id="compareDock"
+      class="compare-dock"
+      aria-label="Tu selección para comparar"
+      hidden
+    ></aside>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script src="../data/products.js"></script>
+    <script src="../data/catalog-2026.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/recommendation.js"></script>
+    <script src="../js/comparator.js"></script>
+    <script src="../js/catalog.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/pages.js"></script>
+  </body>
+</html>

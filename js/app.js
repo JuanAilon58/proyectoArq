@@ -1,112 +1,137 @@
-/* TechAlbum — js/app.js | Inicialización general (nav, contadores) */
+/* Comportamiento compartido: navegación, tema, guardados y bandeja. */
 (function () {
   "use strict";
   function ready(fn) {
-    if (document.readyState !== "loading") fn();
-    else document.addEventListener("DOMContentLoaded", fn);
+    if (document.readyState === "loading")
+      document.addEventListener("DOMContentLoaded", fn);
+    else fn();
   }
   ready(function () {
-    // Tema persistente: usa la preferencia guardada o la del sistema la primera vez.
-    function applyTheme(theme) {
-      document.body.setAttribute("data-theme", theme);
-      document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
-        var light = theme === "light";
-        button.setAttribute("aria-pressed", light ? "true" : "false");
-        button.setAttribute("aria-label", light ? "Activar modo oscuro" : "Activar modo claro");
-        var icon = button.querySelector("[aria-hidden='true']");
-        var label = button.querySelector(".theme-label");
-        if (icon) icon.textContent = light ? "☾" : "☀";
-        if (label) label.textContent = light ? "Modo oscuro" : "Modo claro";
-      });
-    }
-    try {
-      var savedTheme = localStorage.getItem("album-tecnologico-theme");
-      var initialTheme = savedTheme || (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-      applyTheme(initialTheme);
-      document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
-        button.addEventListener("click", function () {
-          var next = document.body.getAttribute("data-theme") === "light" ? "dark" : "light";
-          localStorage.setItem("album-tecnologico-theme", next);
-          applyTheme(next);
-        });
-      });
-    } catch (e) { applyTheme("dark"); }
-
-    if (window.TechAlbum && TechAlbum.comparator) {
-      TechAlbum.comparator.updatePill();
-      TechAlbum.comparator.refreshButtons();
-      TechAlbum.catalog.bindCompareButtons(document);
-    }
-    // Marca la página activa en la navegación.
-    try {
-      var page = (location.pathname.split("/").pop() || "index.html").split("?")[0];
-      document.querySelectorAll(".main-nav a").forEach(function (a) {
-        var href = (a.getAttribute("href") || "").split("?")[0].split("/").pop();
-        if (href === page || (page === "" && href === "index.html")) a.setAttribute("aria-current", "page");
-      });
-    } catch (e) { /* navegación estática */ }
-
-    // Revela las secciones al entrar en el viewport sin ocultar contenido
-    // cuando JavaScript no está disponible.
-    try {
-      var revealItems = document.querySelectorAll("[data-reveal]");
-      if (revealItems.length && "IntersectionObserver" in window &&
-          window.matchMedia("(prefers-reduced-motion: no-preference)").matches) {
-        document.documentElement.classList.add("has-motion");
-        var revealObserver = new IntersectionObserver(function (entries) {
-          entries.forEach(function (entry) {
-            if (entry.isIntersecting) {
-              entry.target.classList.add("is-visible");
-              revealObserver.unobserve(entry.target);
-            }
-          });
-        }, { threshold: .12, rootMargin: "0px 0px -20px" });
-        revealItems.forEach(function (item) { revealObserver.observe(item); });
-      } else {
-        revealItems.forEach(function (item) { item.classList.add("is-visible"); });
+    var TA = window.TechAlbum,
+      U = TA.ui;
+    document.querySelectorAll("[data-theme-toggle]").forEach(function (button) {
+      function sync() {
+        var dark = document.body.dataset.theme === "dark";
+        button.setAttribute("aria-pressed", String(dark));
+        button.setAttribute(
+          "aria-label",
+          dark ? "Activar modo claro" : "Activar modo oscuro",
+        );
+        button.innerHTML = U.icon(dark ? "sun" : "moon");
       }
-    } catch (e) { /* el contenido se conserva visible */ }
-
-    // Los CTA principales responden suavemente a la cercanía del cursor.
-    try {
-      if (window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) {
-        document.querySelectorAll(".magnetic").forEach(function (button) {
-          button.addEventListener("pointermove", function (event) {
-            var box = button.getBoundingClientRect();
-            var x = (event.clientX - box.left - box.width / 2) / box.width;
-            var y = (event.clientY - box.top - box.height / 2) / box.height;
-            button.style.transform = "translate(" + (x * 9).toFixed(1) + "px, " + (y * 7).toFixed(1) + "px)";
-          });
-          button.addEventListener("pointerleave", function () { button.style.transform = ""; });
-        });
-      }
-    } catch (e) { /* el enlace funciona sin el efecto magnético */ }
-
-    // Movimiento sutil de las imágenes con puntero. Se desactiva para
-    // usuarios que prefieren menos movimiento y no se usa en pantallas táctiles.
-    try {
-      if (!window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) return;
-      document.addEventListener("pointerover", function (event) {
-        var media = event.target.closest && event.target.closest(".product-media, .cat-orbit, .audience-image");
-        if (media) media.classList.add("is-tilting");
-      });
-      document.addEventListener("pointerout", function (event) {
-        var media = event.target.closest && event.target.closest(".product-media, .cat-orbit, .audience-image");
-        if (media && !media.contains(event.relatedTarget)) {
-          media.classList.remove("is-tilting");
-          media.style.removeProperty("--tilt-x");
-          media.style.removeProperty("--tilt-y");
+      sync();
+      button.addEventListener("click", function () {
+        var theme = document.body.dataset.theme === "dark" ? "light" : "dark";
+        document.body.dataset.theme = theme;
+        try {
+          localStorage.setItem("album-tecnologico-theme", theme);
+        } catch (e) {
+          /* tema funciona en esta página */
         }
+        sync();
       });
-      document.addEventListener("pointermove", function (event) {
-        var media = event.target.closest && event.target.closest(".product-media, .cat-orbit, .audience-image");
-        if (!media) return;
-        var box = media.getBoundingClientRect();
-        var x = ((event.clientX - box.left) / box.width - .5) * 2;
-        var y = ((event.clientY - box.top) / box.height - .5) * 2;
-        media.style.setProperty("--tilt-x", (x * 2.5).toFixed(2) + "deg");
-        media.style.setProperty("--tilt-y", (y * -2.5).toFixed(2) + "deg");
+    });
+    var menu = document.getElementById("menuToggle"),
+      nav = document.getElementById("mainNav");
+    menu.addEventListener("click", function () {
+      var open = menu.getAttribute("aria-expanded") !== "true";
+      menu.setAttribute("aria-expanded", String(open));
+      menu.setAttribute(
+        "aria-label",
+        open ? "Cerrar navegación" : "Abrir navegación",
+      );
+      nav.classList.toggle("is-open", open);
+    });
+    document.addEventListener("keydown", function (event) {
+      if (
+        event.key === "Escape" &&
+        menu.getAttribute("aria-expanded") === "true"
+      ) {
+        menu.click();
+        menu.focus();
+      }
+    });
+    document.addEventListener("click", function (event) {
+      if (
+        menu.getAttribute("aria-expanded") === "true" &&
+        !event.target.closest(".site-header")
+      )
+        menu.click();
+    });
+    function dock() {
+      var el = document.getElementById("compareDock"),
+        items = TA.comparator.list();
+      el.hidden = !items.length || document.body.dataset.page === "compare";
+      if (el.hidden) return;
+      var info = TA.store.comparisonMeta(items[0]);
+      el.innerHTML =
+        '<div class="dock-copy"><strong>' +
+        items.length +
+        " de 3 fichas seleccionadas</strong><small>" +
+        U.esc(info.subcategory + " · " + TA.store.rangeLabel(info.range)) +
+        "</small></div>" +
+        '<div class="dock-items">' +
+        items
+          .map(function (p) {
+            return (
+              '<div class="dock-item"><span>' +
+              U.esc(p.model) +
+              '</span><button type="button" data-dock-remove="' +
+              p.id +
+              '" aria-label="Quitar ' +
+              U.esc(p.brand + " " + p.model) +
+              '">' +
+              U.icon("close") +
+              "</button></div>"
+            );
+          })
+          .join("") +
+        "</div>" +
+        '<button class="dock-clear" type="button" id="dockClear">Limpiar</button><a class="btn" href="' +
+        U.page("comparar") +
+        "?ids=" +
+        items
+          .map(function (p) {
+            return p.id;
+          })
+          .join(",") +
+        '">' +
+        (items.length < 2 ? "Elegir otra ficha" : "Ver comparación") +
+        U.icon("arrow") +
+        "</a>";
+      el.querySelectorAll("[data-dock-remove]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          TA.comparator.remove(btn.dataset.dockRemove);
+        });
       });
-    } catch (e) { /* la experiencia principal no depende del movimiento */ }
+      el.querySelector("#dockClear").addEventListener(
+        "click",
+        TA.comparator.clear,
+      );
+    }
+    window.addEventListener("techalbum:compare-change", function () {
+      dock();
+      U.animate(document.querySelector(".dock-items"));
+    });
+    window.addEventListener("techalbum:compare-error", function (event) {
+      var messages = {
+        max: "La bandeja admite hasta tres fichas. Quita una para añadir otra.",
+        incompatible:
+          "Esta ficha tiene otro tipo o gama. Reinicia la selección o elige una alternativa compatible.",
+        "not-found": "No encontramos esa ficha. Vuelve al álbum y elige otra.",
+        "no-alternative":
+          "Esta ficha es solo de consulta: aún no hay otra opción del mismo tipo y gama.",
+      };
+      U.toast(messages[event.detail.reason] || "No se pudo añadir esa ficha.");
+    });
+    window.addEventListener("storage", function () {
+      dock();
+      TA.comparator.updatePill();
+      TA.comparator.refreshButtons();
+      U.refreshSaved();
+    });
+    TA.comparator.updatePill();
+    dock();
+    TA.catalog.bindCompareButtons(document);
   });
 })();

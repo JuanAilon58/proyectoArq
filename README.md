@@ -1,147 +1,87 @@
-# Álbum Tecnológico — Guía y Comparador de Tecnología
+# Álbum Tecnológico — edición 2026
 
-Álbum digital de tecnología con comparador inteligente de productos: explora componentes de PC,
-smartphones por gama, periféricos, audio, cables y otros dispositivos; compara marcas lado a lado
-y obtén una **recomendación con puntaje transparente** debajo de cada comparación.
+Guía académica de tecnología de la Universidad Mariano Gálvez de Guatemala. Organiza la consulta por **categoría → subcategoría → tipo de producto → gama** y compara dos o tres opciones equivalentes.
 
-> 💡 **Nota visible en el sitio:** los precios están en quetzales (Q) y son **de referencia**;
-> pueden variar según el establecimiento, la fecha y la disponibilidad. Las especificaciones son
-> datos de demostración para fines académicos. No es una tienda (sin carrito, pagos ni usuarios).
+El catálogo contiene **197 productos en 50 subcategorías**: 30 fichas contrastadas con fuentes oficiales el **9 de octubre de 2026**, y 167 fichas académicas originales identificadas como referencia. Incluye nuevos lanzamientos de 2026 y modelos anteriores cuya ficha sigue siendo útil para consulta; el año de lanzamiento y la fecha de revisión son datos distintos.
 
-## Enfoque del proyecto
+## Experiencia
 
-Álbum Tecnológico es una guía de consulta para estudiantes y usuarios que necesitan entender
-qué opción puede ser mejor entre dos o más productos. No es una tienda: no tiene carrito,
-pagos, cuentas ni filtros de precio.
+- Portada editorial, índice por áreas, fuentes Manrope y Newsreader autoalojadas y temas claro/oscuro persistentes.
+- Álbum con búsqueda por marca, modelo, especificación o uso; filtros por tipo, gama y marca; selección de fuentes verificadas y fichas guardadas. Sin filtro de precio.
+- URLs que conservan filtros y regreso desde la ficha a la sección consultada. Paginación progresiva de 24 fichas para evitar renderizar todo el catálogo.
+- Smartphones por gama, mostrando todos los resultados; archivo académico opcional.
+- Fichas con especificaciones, fecha, fuentes, limitaciones, tipo de fotografía y alternativas del mismo tipo y gama.
+- Bandeja de hasta tres productos, persistente en el dispositivo, con validación de compatibilidad. Los grupos sin alternativas quedan como consulta.
+- Comparador con tablas accesibles, opción de mostrar solo diferencias, enlace compartible e impresión. Una recomendación condicional puede priorizar un criterio disponible.
+- Glosario y metodología en `pages/guia.html`. Guardados locales sin cuentas.
+- Navegación móvil, foco visible, controles etiquetados, preferencia de movimiento reducido y contenido visible desde el inicio.
 
-## Funcionalidades
+## Datos y honestidad
 
-- **Inicio**: rutas por objetivo (armar PC, estudiar, jugar/crear o elegir teléfono), productos
-  destacados, categorías y explicación del flujo.
-- **Álbum tecnológico** (`pages/catalogo.html`): tarjetas con imagen, marca, modelo, categoría,
-  precio, característica principal y búsqueda por categoría, marca, modelo o uso. No filtra por precio.
-- **Detalle** (`pages/producto.html?id=`): imagen grande, uso ideal, características relevantes,
-  ficha académica de referencia y productos relacionados.
-- **Smartphones por gama** (`pages/smartphones.html`): pestañas baja/media/alta (2 marcas por
-  gama como mínimo) y botones de comparación directa por gama.
-- **Comparador** (`pages/comparar.html`): de 2 a 4 productos, tabla dinámica (unión de
-  especificaciones según la categoría), fila de mejor precio y **recomendación obligatoria**
-  debajo con motivos y tabla de puntajes.
-- **Búsqueda dinámica**: marca, modelo, categoría y características.
-- **Consulta**: categoría, grupo (navegación Periféricos/Tecnología), marca, gama de smartphones
-  y búsqueda por texto (modelo, marca o característica).
-- **Responsive**: 4→2→1 columnas; tablas con scroll horizontal en móvil.
-- **Accesibilidad**: HTML semántico, `alt` en imágenes, labels, skip-link, foco visible.
+`data/products.js` conserva las fichas demostrativas y sus IDs originales. `data/catalog-2026.js` añade clasificación estable, estados y nuevas fichas con fuentes. Se carga antes de `js/products.js`.
 
-## Tecnologías
+Cada producto tiene `range`, `comparisonGroup`, `comparisonLabel`, `dataStatus`, `imageKind` y `sources`. La clave de comparación combina subcategoría, tipo y gama. **La gama no depende del precio ni del orden de inserción.**
 
-HTML5 semántico · CSS3 moderno (sin frameworks) · JavaScript vanilla ES6 (scripts clásicos,
-sin build) · Datos en `data/products.js` (global `TECHALBUM_DATA`, sin `fetch` para que
-funcione con `file://`) · Imágenes SVG locales · `localStorage` para la bandeja del comparador.
+Una ficha `verified` contiene solo especificaciones seleccionadas contrastadas con documentación oficial, fecha `verifiedAt` y enlaces de origen. Esto no certifica disponibilidad en Guatemala. El catálogo no se actualiza automáticamente.
 
-## Estructura
+Los productos nuevos llevan `price: null` cuando no hay precio local comprobado. Se muestra **Por verificar**, nunca Q 0. Los precios del archivo son referencia académica. Para registrar un precio comprobado se requieren `priceStatus: 'verified'`, `currency: 'GTQ'`, `priceSource` y `priceVerifiedAt` junto con el valor.
+
+La recomendación no usa estrellas demostrativas, cantidad de texto, GHz, megapíxeles ni mAh como puntuación global. Contrasta métricas tipadas solo cuando están verificadas para todo el conjunto. Explica el alcance de cada criterio: más VRAM no implica más FPS, por ejemplo. Con datos insuficientes o empate, no declara un ganador.
+
+## Ejecutar
+
+El sitio publicado es HTML, CSS y JavaScript clásico. No requiere framework, servidor de datos, claves de API ni build; también se puede abrir `index.html` directamente.
+
+Para la vista previa y las comprobaciones de desarrollo se necesita Node.js 20 o superior. No hay dependencias npm:
+
+```sh
+npm start
+# http://127.0.0.1:4173
+
+npm run check
+# validación de catálogo, rutas, scripts y reglas del comparador
+```
+
+La búsqueda y la comparación se ejecutan en el dispositivo. Solo abrir las fuentes externas requiere conexión.
+
+## Organización
 
 ```text
-.
-├── index.html                 # Inicio (rutas por objetivo, destacados y categorías)
-├── pages/
-│   ├── catalogo.html          # Álbum + búsqueda por categoría, marca y uso
-│   ├── smartphones.html       # Teléfonos por gama
-│   ├── comparar.html          # Comparador + recomendación
-│   └── producto.html          # Detalle (?id=)
-├── css/ style.css · components.css · responsive.css
-├── js/
-│   ├── products.js            # Acceso a datos y utilidades
-│   ├── catalog.js             # Render de tarjetas/categorías
-│   ├── filters.js             # Filtros
-│   ├── search.js              # Búsqueda
-│   ├── comparator.js          # Bandeja (localStorage, máx. 4)
-│   ├── recommendation.js      # Puntaje y recomendación
-│   └── app.js                 # Init general
-├── data/products.js           # CATEGORIES (48) + PRODUCTS (167 demos)
-├── assets/images/categories/  # SVG por categoría + placeholder.svg
-├── vercel.json
-└── README.md
+index.html                      Portada
+pages/catalogo.html             Índice y fichas
+pages/smartphones.html           Teléfonos por gama
+pages/producto.html?id=204       Ficha y fuentes
+pages/comparar.html?ids=203,205   Comparación compartida
+pages/guia.html                  Método y glosario
+css/                            Base, componentes y responsive
+js/ui.js                        Iconos, guardados y utilidades
+js/pages.js                     Comportamiento de las seis rutas
+js/comparator.js                 Selección compatible y persistencia
+js/recommendation.js             Conclusiones por criterio
+scripts/build-pages.cjs          Plantillas estáticas y navegación común
+scripts/validate-catalog.cjs     Validación de datos y referencias
+scripts/test-comparison.cjs      Pruebas de decisiones y casos límite
 ```
 
-## Ejecución local
+Para modificar el encabezado, pie o contenido estático, edita `scripts/build-pages.cjs` y ejecuta `npm run pages`. Las páginas generadas se incluyen en Git. No hace falta generar nada al desplegar.
 
-Sin instalación ni build. Opciones:
+## Mantener el catálogo
 
-```bash
-# Opción A: abrir directamente (funciona por file://)
-# Doble clic en index.html
+1. Añade una ficha a `data/catalog-2026.js` con ID único y subcategoría existente. Para una sección nueva, agrega su definición a `CATEGORIES`.
+2. Asigna gama y grupo por función y segmento, usando las mismas claves para alternativas equivalentes. No mezcles SSD internos con portátiles, DDR4 con DDR5 o periféricos de funciones distintas.
+3. Comprueba el modelo y variante exactos en fuentes oficiales. Registra `verifiedAt`, fuentes y año solo cuando esté confirmado. Las métricas en `metrics` deben corresponder a esas especificaciones.
+4. Usa imágenes locales y registra licencia y atribución. Si una fotografía es genérica, conserva `imageKind: 'illustrative'`.
+5. Verifica que haya al menos dos opciones en cada grupo que habilites para comparar. Un producto aislado conserva su ficha de consulta.
+6. Ejecuta `npm run check` y revisa las rutas afectadas en computadora y móvil antes de subir cambios.
 
-# Opción B: servidor estático
-npx serve .
-# o
-python -m http.server 8000
-```
+GitHub Actions ejecuta las comprobaciones en cada push y pull request. Las pruebas verifican compatibilidad, límites, persistencia ante fallos, precios ausentes, datos incompletos y recomendaciones condicionales. No comprueban automáticamente cambios en las páginas oficiales.
 
-Luego visita `http://localhost:3000` (serve) o `http://localhost:8000`.
+## Recursos visuales
 
-## Cómo agregar productos
+Las fotos de modelos de Galaxy A57, Galaxy S26 e iPhone 17 Pro tienen licencia abierta y crédito en sus fichas y en la guía. El resto se identifica como ilustrativo. Consulta [fuentes y licencias de imágenes](assets/images/verified/SOURCES.md) y [tipografía](assets/fonts/SOURCES.md).
 
-En `data/products.js`, copia un objeto y cambia al menos `id` (único), `category`, `brand`,
-`model`, `price`, `specifications` y `highlights`. Ejemplo:
+Las fotografías de referencia del proyecto original permanecen en `assets/images/products/`; no deben interpretarse como fotos del modelo. La fotografía de portada muestra un procesador genérico.
 
-```js
-P({ id: 168, category: "ram", brand: "Kingston", model: "FURY Beast 8GB",
-  image: IMAGE(38361202), price: 299, rating: 3,
-  specifications: { "Capacidad": "8 GB", "Tipo": "DDR4", "Frecuencia": "3200 MHz" },
-  highlights: ["Económica para oficina"] }),
-```
+## Vercel
 
-Para smartphones agrega `range: "baja" | "media" | "alta"`.
-
-## Cómo agregar categorías
-
-1. Añade `{ id, label, icon, group, desc }` en `CATEGORIES` (id único, minúsculas, sin espacios).
-2. Crea `assets/images/categories/<id>.svg` (o reutiliza `placeholder.svg`).
-3. Usa ese `id` en los productos. El comparador no necesita cambios (tabla genérica).
-
-## Imágenes locales
-
-Cada producto usa una fotografía local de `assets/images/products/`; por tanto el sitio no
-depende de APIs, peticiones externas ni conexión a internet para mostrar imágenes. El helper
-`IMAGE(<id>)` en `data/products.js` resuelve la ruta local correspondiente.
-
-- Hay **167 fotografías locales**, una referencia visual para cada producto del álbum.
-- Si falta un archivo, `TechAlbum.store.imgFallback` muestra el SVG local de la categoría y,
-  como último recurso, `placeholder.svg`.
-- Las fotos de referencia se descargaron desde Pexels bajo su licencia, que permite el uso en
-  sitios web; se recomienda conservar el crédito de origen en la documentación del proyecto.
-
-## Cómo usar el comparador
-
-Abre `pages/comparar.html` → agrega de 2 a 4 productos → consulta la tabla lado a lado → lee la
-**recomendación** con puntajes. La pantalla incluye pares sugeridos para iniciar comparaciones
-académicas frecuentes. Para una conclusión más útil, compara productos de la misma categoría.
-
-## Cómo funciona la recomendación
-
-`js/recommendation.js`, pesos fijos y visibles:
-
-```text
-total = 0.40 × rendimiento (rating×2, 0–10)
-      + 0.35 × precio relativo (10 = más barato DEL CONJUNTO, 0 = más caro)
-      + 0.25 × características (según nº de specs + highlights)
-```
-
-Gana el mayor total. El precio se normaliza **dentro de cada comparación**, por eso la
-recomendación cambia según los productos elegidos. Debajo se muestra la tabla de puntajes,
-los motivos y la relación precio/características.
-
-## Despliegue en Vercel
-
-1. Crea un repositorio en GitHub y sube el proyecto.
-2. Entra a [vercel.com](https://vercel.com) → **Add New Project** → **Import** el repositorio.
-3. Framework: **Other**. Build: vacío. Output: `./` (sitio estático, sin build).
-4. **Deploy** y verifica la URL (navegación, filtros, comparador).
-
-## Requisitos académicos
-
-Ver tabla de verificación en el resumen de entrega (todos cubiertos: hardware interno y
-externo, 2+ marcas por comparativa, precios Q, imágenes, recomendación bajo cada
-comparación, 3 gamas con 2 marcas, periféricos, audio, cables, catálogo, búsqueda,
-filtros, comparador, responsive y Vercel).
+Mantén el proyecto como **Other**, sin comando de build y con el directorio raíz como salida. `vercel.json` conserva URLs limpias. El sitio no incluye carrito, pagos, venta ni cuentas.

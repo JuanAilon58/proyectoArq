@@ -8,48 +8,52 @@ web
 
 ## Users
 
-Estudiantes y personas que desean entender las diferencias entre productos tecnológicos antes de elegir una opción. Lo usan como apoyo académico y guía de consulta, no como una tienda.
+Estudiantes y personas que quieren comprender diferencias entre productos tecnológicos antes de elegir. Lo usan como apoyo académico y guía de consulta.
 
 ## Product Purpose
 
-Álbum Tecnológico reúne componentes internos y externos, teléfonos y otros dispositivos. Permite revisar especificaciones y precios de referencia, y comparar dos o tres opciones del mismo segmento, categoría, subcategoría y gama para recibir una recomendación explicada.
+Álbum Tecnológico permite explorar una colección por categoría, subcategoría, tipo y gama, revisar fichas con fuentes y comparar dos o tres opciones equivalentes. La conclusión explica diferencias documentadas y sus límites.
 
 ## Positioning
 
-No vende productos ni prioriza filtros comerciales: estructura el aprendizaje y la decisión mediante comparaciones justas entre opciones equivalentes.
+Guía educativa de consulta. Sin carrito, venta, pagos, cuentas ni filtro de precio. La recomendación debe poder revisarse y no simular una certeza que los datos no ofrecen.
 
 ## Operating Context
 
-Se consulta desde computadora o teléfono durante investigación, tareas académicas o una decisión de compra informada. Las personas comienzan por categoría, afinan por subcategoría y gama, revisan fichas y terminan en una tabla comparativa con recomendación.
+Se consulta en computadora o teléfono durante investigación, tareas o evaluación de alternativas. La navegación comienza en el índice, continúa por tipo y gama y termina en una ficha o comparación. Filtros en la URL y guardados locales permiten regresar.
 
 ## Capabilities and Constraints
 
-- Catálogo de productos con imágenes locales, marcas, especificaciones y precios referenciales en quetzales.
-- Categorías y subcategorías de tecnología; la gama organiza alternativas equivalentes.
-- El comparador admite únicamente dos o tres productos que pertenezcan al mismo grupo de comparación.
-- La recomendación resume rendimiento, precio relativo y características.
-- Proyecto web estático en HTML, CSS y JavaScript; debe conservar sus rutas existentes y funcionar en móviles.
-- No debe incorporar carrito, venta, pagos ni filtro de precio.
+- Sitio estático HTML/CSS/JavaScript clásico, con rutas existentes conservadas y sin dependencia de APIs externas para funcionar.
+- Clasificación editorial explícita e independiente del precio. Comparación solo entre productos del mismo tipo, subcategoría y gama, con máximo de tres.
+- Datos oficiales contrastados identificados como verificados, con fecha y fuente; archivo académico claramente identificado como referencia.
+- Año de lanzamiento separado de la fecha de revisión. No se promete que un modelo sea el último de su fabricante por estar verificado.
+- Precios en GTQ: pendientes se presentan como Por verificar; precios académicos no se usan para decidir. Precios verificados exigen valor, fuente y fecha.
+- Recomendación condicional por criterios relevantes cuando todos los datos necesarios están verificados; abstención de ganador global sin evidencia comparable.
+- Fotografías locales: modelo exacto con licencia y crédito cuando se dispone de ella; otras identificadas como ilustrativas.
+- Persistencia local, enlaces compartibles de comparación e impresión, sin registro.
+- Node se utiliza únicamente para desarrollo, generación de HTML y validación. No hay dependencias en producción.
 
 ## Brand Commitments
 
-El nombre visible es Álbum Tecnológico. Es un proyecto académico de la Universidad Mariano Gálvez de Guatemala; su emblema debe aparecer de forma discreta y respetuosa. El lenguaje debe ser claro, educativo y directo.
+Nombre visible: Álbum Tecnológico. Proyecto académico de la Universidad Mariano Gálvez de Guatemala, con emblema discreto. Lenguaje claro y educativo. Identidad editorial cálida con verde profundo y acento terracota; los productos y sus diferencias lideran la experiencia.
 
 ## Evidence on Hand
 
-- Datos demostrativos: `data/products.js`.
-- Fotografías locales: `assets/images/products/`.
-- Emblema de la universidad: `assets/images/umg-logo.svg`.
-- Los precios y especificaciones se presentan explícitamente como referencia académica.
+- Archivo original de 167 fichas: data/products.js.
+- Revisión del 9 de octubre de 2026: data/catalog-2026.js, 30 fichas con documentación oficial y dos subcategorías nuevas.
+- Fotos locales, licencias de tipografía y atribución visible de fotografías nuevas.
+- Validación y pruebas de reglas en scripts/; comprobación de rutas en navegador de escritorio y móvil.
 
 ## Product Principles
 
-1. Comparar solo opciones equivalentes produce recomendaciones comprensibles.
-2. La categoría, subcategoría y gama deben orientar antes de mostrar una tabla.
-3. La información técnica debe poder entenderse sin conocimiento especializado.
-4. La presentación visual debe servir a la exploración, no simular una tienda.
-5. La experiencia debe conservarse usable en pantallas pequeñas y con teclado.
+1. Comparar opciones de la misma función y segmento da contexto.
+2. Una fuente verificable importa más que una ficha extensa.
+3. Un dato ausente se muestra como ausente y no como cero.
+4. La fotografía debe identificarse por lo que representa realmente.
+5. La interfaz acompaña la exploración y mantiene visible la selección.
+6. Una recomendación debe explicar el criterio y poder abstenerse.
 
 ## Accessibility & Inclusion
 
-Los controles, imágenes y tablas necesitan etiquetas comprensibles, foco visible, contraste suficiente, navegación por teclado y una alternativa sin movimiento para quien lo prefiera.
+HTML semántico, controles etiquetados, foco visible, tablas con encabezados, navegación con teclado, contraste suficiente, diseño móvil y alternativas con movimiento reducido. El catálogo requiere JavaScript; la metodología básica sigue visible sin él.

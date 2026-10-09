@@ -1,86 +1,230 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Laboratorio de comparación de dos o tres productos equivalentes por subcategoría y gama.">
-  <title>Laboratorio de comparación — Álbum Tecnológico</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
-</head>
-<body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="site-header"><div class="header-inner">
-    <a class="brand" href="../index.html" aria-label="Álbum Tecnológico, inicio"><span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 9.5h20a4.5 4.5 0 0 1 4.5 4.5v14A4.5 4.5 0 0 1 34 32.5H14A4.5 4.5 0 0 1 9.5 28V14A4.5 4.5 0 0 1 14 9.5Z" stroke="currentColor" stroke-width="3"/><path d="m19 21 3.2 3.2L29 17.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span class="brand-name">Álbum Tecnológico</span></a>
-    <nav class="main-nav" aria-label="Navegación principal"><a href="../index.html">Inicio</a><a href="catalogo.html">Componentes</a><a href="smartphones.html">Smartphones</a><a href="catalogo.html?group=Periféricos">Periféricos</a><a href="catalogo.html?group=Otros">Tecnología</a></nav>
-    <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Activar modo claro"><span aria-hidden="true">☀</span><span class="theme-label">Modo claro</span></button>
-  </div></header>
-
-  <main class="container compare-page" id="contenido">
-    <section class="compare-intro" data-reveal>
-      <h1>Una comparación útil comienza con opciones equivalentes.</h1>
-      <p>Selecciona dos o tres productos de la misma categoría, subcategoría y gama. Así el análisis de precio, rendimiento y características tendrá contexto.</p>
-      <div class="comparison-rule" aria-label="Reglas de una comparación justa"><span>1. Elige una subcategoría</span><span>2. Mantén la misma gama</span><span>3. Revisa la recomendación</span></div>
-    </section>
-
-    <section class="compare-workbench" aria-labelledby="selection-title" data-reveal>
-      <div class="workbench-heading"><div><h2 id="selection-title"><span id="trayCount">0</span> de 3 productos</h2></div><button class="text-button" id="clearTray" type="button">Reiniciar selección</button></div>
-      <div class="comparison-context" id="comparisonContext" aria-live="polite">Elige un primer producto para definir la subcategoría y la gama.</div>
-      <div class="compare-tray" id="tray" aria-live="polite"></div>
-      <div class="selection-controls"><label for="addQ">Buscar en el álbum</label><div class="toolbar compare-search"><input type="search" id="addQ" placeholder="Marca o modelo" aria-label="Buscar producto para agregar"><select id="addSelect" aria-label="Producto compatible para agregar"></select><button class="btn btn-primary" id="addBtn" type="button">Añadir opción</button></div><p class="selection-hint">Después del primer producto, solo se mostrarán alternativas compatibles.</p></div>
-    </section>
-
-    <section class="guided-pairs" aria-labelledby="pairs-title" data-reveal><div><h2 id="pairs-title">Comparaciones listas para explorar</h2></div><div id="suggestedPairs" class="pair-list"></div></section>
-    <div id="compareZone" aria-live="polite"></div><div id="verdictZone" aria-live="polite"></div>
-    <aside class="price-note" role="note"><strong>Referencia académica.</strong> Los precios se muestran en quetzales y pueden variar según fecha, disponibilidad y establecimiento.</aside>
-  </main>
-  <footer class="site-footer"><div class="footer-inner"><span><strong>Álbum Tecnológico</strong> — Proyecto académico.</span><span><a href="../index.html">Volver al inicio</a> · Imágenes locales</span></div></footer>
-
-  <script src="../data/products.js"></script><script src="../js/products.js"></script><script src="../js/recommendation.js"></script><script src="../js/comparator.js"></script><script src="../js/catalog.js"></script><script src="../js/filters.js"></script><script src="../js/search.js"></script><script src="../js/app.js"></script>
-  <script>
-    (function () {
-      var TA = window.TechAlbum, esc = TA.catalog.esc;
-      var tray = document.getElementById("tray"), addQ = document.getElementById("addQ"), addSelect = document.getElementById("addSelect"), context = document.getElementById("comparisonContext"), compareZone = document.getElementById("compareZone"), verdictZone = document.getElementById("verdictZone");
-      function image(p) { return (p.image || "").indexOf("assets/") === 0 ? "../" + p.image : p.image; }
-      function selected() { return TA.comparator.list(); }
-      function meta(p) { return TA.store.comparisonMeta(p); }
-      function name(p) { return p.brand + " " + p.model; }
-      function fillOptions(term) {
-        var items = TA.store.products().filter(function (p) { return !TA.comparator.contains(p.id) && (!selected().length || TA.store.compatibleWith(selected()[0], p)) && TA.search.matches(p, term); }).slice(0, 60);
-        addSelect.innerHTML = items.map(function (p) { return '<option value="' + p.id + '">' + esc(name(p) + " — " + TA.store.formatPrice(p.price)) + "</option>"; }).join("") || '<option value="">No hay opciones compatibles</option>';
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Compara dos o tres productos del mismo tipo y gama, destaca diferencias y consulta conclusiones con evidencia."
+    />
+    <meta name="theme-color" content="#173e35" />
+    <title>Comparador — Álbum Tecnológico</title>
+    <link
+      rel="icon"
+      href="../assets/images/album-mark.svg"
+      type="image/svg+xml"
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/manrope-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/newsreader-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body data-page="compare">
+    <script>
+      try {
+        document.body.dataset.theme =
+          localStorage.getItem("album-tecnologico-theme") ||
+          (matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+      } catch (e) {
+        document.body.dataset.theme = "light";
       }
-      function renderTray() {
-        var items = selected(); document.getElementById("trayCount").textContent = items.length;
-        context.textContent = items.length ? "Comparación activa: " + meta(items[0]).category + " / " + meta(items[0]).subcategory + " / " + TA.store.rangeLabel(meta(items[0]).range) + "." : "Elige un primer producto para definir la subcategoría y la gama.";
-        tray.innerHTML = items.length ? items.map(function (p) { return '<article class="tray-slot filled"><img src="' + esc(image(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(name(p)) + '" onerror="TechAlbum.store.imgFallback(this)"><div><p class="t">' + esc(name(p)) + '</p><p class="p">' + esc(TA.store.formatPrice(p.price)) + '</p><small>' + esc(TA.store.rangeLabel(meta(p).range)) + '</small></div><button class="tray-remove" type="button" data-remove="' + p.id + '">Quitar</button></article>'; }).join("") : '<div class="tray-slot"><strong>Sin opciones seleccionadas</strong><span>El primer producto marcará el marco de una comparación justa.</span></div>';
-        tray.querySelectorAll("[data-remove]").forEach(function (button) { button.addEventListener("click", function () { TA.comparator.remove(button.dataset.remove); renderAll(); }); });
-      }
-      function specKeys(items) { var seen = {}, keys = []; items.forEach(function (p) { Object.keys(p.specifications || {}).forEach(function (key) { if (!seen[key]) { seen[key] = true; keys.push(key); } }); }); return keys; }
-      function renderCompare() {
-        var items = selected();
-        if (items.length < 2) { compareZone.innerHTML = '<section class="comparison-empty"><h2>La tabla aparecerá al seleccionar dos opciones.</h2><p>Usa una de las sugerencias o busca un producto para iniciar.</p></section>'; verdictZone.innerHTML = ""; return; }
-        var lowest = Math.min.apply(null, items.map(function (p) { return p.price; }));
-        var rows = specKeys(items).map(function (key) { return "<tr><th>" + esc(key) + "</th>" + items.map(function (p) { var value = (p.specifications || {})[key]; return "<td>" + (value == null ? "—" : esc(value)) + "</td>"; }).join("") + "</tr>"; }).join("");
-        rows += "<tr><th>Precio de referencia</th>" + items.map(function (p) { return '<td' + (p.price === lowest ? ' class="best"' : "") + ">" + esc(TA.store.formatPrice(p.price)) + (p.price === lowest ? " · menor precio" : "") + "</td>"; }).join("") + "</tr>";
-        rows += "<tr><th>Aspectos sobresalientes</th>" + items.map(function (p) { return "<td>" + esc((p.highlights || []).join(" · ")) + "</td>"; }).join("") + "</tr>";
-        var header = items.map(function (p) { return '<th class="prod"><span class="compare-head-card"><img src="' + esc(image(p)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(name(p)) + '" onerror="TechAlbum.store.imgFallback(this)"><strong>' + esc(name(p)) + "</strong><span>" + esc(TA.store.formatPrice(p.price)) + "</span></span></th>"; }).join("");
-        compareZone.innerHTML = '<section class="comparison-result"><h2>Lo que cambia entre tus opciones</h2><p>Las opciones pertenecen al mismo marco de comparación; observa qué especificación responde mejor a tu uso.</p><div class="table-wrap"><table class="compare"><thead><tr><th>Característica</th>' + header + "</tr></thead><tbody>" + rows + "</tbody></table></div></section>";
-        var rec = TA.recommendation.recommend(items), winner = rec.rows[0];
-        verdictZone.innerHTML = '<section class="verdict" aria-label="Recomendación"><h2>Recomendamos: ' + esc(name(rec.winner)) + '</h2><p class="winner">' + esc(TA.store.formatPrice(rec.winner.price)) + '</p><p>' + esc(rec.verdict) + '</p><div class="verdict-metrics"><div><span>Puntaje global</span><strong>' + winner.total.toFixed(2) + '<small>/10</small></strong></div><div><span>Rendimiento</span><strong>' + winner.performance.toFixed(1) + '<small>/10</small></strong></div><div><span>Valor relativo</span><strong>' + winner.priceScore.toFixed(1) + '<small>/10</small></strong></div></div><h3>Dos razones para escoger esta opción</h3><ul>' + rec.reasons.map(function (reason) { return "<li>" + esc(reason) + "</li>"; }).join("") + '</ul><p class="formula">Puntaje: rendimiento 40%, precio relativo 35% y características 25%. Es una guía de estudio; decide según el uso que necesitas.</p></section>';
-      }
-      function renderPairs() {
-        var groups = {}; TA.store.products().forEach(function (p) { var key = meta(p).key; (groups[key] || (groups[key] = [])).push(p); });
-        var choices = Object.keys(groups).map(function (key) { return groups[key].slice(0, 3); }).filter(function (group) { return group.length >= 2; }).slice(0, 6);
-        document.getElementById("suggestedPairs").innerHTML = choices.map(function (group) { var info = meta(group[0]); return '<button type="button" class="pair-option" data-pair="' + group.map(function (p) { return p.id; }).join(",") + '"><span>' + esc(info.subcategory) + " · " + esc(TA.store.rangeLabel(info.range)) + '</span><strong>' + esc(group.map(function (p) { return p.brand; }).join(" / ")) + '</strong><small>' + esc(group.map(function (p) { return p.model; }).join(" · ")) + "</small></button>"; }).join("");
-        document.querySelectorAll("[data-pair]").forEach(function (button) { button.addEventListener("click", function () { TA.comparator.clear(); button.dataset.pair.split(",").forEach(function (id) { TA.comparator.add(Number(id)); }); renderAll(); document.querySelector(".compare-workbench").scrollIntoView({ behavior: "smooth", block: "start" }); }); });
-      }
-      function renderAll() { renderTray(); fillOptions(addQ.value); renderCompare(); }
-      document.getElementById("addBtn").addEventListener("click", function () { var result = TA.comparator.add(Number(addSelect.value)); if (!result.ok && result.reason === "max") alert("Puedes analizar hasta tres productos."); if (!result.ok && result.reason === "incompatible") alert("Selecciona opciones de la misma subcategoría y gama."); renderAll(); });
-      document.getElementById("clearTray").addEventListener("click", function () { TA.comparator.clear(); renderAll(); }); TA.search.bindLive(addQ, function () { fillOptions(addQ.value); });
-      try { var initial = Number(new URLSearchParams(location.search).get("producto")); if (initial && !selected().length) TA.comparator.add(initial); } catch (e) {}
-      renderPairs(); renderAll();
-    })();
-  </script>
-</body>
+    </script>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a
+          class="brand"
+          href="../index.html"
+          aria-label="Álbum Tecnológico, inicio"
+          ><span class="brand-mark"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 6c-3-2-7-2-9-1v14c2-1 6-1 9 1 3-2 7-2 9-1V5c-2-1-6-1-9 1Zm0 0v14"
+              /></svg></span
+          ><span class="brand-name"
+            >Álbum Tecnológico<small>EXPLORA · ENTIENDE · COMPARA</small></span
+          ></a
+        >
+        <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+          <a href="../index.html">Inicio</a
+          ><a href="../pages/catalogo.html">El álbum</a
+          ><a href="../pages/smartphones.html">Smartphones</a
+          ><a href="../pages/guia.html">Cómo elegir</a>
+        </nav>
+        <div class="header-actions">
+          <a
+            class="compare-link"
+            href="../pages/comparar.html"
+            aria-current="page"
+            aria-label="Abrir comparador"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 4v16M16 4v16M4 8h8m0 8h8" /></svg
+            ><span>Comparador</span
+            ><span
+              class="compare-count"
+              data-compare-count
+              aria-label="Productos seleccionados"
+              >0</span
+            ></a
+          ><button
+            class="icon-button"
+            type="button"
+            data-theme-toggle
+            aria-label="Activar modo oscuro"
+            aria-pressed="false"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z" />
+            </svg></button
+          ><button
+            class="icon-button menu-toggle"
+            type="button"
+            id="menuToggle"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="container" id="contenido">
+      <section class="page-intro">
+        <h1>Las diferencias, frente a frente.</h1>
+        <p>
+          Dos o tres fichas del mismo tipo y gama. Lee qué cambia entre ellas y
+          qué significa para el uso que tienes en mente.
+        </p>
+      </section>
+      <section class="compare-workbench" aria-labelledby="selectionTitle">
+        <div class="section-heading">
+          <h2 id="selectionTitle">
+            Tu selección <span class="tabular" id="trayCount">0/3</span>
+          </h2>
+          <button type="button" class="text-button" id="clearTray">
+            Reiniciar selección
+          </button>
+        </div>
+        <p class="comparison-context" id="comparisonContext">
+          El primer producto define el tipo y la gama de la comparación.
+        </p>
+        <div class="compare-tray" id="tray"></div>
+        <form class="toolbar compare-search" id="compareForm">
+          <div class="field search-field">
+            <label for="addQ">Buscar un modelo</label
+            ><input
+              type="search"
+              id="addQ"
+              placeholder="Marca, modelo o característica"
+            />
+          </div>
+          <div class="field">
+            <label for="addSelect">Opciones compatibles</label
+            ><select id="addSelect"></select>
+          </div>
+          <button class="btn btn-primary" id="addBtn" type="submit">
+            Añadir ficha
+          </button>
+        </form>
+      </section>
+      <section
+        id="compareZone"
+        class="comparison-result"
+        aria-labelledby="resultTitle"
+      ></section>
+      <div id="verdictZone"></div>
+      <section class="section guided-pairs" aria-labelledby="pairsTitle">
+        <div class="section-heading">
+          <div>
+            <h2 id="pairsTitle">Una buena comparación para empezar.</h2>
+            <p>
+              Selecciones con fuentes verificadas y alternativas de distintas
+              marcas.
+            </p>
+          </div>
+        </div>
+        <div id="suggestedPairs" class="pair-list"></div>
+      </section>
+      <p class="notice">
+        La comparación describe diferencias documentadas. Los precios
+        académicos, los GHz y los megapíxeles no se convierten en un puntaje de
+        rendimiento.
+      </p>
+      <noscript
+        ><p class="notice">
+          Activa JavaScript para explorar las fichas y usar el comparador. La
+          guía de lectura permanece disponible.
+        </p></noscript
+      >
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a class="footer-brand" href="../index.html">Álbum Tecnológico</a>
+          <p>
+            Una colección para comprender la tecnología y elegir con contexto.
+          </p>
+          <div class="footer-links">
+            <a href="../pages/catalogo.html?saved=1">Mis guardados</a
+            ><a href="../pages/guia.html#fuentes">Fuentes y metodología</a
+            ><a href="../pages/guia.html#glosario">Glosario</a
+            ><a href="../pages/guia.html#imagenes">Créditos visuales</a>
+          </div>
+        </div>
+        <div>
+          <div class="academic">
+            <img
+              src="../assets/images/umg-logo.svg"
+              alt="Emblema de la Universidad Mariano Gálvez de Guatemala"
+              width="38"
+              height="38"
+            /><span
+              >Proyecto académico<br /><strong
+                >Universidad Mariano Gálvez de Guatemala</strong
+              ></span
+            >
+          </div>
+          <p>
+            Edición 2026 · Precios de referencia en quetzales.<br />Consulta la
+            fuente y la fecha en cada ficha.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <aside
+      id="compareDock"
+      class="compare-dock"
+      aria-label="Tu selección para comparar"
+      hidden
+    ></aside>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script src="../data/products.js"></script>
+    <script src="../data/catalog-2026.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/recommendation.js"></script>
+    <script src="../js/comparator.js"></script>
+    <script src="../js/catalog.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/pages.js"></script>
+  </body>
 </html>

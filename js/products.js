@@ -2,11 +2,19 @@
 window.TechAlbum = window.TechAlbum || {};
 (function (TA) {
   "use strict";
-  var DB = window.TECHALBUM_DATA || { CATEGORIES: [], PRODUCTS: [], RANGES: [] };
+  var DB = window.TECHALBUM_DATA || {
+    CATEGORIES: [],
+    PRODUCTS: [],
+    RANGES: [],
+  };
   var PLACEHOLDER = "assets/images/categories/placeholder.svg";
 
-  function products() { return DB.PRODUCTS.slice(); }
-  function categories() { return DB.CATEGORIES.slice(); }
+  function products() {
+    return DB.PRODUCTS.slice();
+  }
+  function categories() {
+    return DB.CATEGORIES.slice();
+  }
   function getById(id) {
     id = Number(id);
     for (var i = 0; i < DB.PRODUCTS.length; i++) {
@@ -21,15 +29,51 @@ window.TechAlbum = window.TechAlbum || {};
     return { id: id, label: id, icon: "📦", group: "", desc: "" };
   }
   function brandsOf(list) {
-    var seen = {}, out = [];
+    var seen = {},
+      out = [];
     (list || products()).forEach(function (p) {
-      if (!seen[p.brand]) { seen[p.brand] = 1; out.push(p.brand); }
+      if (!seen[p.brand]) {
+        seen[p.brand] = 1;
+        out.push(p.brand);
+      }
     });
     return out.sort();
   }
   function formatPrice(value) {
-    var n = Number(value) || 0;
-    return "Q " + n.toLocaleString("es-GT", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    if (
+      value === null ||
+      value === undefined ||
+      value === "" ||
+      typeof value === "boolean"
+    )
+      return "Por verificar";
+    var n = Number(value);
+    if (!Number.isFinite(n) || n <= 0) return "Por verificar";
+    return (
+      "Q " +
+      n.toLocaleString("es-GT", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      })
+    );
+  }
+  function hasVerifiedPrice(p) {
+    if (
+      !p ||
+      p.priceStatus !== "verified" ||
+      p.currency !== "GTQ" ||
+      !Number.isFinite(p.price) ||
+      p.price <= 0
+    )
+      return false;
+    var source =
+      typeof p.priceSource === "string"
+        ? p.priceSource
+        : p.priceSource && p.priceSource.url;
+    return (
+      /^https?:\/\//.test(source || "") &&
+      /^\d{4}-\d{2}-\d{2}$/.test(p.priceVerifiedAt || "")
+    );
   }
   function rangeLabel(range) {
     if (range === "baja") return "Gama baja";
@@ -38,30 +82,39 @@ window.TechAlbum = window.TechAlbum || {};
     return "";
   }
   function rangeOf(p) {
-    if (!p) return "";
-    if (p.range) return p.range;
-    var inCategory = products().filter(function (item) { return item.category === p.category; })
-      .sort(function (a, b) { return a.price - b.price || a.id - b.id; });
-    var index = inCategory.map(function (item) { return item.id; }).indexOf(p.id);
-    var total = inCategory.length;
-    if (total <= 3) return "media";
-    if (index < 2) return "baja";
-    if (total >= 6 && index >= 4) return "alta";
-    if (total === 4 && index >= 2) return "alta";
-    return "media";
+    return p && ["baja", "media", "alta"].indexOf(p.range) !== -1
+      ? p.range
+      : "";
   }
   function comparisonMeta(p) {
+    p = p || {};
     var cat = categoryById(p.category);
+    var range = rangeOf(p);
+    var group = p.comparisonGroup || "";
     return {
       category: cat.group || "Tecnología",
       subcategory: cat.label || p.category,
-      range: rangeOf(p),
-      key: [p.category, rangeOf(p)].join("|")
+      type: p.comparisonLabel || group,
+      comparisonGroup: group,
+      range: range,
+      key:
+        p.category && group && range
+          ? [p.category, group, range].join("|")
+          : null,
     };
   }
   function compatibleWith(first, candidate) {
-    if (!first || !candidate) return true;
-    return comparisonMeta(first).key === comparisonMeta(candidate).key;
+    if (!first || !candidate) return false;
+    var key = comparisonMeta(first).key;
+    return !!key && key === comparisonMeta(candidate).key;
+  }
+  function hasAlternatives(p) {
+    return (
+      !!p &&
+      DB.PRODUCTS.some(function (other) {
+        return other.id !== p.id && compatibleWith(p, other);
+      })
+    );
   }
   function stars(rating) {
     var r = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
@@ -83,16 +136,20 @@ window.TechAlbum = window.TechAlbum || {};
       mouse: "oficina, estudio y control preciso en juegos",
       webcams: "videollamadas, clases y transmisiones",
       microfonos: "clases, podcast y creación de contenido",
-      smartphones: "usuarios que buscan un teléfono según su presupuesto y uso diario",
+      smartphones:
+        "usuarios que buscan un teléfono según su presupuesto y uso diario",
       camaras: "fotografía y creación de contenido",
       "camaras-video": "grabación de video y proyectos audiovisuales",
       drones: "fotografía aérea y proyectos creativos",
       impresoras: "tareas, documentos y trabajo desde casa",
       redes: "mejorar la cobertura y conectividad del hogar u oficina",
       audifonos: "clases, música, llamadas y gaming",
-      bocinas: "música, películas y escritorio"
+      bocinas: "música, películas y escritorio",
     };
-    return useCases[p.category] || "usuarios que desean comparar especificaciones antes de elegir";
+    return (
+      useCases[p.category] ||
+      "usuarios que desean comparar especificaciones antes de elegir"
+    );
   }
   function imgFallback(img) {
     // Cadena de fallback: URL original → SVG de su categoría
@@ -101,13 +158,20 @@ window.TechAlbum = window.TechAlbum || {};
     var src = img.getAttribute("src") || img.src || "";
     var cat = img.getAttribute("data-cat") || "";
     var list = [src];
-    if (cat) list.push("assets/images/categories/" + cat + ".svg", "../assets/images/categories/" + cat + ".svg");
-    if (src && src.indexOf("assets/") !== 0 && src.indexOf("../assets/") !== 0) list.push("../" + src);
+    if (cat)
+      list.push(
+        "assets/images/categories/" + cat + ".svg",
+        "../assets/images/categories/" + cat + ".svg",
+      );
+    if (src && src.indexOf("assets/") !== 0 && src.indexOf("../assets/") !== 0)
+      list.push("../" + src);
     list.push(PLACEHOLDER, "../" + PLACEHOLDER);
     step++;
     if (step < list.length && list[step] && list[step] !== img.src) {
       img.setAttribute("data-fb", String(step));
-      img.onerror = function () { imgFallback(img); };
+      img.onerror = function () {
+        imgFallback(img);
+      };
       img.src = list[step];
     } else {
       img.onerror = null;
@@ -115,10 +179,21 @@ window.TechAlbum = window.TechAlbum || {};
   }
 
   TA.store = {
-    products: products, categories: categories, getById: getById,
-    categoryById: categoryById, brandsOf: brandsOf, formatPrice: formatPrice,
-    rangeLabel: rangeLabel, rangeOf: rangeOf, comparisonMeta: comparisonMeta, compatibleWith: compatibleWith,
-    stars: stars, recommendedFor: recommendedFor, imgFallback: imgFallback,
-    PLACEHOLDER: PLACEHOLDER
+    products: products,
+    categories: categories,
+    getById: getById,
+    categoryById: categoryById,
+    brandsOf: brandsOf,
+    formatPrice: formatPrice,
+    hasVerifiedPrice: hasVerifiedPrice,
+    rangeLabel: rangeLabel,
+    rangeOf: rangeOf,
+    comparisonMeta: comparisonMeta,
+    compatibleWith: compatibleWith,
+    stars: stars,
+    hasAlternatives: hasAlternatives,
+    recommendedFor: recommendedFor,
+    imgFallback: imgFallback,
+    PLACEHOLDER: PLACEHOLDER,
   };
 })(window.TechAlbum);

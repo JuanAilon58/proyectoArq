@@ -1,0 +1,12 @@
+{
+  "name": "album-tecnologico",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Álbum tecnológico académico con comparaciones verificables",
+  "scripts": {
+    "start": "node scripts/serve.cjs",
+    "pages": "node scripts/build-pages.cjs",
+    "check": "node scripts/validate-catalog.cjs && node scripts/test-comparison.cjs",
+    "test": "node scripts/test-comparison.cjs"
+  }
+}

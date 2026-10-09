@@ -1,94 +1,148 @@
-/* TechAlbum — js/catalog.js | Render de tarjetas, categorías y destacados */
+/* Fichas compartidas: fotos editoriales identificadas y selección persistente. */
 window.TechAlbum = window.TechAlbum || {};
 (function (TA) {
   "use strict";
-
-  function esc(s) {
-    return String(s == null ? "" : s)
-      .replace(/&/g, "&amp;").replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-  }
-
-  function imgSrc(src) {
-    // Las páginas dentro de /pages necesitan prefijo ../ para llegar a assets/.
-    if (typeof location !== "undefined" && location.pathname.indexOf("/pages/") !== -1 &&
-        src && src.indexOf("assets/") === 0) {
-      return "../" + src;
-    }
-    return src;
-  }
-
-  function cardHTML(p, opts) {
-    opts = opts || {};
-    var cat = TA.store.categoryById(p.category);
-    var productRange = TA.store.rangeOf(p);
-    var range = productRange
-      ? '<span class="badge badge-range-' + esc(productRange) + '">' + esc(TA.store.rangeLabel(productRange)) + "</span>"
-      : "";
-    var detailHref = (opts.base || "") + "pages/producto.html?id=" + p.id;
+  var U = TA.ui,
+    esc = U.esc;
+  function cardHTML(p) {
+    var cat = TA.store.categoryById(p.category),
+      href = U.page("producto") + "?id=" + p.id;
+    var keys = Object.keys(p.specifications || {}).slice(0, 3);
     return (
-      '<article class="product-card" data-product-card data-id="' + p.id + '">' +
-        '<div class="product-media"><img src="' + esc(imgSrc(p.image)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"></div>' +
-        '<div class="product-body">' +
-          '<span class="product-brand">' + esc(p.brand) + "</span>" +
-          '<h3 class="product-model">' + esc(p.model) + "</h3>" +
-          '<div class="product-meta"><span class="badge">' + esc(cat.label) + "</span>" + range +
-          '<span class="stars" aria-label="Calificación ' + p.rating + ' de 5">' + TA.store.stars(p.rating) + "</span></div>" +
-          '<div class="product-price">' + esc(TA.store.formatPrice(p.price)) + "</div>" +
-          '<p class="product-highlight">' + esc((p.highlights && p.highlights[0]) || "") + "</p>" +
-          '<div class="product-actions">' +
-            '<a class="btn btn-small btn-primary" href="' + detailHref + '">Ver ficha</a>' +
-          "</div>" +
-        "</div>" +
-      "</article>"
+      '<article class="product-card" data-product-card data-id="' +
+      p.id +
+      '">' +
+      '<div class="product-media" data-kind="' +
+      p.imageKind +
+      '"><a href="' +
+      href +
+      '" tabindex="-1" aria-hidden="true"><img src="' +
+      esc(U.asset(p.image)) +
+      '" alt="" data-cat="' +
+      esc(p.category) +
+      '" width="800" height="533" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"></a>' +
+      '<span class="image-label">' +
+      (p.imageKind === "exact"
+        ? "Fotografía del modelo"
+        : "Fotografía ilustrativa") +
+      "</span>" +
+      '<button class="save-button" type="button" data-save="' +
+      p.id +
+      '" aria-pressed="' +
+      U.isSaved(p.id) +
+      '" aria-label="Guardar ficha: ' +
+      esc(p.brand + " " + p.model) +
+      '">' +
+      U.icon("save") +
+      "</button></div>" +
+      '<div class="product-body"><div class="product-topline"><span class="product-brand">' +
+      esc(p.brand) +
+      "</span>" +
+      U.status(p) +
+      "</div>" +
+      '<h3 class="product-model"><a href="' +
+      href +
+      '">' +
+      esc(p.model) +
+      '</a></h3><div class="product-meta"><span class="badge">' +
+      esc(TA.store.rangeLabel(p.range)) +
+      "</span>" +
+      (p.releaseYear
+        ? '<span class="badge' +
+          (p.releaseYear === 2026 ? " badge-new" : "") +
+          '">' +
+          p.releaseYear +
+          "</span>"
+        : "") +
+      "</div>" +
+      '<ul class="card-specs">' +
+      keys
+        .map(function (key) {
+          return (
+            "<li><b>" +
+            esc(key) +
+            "</b> " +
+            esc(p.specifications[key]) +
+            "</li>"
+          );
+        })
+        .join("") +
+      "</ul>" +
+      '<div class="product-bottom"><p class="product-price">' +
+      esc(TA.store.formatPrice(p.price)) +
+      '<span class="price-caption">' +
+      esc(U.priceCaption(p)) +
+      "</span></p>" +
+      (TA.store.hasAlternatives(p)
+        ? '<button type="button" class="compare-button" data-compare-btn="' +
+          p.id +
+          '" aria-label="Comparar ' +
+          esc(p.brand + " " + p.model) +
+          '" aria-pressed="false">' +
+          U.icon("compare") +
+          "<span data-compare-label>Comparar</span></button>"
+        : '<span class="badge" title="Aún no hay otra ficha del mismo tipo y gama">Solo consulta</span>') +
+      "</div></div></article>"
     );
   }
-
-  function renderInto(el, items, opts) {
-    if (!el) return;
-    if (!items.length) {
-      el.innerHTML = '<div class="empty"><span class="big">🔍</span><p>No se encontraron productos con esos criterios.<br>Prueba a limpiar la búsqueda o los filtros.</p></div>';
-    } else {
-      el.innerHTML = items.map(function (p) { return cardHTML(p, opts); }).join("");
-    }
-    bindCompareButtons(el);
-    if(TA.comparator) TA.comparator.refreshButtons();
-  }
-
   function bindCompareButtons(root) {
-    (root || document).querySelectorAll("[data-compare-btn]").forEach(function (btn) {
-      if (btn.dataset.bound) return;
-      btn.dataset.bound = "1";
-      btn.addEventListener("click", function () {
-        var id = Number(btn.getAttribute("data-compare-btn"));
-        if(TA.comparator) TA.comparator.toggle(id, btn);
+    (root || document)
+      .querySelectorAll("[data-compare-btn]")
+      .forEach(function (button) {
+        if (button.dataset.bound) return;
+        button.dataset.bound = "1";
+        button.addEventListener("click", function () {
+          TA.comparator.toggle(Number(button.dataset.compareBtn), button);
+        });
       });
-    });
+    (root || document)
+      .querySelectorAll("[data-save]")
+      .forEach(function (button) {
+        if (button.dataset.bound) return;
+        button.dataset.bound = "1";
+        button.addEventListener("click", function () {
+          U.toggleSaved(button.dataset.save);
+        });
+      });
+    U.refreshSaved();
+    if (TA.comparator) TA.comparator.refreshButtons();
   }
-
-  function categoryCards(el, opts) {
+  function renderInto(el, items) {
     if (!el) return;
-    var counts = {};
-    TA.store.products().forEach(function (p) { counts[p.category] = (counts[p.category] || 0) + 1; });
-    el.innerHTML = TA.store.categories().map(function (c) {
-      var href = (opts && opts.base ? opts.base : "") + "pages/catalogo.html?cat=" + encodeURIComponent(c.id);
-      var sample = TA.store.products().filter(function (p) { return p.category === c.id; })[0];
-      if (opts && opts.rail) {
-        return (
-          '<a class="cat-orbit" href="' + href + '">' +
-            '<span class="cat-orbit-media"><img src="' + esc(imgSrc(sample ? sample.image : TA.store.PLACEHOLDER)) + '" data-cat="' + esc(c.id) + '" alt="" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"></span>' +
-            '<strong>' + esc(c.label) + '</strong><small>' + (counts[c.id] || 0) + ' opciones</small>' +
-          '</a>'
+    el.innerHTML = items.length
+      ? items.map(cardHTML).join("")
+      : U.empty(
+          "No encontramos esas fichas",
+          "Prueba otra búsqueda o restablece los filtros.",
         );
-      }
-      return (
-        '<a class="cat-card" href="' + href + '">' +
-          '<span class="cat-icon" aria-hidden="true">' + c.icon + "</span>" +
-          "<span><strong>" + esc(c.label) + "</strong><small>" + (counts[c.id] || 0) + " productos</small></span>" +
-        "</a>"
-      );
-    }).join("");
+    bindCompareButtons(el);
   }
-
-  TA.catalog = { cardHTML: cardHTML, renderInto: renderInto, bindCompareButtons: bindCompareButtons, categoryCards: categoryCards, esc: esc };
+  function categoryCards(el) {
+    if (!el) return;
+    el.innerHTML = TA.store
+      .categories()
+      .map(function (c) {
+        return (
+          '<a class="chapter-link" href="' +
+          U.page("catalogo") +
+          "?cat=" +
+          encodeURIComponent(c.id) +
+          '"><span><strong>' +
+          esc(c.label) +
+          "</strong><small>" +
+          esc(c.group) +
+          "</small></span>" +
+          U.icon("arrow") +
+          "</a>"
+        );
+      })
+      .join("");
+  }
+  TA.catalog = {
+    cardHTML: cardHTML,
+    renderInto: renderInto,
+    bindCompareButtons: bindCompareButtons,
+    categoryCards: categoryCards,
+    esc: esc,
+  };
 })(window.TechAlbum);

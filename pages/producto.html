@@ -1,108 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Detalle del producto: imagen, especificaciones, características sobresalientes y álbum.">
-  <title>Detalle del producto — Álbum Tecnológico</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
-</head>
-<body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="../index.html" aria-label="Álbum Tecnológico inicio">
-        <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 9.5h20a4.5 4.5 0 0 1 4.5 4.5v14A4.5 4.5 0 0 1 34 32.5H14A4.5 4.5 0 0 1 9.5 28V14A4.5 4.5 0 0 1 14 9.5Z" stroke="currentColor" stroke-width="3"/><path d="M18 38.5h12M24 32.5v6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="m19 21 3.2 3.2L29 17.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="brand-name">Álbum Tecnológico</span>
-      </a>
-      <nav class="main-nav" aria-label="Navegación principal">
-        <a href="../index.html">Inicio</a>
-        <a href="catalogo.html">Componentes</a>
-        <a href="smartphones.html">Smartphones</a>
-        <a href="catalogo.html?group=Periféricos">Periféricos</a>
-        <a href="catalogo.html?group=Otros">Tecnología</a>
-      </nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Activar modo claro"><span aria-hidden="true">☀</span><span class="theme-label">Modo claro</span></button>
-    </div>
-  </header>
-
-  <main class="container" id="contenido">
-    <p><a href="catalogo.html">← Volver al álbum</a></p>
-    <div id="detail"></div>
-    <h2 class="section-title">Relacionados</h2>
-    <p class="section-sub">Más productos de la misma categoría.</p>
-    <div class="grid grid-products" id="related"></div>
-    <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad.</aside>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span><strong>Álbum Tecnológico</strong> — Detalle del producto · Proyecto académico.</span>
-      <span><a href="../index.html">← Volver al inicio</a> · Imágenes locales</span>
-    </div>
-  </footer>
-
-  <script src="../data/products.js"></script>
-  <script src="../js/products.js"></script>
-  <script src="../js/catalog.js"></script>
-  <script src="../js/filters.js"></script>
-  <script src="../js/search.js"></script>
-  <script src="../js/app.js"></script>
-  <script>
-    (function () {
-      var TA = window.TechAlbum;
-      var esc = TA.catalog.esc;
-      var host = document.getElementById("detail");
-      var id = null;
-      try { id = Number(new URLSearchParams(location.search).get("id")); } catch (e) {}
-      var p = TA.store.getById(id);
-
-      function imgSrc(src) {
-        if (src && src.indexOf("assets/") === 0) return "../" + src;
-        return src;
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Especificaciones, fuentes, contexto y alternativas comparables del producto."
+    />
+    <meta name="theme-color" content="#173e35" />
+    <title>Ficha de producto — Álbum Tecnológico</title>
+    <link
+      rel="icon"
+      href="../assets/images/album-mark.svg"
+      type="image/svg+xml"
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/manrope-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/newsreader-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body data-page="detail">
+    <script>
+      try {
+        document.body.dataset.theme =
+          localStorage.getItem("album-tecnologico-theme") ||
+          (matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+      } catch (e) {
+        document.body.dataset.theme = "light";
       }
-
-      if (!p) {
-        document.title = "Producto no encontrado — Álbum Tecnológico";
-        host.innerHTML = '<div class="empty"><span class="big">📦</span><p>Producto no encontrado.</p><p><a class="btn" href="catalogo.html">Volver al álbum</a></p></div>';
-        document.getElementById("related").innerHTML = "";
-        return;
-      }
-      document.title = p.brand + " " + p.model + " — Álbum Tecnológico";
-      var cat = TA.store.categoryById(p.category);
-      var productRange = TA.store.rangeOf(p);
-      var range = productRange ? ' <span class="badge badge-range-' + esc(productRange) + '">' + esc(TA.store.rangeLabel(productRange)) + "</span>" : "";
-      var specs = Object.keys(p.specifications || {}).map(function (k) {
-        return "<li><span class='spec-k'>" + esc(k) + "</span><span>" + esc(p.specifications[k]) + "</span></li>";
-      }).join("");
-      var purpose = TA.store.recommendedFor(p);
-      host.innerHTML =
-        '<article class="detail">' +
-          '<div class="detail-media"><img src="' + esc(imgSrc(p.image)) + '" data-cat="' + esc(p.category) + '" alt="' + esc(p.brand + " " + p.model) + '" onerror="TechAlbum.store.imgFallback(this)"></div>' +
-          '<div class="detail-info">' +
-            '<div class="detail-tags"><span class="badge">' + esc(cat.group) + "</span><span class=\"badge\">" + esc(cat.label) + "</span>" + range + '</div>' +
-            "<h1>" + esc(p.brand + " " + p.model) + "</h1>" +
-            '<p class="product-price" style="font-size:1.4rem">' + esc(TA.store.formatPrice(p.price)) + ' <span style="font-size:.75rem;color:var(--muted)">GTQ · precio de referencia</span></p>' +
-            '<p><span class="stars">' + TA.store.stars(p.rating) + '</span> <span style="color:var(--muted);font-size:.82rem">' + p.rating + "/5</span></p>" +
-            '<div class="purpose-card"><span>IDEAL PARA</span><p>' + esc(purpose) + '</p></div>' +
-            '<h2 class="section-title" style="margin-top:22px">Por qué considerarlo</h2>' +
-            '<ul class="hl-list feature-list">' + (p.highlights || []).map(function (h) { return "<li>" + esc(h) + "</li>"; }).join("") + "</ul>" +
-            '<p style="display:flex;gap:8px;flex-wrap:wrap">' +
-              '<a class="btn btn-small btn-primary" href="catalogo.html?cat=' + p.category + '">Ver su gama en el álbum →</a>' +
-              '<a class="btn btn-small btn-ghost" href="comparar.html?producto=' + p.id + '">Analizar opciones equivalentes</a>' +
-            "</p>" +
-            '<h2 class="section-title">Especificaciones</h2>' +
-            '<p class="spec-intro">' + esc(p.reference) + '. Revisa especialmente las especificaciones importantes para tu uso.</p>' +
-            '<ul class="spec-list">' + specs + "</ul>" +
-          "</div>" +
-        "</article>";
-      if (TA.catalog.bindCompareButtons) TA.catalog.bindCompareButtons(host);
-
-      var rel = TA.store.products().filter(function (x) { return x.category === p.category && x.id !== p.id; }).slice(0, 4);
-      TA.catalog.renderInto(document.getElementById("related"), rel, { base: "../" });
-    })();
-  </script>
-</body>
+    </script>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a
+          class="brand"
+          href="../index.html"
+          aria-label="Álbum Tecnológico, inicio"
+          ><span class="brand-mark"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 6c-3-2-7-2-9-1v14c2-1 6-1 9 1 3-2 7-2 9-1V5c-2-1-6-1-9 1Zm0 0v14"
+              /></svg></span
+          ><span class="brand-name"
+            >Álbum Tecnológico<small>EXPLORA · ENTIENDE · COMPARA</small></span
+          ></a
+        >
+        <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+          <a href="../index.html">Inicio</a
+          ><a href="../pages/catalogo.html">El álbum</a
+          ><a href="../pages/smartphones.html">Smartphones</a
+          ><a href="../pages/guia.html">Cómo elegir</a>
+        </nav>
+        <div class="header-actions">
+          <a
+            class="compare-link"
+            href="../pages/comparar.html"
+            aria-label="Abrir comparador"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 4v16M16 4v16M4 8h8m0 8h8" /></svg
+            ><span>Comparador</span
+            ><span
+              class="compare-count"
+              data-compare-count
+              aria-label="Productos seleccionados"
+              >0</span
+            ></a
+          ><button
+            class="icon-button"
+            type="button"
+            data-theme-toggle
+            aria-label="Activar modo oscuro"
+            aria-pressed="false"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z" />
+            </svg></button
+          ><button
+            class="icon-button menu-toggle"
+            type="button"
+            id="menuToggle"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="container" id="contenido">
+      <div class="page-intro">
+        <nav
+          class="breadcrumb"
+          id="detailBreadcrumb"
+          aria-label="Ruta de la ficha"
+        >
+          <a href="catalogo.html">El álbum</a>
+        </nav>
+        <a class="text-link" id="backToAlbum" href="catalogo.html"
+          >Volver a tu sección</a
+        >
+      </div>
+      <div id="detail"><p class="loading-note">Cargando ficha…</p></div>
+      <section class="section" id="relatedSection">
+        <div class="section-heading">
+          <div>
+            <h2>Otras páginas de la misma sección.</h2>
+            <p>
+              Alternativas del mismo tipo y gama para continuar la comparación.
+            </p>
+          </div>
+        </div>
+        <div class="grid-products" id="related"></div>
+      </section>
+      <noscript
+        ><p class="notice">
+          Activa JavaScript para explorar las fichas y usar el comparador. La
+          guía de lectura permanece disponible.
+        </p></noscript
+      >
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a class="footer-brand" href="../index.html">Álbum Tecnológico</a>
+          <p>
+            Una colección para comprender la tecnología y elegir con contexto.
+          </p>
+          <div class="footer-links">
+            <a href="../pages/catalogo.html?saved=1">Mis guardados</a
+            ><a href="../pages/guia.html#fuentes">Fuentes y metodología</a
+            ><a href="../pages/guia.html#glosario">Glosario</a
+            ><a href="../pages/guia.html#imagenes">Créditos visuales</a>
+          </div>
+        </div>
+        <div>
+          <div class="academic">
+            <img
+              src="../assets/images/umg-logo.svg"
+              alt="Emblema de la Universidad Mariano Gálvez de Guatemala"
+              width="38"
+              height="38"
+            /><span
+              >Proyecto académico<br /><strong
+                >Universidad Mariano Gálvez de Guatemala</strong
+              ></span
+            >
+          </div>
+          <p>
+            Edición 2026 · Precios de referencia en quetzales.<br />Consulta la
+            fuente y la fecha en cada ficha.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <aside
+      id="compareDock"
+      class="compare-dock"
+      aria-label="Tu selección para comparar"
+      hidden
+    ></aside>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script src="../data/products.js"></script>
+    <script src="../data/catalog-2026.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/recommendation.js"></script>
+    <script src="../js/comparator.js"></script>
+    <script src="../js/catalog.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/pages.js"></script>
+  </body>
 </html>

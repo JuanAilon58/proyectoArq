@@ -1,139 +1,224 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Smartphones por gama: baja, media y alta, con comparativas por marca.">
-  <title>Smartphones por gama — Álbum Tecnológico</title>
-  <link rel="stylesheet" href="../css/style.css">
-  <link rel="stylesheet" href="../css/components.css">
-  <link rel="stylesheet" href="../css/responsive.css">
-</head>
-<body>
-  <a class="skip-link" href="#contenido">Saltar al contenido</a>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="../index.html" aria-label="Álbum Tecnológico inicio">
-        <span class="brand-logo" aria-hidden="true"><svg viewBox="0 0 48 48" fill="none"><path d="M14 9.5h20a4.5 4.5 0 0 1 4.5 4.5v14A4.5 4.5 0 0 1 34 32.5H14A4.5 4.5 0 0 1 9.5 28V14A4.5 4.5 0 0 1 14 9.5Z" stroke="currentColor" stroke-width="3"/><path d="M18 38.5h12M24 32.5v6" stroke="currentColor" stroke-width="3" stroke-linecap="round"/><path d="m19 21 3.2 3.2L29 17.5" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        <span class="brand-name">Álbum Tecnológico</span>
-      </a>
-      <nav class="main-nav" aria-label="Navegación principal">
-        <a href="../index.html">Inicio</a>
-        <a href="catalogo.html">Componentes</a>
-        <a href="smartphones.html">Smartphones</a>
-        <a href="catalogo.html?group=Periféricos">Periféricos</a>
-        <a href="catalogo.html?group=Otros">Tecnología</a>
-      </nav>
-      <button class="theme-toggle" type="button" data-theme-toggle aria-pressed="false" aria-label="Activar modo claro"><span aria-hidden="true">☀</span><span class="theme-label">Modo claro</span></button>
-    </div>
-  </header>
-
-  <main class="container" id="contenido">
-    <h1 class="page-title">Smartphones por gama</h1>
-    <p class="page-sub">Encuentra el teléfono que encaja contigo: explora por gama, busca por marca o modelo y revisa sus especificaciones.</p>
-
-    <div class="tabs" role="tablist" aria-label="Filtrar por gama">
-      <button class="tab" role="tab" data-range="" aria-selected="true">Todas</button>
-      <button class="tab" role="tab" data-range="baja" aria-selected="false">Gama baja</button>
-      <button class="tab" role="tab" data-range="media" aria-selected="false">Gama media</button>
-      <button class="tab" role="tab" data-range="alta" aria-selected="false">Gama alta</button>
-    </div>
-
-    <div class="toolbar" role="search">
-      <input type="search" id="q" placeholder="🔍 Buscar teléfonos (marca, modelo)…" aria-label="Buscar teléfonos">
-    </div>
-
-    <div id="rangeSections"></div>
-
-    <aside class="price-note" role="note">💡 <strong>Nota:</strong> los precios mostrados están en quetzales (Q) y son <strong>de referencia</strong>; pueden variar según el establecimiento, la fecha y la disponibilidad.</aside>
-  </main>
-
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <span><strong>Álbum Tecnológico</strong> — Smartphones por gama · Proyecto académico.</span>
-      <span><a href="../index.html">← Volver al inicio</a> · Imágenes locales</span>
-    </div>
-  </footer>
-
-  <script src="../data/products.js"></script>
-  <script src="../js/products.js"></script>
-  <script src="../js/catalog.js"></script>
-  <script src="../js/filters.js"></script>
-  <script src="../js/search.js"></script>
-  <script src="../js/app.js"></script>
-  <script>
-    (function () {
-      var TA = window.TechAlbum;
-      var RANGES = [
-        { id: "baja", title: "Gama baja", desc: "Económicos para lo esencial: redes, clases y fotos casuales." },
-        { id: "media", title: "Gama media", desc: "El equilibrio: pantallas fluidas, 5G y buenas cámaras." },
-        { id: "alta", title: "Gama alta", desc: "Lo máximo: cámaras pro, potencia tope e IA." }
-      ];
-      var activeRange = "";
-      var term = "";
-      var host = document.getElementById("rangeSections");
-
-      function phones() { return TA.store.products().filter(function (p) { return p.category === "smartphones"; }); }
-
-      function render() {
-        var list = phones().filter(function (p) { return TA.search.matches(p, term); });
-        var sections = RANGES.filter(function (r) { return !activeRange || r.id === activeRange; });
-        host.innerHTML = sections.map(function (r) {
-          var items = list.filter(function (p) { return p.range === r.id; });
-          var brands = TA.store.brandsOf(items).join(" vs ");
-          var cards = items.length
-            ? '<div class="grid grid-products">' + items.slice(0, 2).map(function (p) {
-                var specs = Object.keys(p.specifications || {}).map(function (k) {
-                  return "<li><span class='spec-k'>" + k + "</span><span>" + p.specifications[k] + "</span></li>";
-                }).join("");
-                var hls = (p.highlights || []).map(function (h) { return "<li>" + h + "</li>"; }).join("");
-                return '<article class="product-card"><div class="product-media"><img src="' + (((p.image || "").indexOf("assets/") === 0) ? "../" + p.image : p.image) + '" data-cat="' + p.category + '" alt="' + p.brand + " " + p.model + '" loading="lazy" onerror="TechAlbum.store.imgFallback(this)"></div>' +
-                  '<div class="product-body"><span class="product-brand">' + p.brand + '</span><h3 class="product-model">' + p.model + '</h3>' +
-                  '<div class="product-price">' + TA.store.formatPrice(p.price) + '</div>' +
-                  '<div class="product-actions"><button class="btn btn-small btn-primary" type="button" data-sp-det="' + p.id + '">Ver detalles</button></div></div>' +
-                  '<div class="inline-detail" id="sp-' + p.id + '" hidden><ul class="hl-list">' + hls + '</ul><ul class="spec-list">' + specs + '</ul>' +
-                  '<p><a class="btn btn-small btn-ghost" href="producto.html?id=' + p.id + '">Abrir ficha →</a></p></div></article>';
-              }).join("") + "</div>"
-            : '<div class="empty"><span class="big">📱</span><p>Sin teléfonos en esta gama para esa búsqueda.</p></div>';
-          return (
-            '<section aria-label="' + r.title + '">' +
-              '<h2 class="section-title">' + r.title + ' <span class="badge">' + brands + "</span></h2>" +
-              '<p class="section-sub">' + r.desc + "</p>" +
-              
-              cards +
-            "</section>"
-          );
-        }).join("");
-        if (TA.catalog.bindCompareButtons) TA.catalog.bindCompareButtons(host);
-        host.querySelectorAll("[data-sp-det]").forEach(function (btn) {
-          btn.addEventListener("click", function () {
-            var panel = host.querySelector("#sp-" + btn.getAttribute("data-sp-det"));
-            if (!panel) return;
-            panel.hidden = !panel.hidden;
-            btn.textContent = panel.hidden ? "Ver detalles" : "Ocultar detalles";
-          });
-        });
-      }
-
-      document.querySelectorAll(".tab").forEach(function (tab) {
-        tab.addEventListener("click", function () {
-          document.querySelectorAll(".tab").forEach(function (t) { t.setAttribute("aria-selected", "false"); });
-          tab.setAttribute("aria-selected", "true");
-          activeRange = tab.getAttribute("data-range");
-          render();
-        });
-      });
-      TA.search.bindLive(document.getElementById("q"), function (v) { term = v; render(); });
-      // Soporte ?range=media|baja|alta
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="Smartphones por gama con fichas oficiales verificadas y comparaciones equivalentes."
+    />
+    <meta name="theme-color" content="#173e35" />
+    <title>Smartphones — Álbum Tecnológico</title>
+    <link
+      rel="icon"
+      href="../assets/images/album-mark.svg"
+      type="image/svg+xml"
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/manrope-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href="../assets/fonts/newsreader-latin-variable.woff2"
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link rel="stylesheet" href="../css/style.css" />
+    <link rel="stylesheet" href="../css/components.css" />
+    <link rel="stylesheet" href="../css/responsive.css" />
+  </head>
+  <body data-page="phones">
+    <script>
       try {
-        var r = new URLSearchParams(location.search).get("range");
-        if (r) {
-          var btn = document.querySelector('.tab[data-range="' + r + '"]');
-          if (btn) btn.click();
-        }
-      } catch (e) {}
-      render();
-    })();
-  </script>
-</body>
+        document.body.dataset.theme =
+          localStorage.getItem("album-tecnologico-theme") ||
+          (matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light");
+      } catch (e) {
+        document.body.dataset.theme = "light";
+      }
+    </script>
+    <a class="skip-link" href="#contenido">Saltar al contenido</a>
+    <header class="site-header">
+      <div class="container header-inner">
+        <a
+          class="brand"
+          href="../index.html"
+          aria-label="Álbum Tecnológico, inicio"
+          ><span class="brand-mark"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path
+                d="M12 6c-3-2-7-2-9-1v14c2-1 6-1 9 1 3-2 7-2 9-1V5c-2-1-6-1-9 1Zm0 0v14"
+              /></svg></span
+          ><span class="brand-name"
+            >Álbum Tecnológico<small>EXPLORA · ENTIENDE · COMPARA</small></span
+          ></a
+        >
+        <nav class="main-nav" id="mainNav" aria-label="Navegación principal">
+          <a href="../index.html">Inicio</a
+          ><a href="../pages/catalogo.html">El álbum</a
+          ><a href="../pages/smartphones.html" aria-current="page"
+            >Smartphones</a
+          ><a href="../pages/guia.html">Cómo elegir</a>
+        </nav>
+        <div class="header-actions">
+          <a
+            class="compare-link"
+            href="../pages/comparar.html"
+            aria-label="Abrir comparador"
+            ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M8 4v16M16 4v16M4 8h8m0 8h8" /></svg
+            ><span>Comparador</span
+            ><span
+              class="compare-count"
+              data-compare-count
+              aria-label="Productos seleccionados"
+              >0</span
+            ></a
+          ><button
+            class="icon-button"
+            type="button"
+            data-theme-toggle
+            aria-label="Activar modo oscuro"
+            aria-pressed="false"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M20 14A8 8 0 0 1 10 4a8 8 0 1 0 10 10Z" />
+            </svg></button
+          ><button
+            class="icon-button menu-toggle"
+            type="button"
+            id="menuToggle"
+            aria-controls="mainNav"
+            aria-expanded="false"
+            aria-label="Abrir navegación"
+          >
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
+      </div>
+    </header>
+    <main class="container" id="contenido">
+      <section class="page-intro">
+        <h1>Un teléfono para tu forma de usarlo.</h1>
+        <p>
+          Explora las gamas, lee las diferencias y compara dos o tres modelos
+          del mismo segmento. Las especificaciones de cada variante están en su
+          ficha.
+        </p>
+      </section>
+      <div class="range-controls" role="group" aria-label="Elegir gama">
+        <button
+          class="range-control"
+          type="button"
+          data-range=""
+          aria-pressed="true"
+        >
+          Todas las gamas</button
+        ><button
+          class="range-control"
+          type="button"
+          data-range="baja"
+          aria-pressed="false"
+        >
+          Gama baja</button
+        ><button
+          class="range-control"
+          type="button"
+          data-range="media"
+          aria-pressed="false"
+        >
+          Gama media</button
+        ><button
+          class="range-control"
+          type="button"
+          data-range="alta"
+          aria-pressed="false"
+        >
+          Gama alta
+        </button>
+      </div>
+      <div class="toolbar">
+        <div class="field search-field">
+          <label for="phoneQ">Buscar teléfonos</label
+          ><input
+            type="search"
+            id="phoneQ"
+            placeholder="Marca, modelo o característica"
+          />
+        </div>
+        <label class="check-label"
+          ><input type="checkbox" id="phoneArchive" />Incluir fichas académicas
+          anteriores</label
+        >
+      </div>
+      <p id="phoneCount" class="notice" role="status" aria-live="polite"></p>
+      <div id="rangeSections"></div>
+      <noscript
+        ><p class="notice">
+          Activa JavaScript para explorar las fichas y usar el comparador. La
+          guía de lectura permanece disponible.
+        </p></noscript
+      >
+    </main>
+    <footer class="site-footer">
+      <div class="container footer-inner">
+        <div>
+          <a class="footer-brand" href="../index.html">Álbum Tecnológico</a>
+          <p>
+            Una colección para comprender la tecnología y elegir con contexto.
+          </p>
+          <div class="footer-links">
+            <a href="../pages/catalogo.html?saved=1">Mis guardados</a
+            ><a href="../pages/guia.html#fuentes">Fuentes y metodología</a
+            ><a href="../pages/guia.html#glosario">Glosario</a
+            ><a href="../pages/guia.html#imagenes">Créditos visuales</a>
+          </div>
+        </div>
+        <div>
+          <div class="academic">
+            <img
+              src="../assets/images/umg-logo.svg"
+              alt="Emblema de la Universidad Mariano Gálvez de Guatemala"
+              width="38"
+              height="38"
+            /><span
+              >Proyecto académico<br /><strong
+                >Universidad Mariano Gálvez de Guatemala</strong
+              ></span
+            >
+          </div>
+          <p>
+            Edición 2026 · Precios de referencia en quetzales.<br />Consulta la
+            fuente y la fecha en cada ficha.
+          </p>
+        </div>
+      </div>
+    </footer>
+    <aside
+      id="compareDock"
+      class="compare-dock"
+      aria-label="Tu selección para comparar"
+      hidden
+    ></aside>
+    <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+    <script src="../data/products.js"></script>
+    <script src="../data/catalog-2026.js"></script>
+    <script src="../js/products.js"></script>
+    <script src="../js/ui.js"></script>
+    <script src="../js/recommendation.js"></script>
+    <script src="../js/comparator.js"></script>
+    <script src="../js/catalog.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/app.js"></script>
+    <script src="../js/pages.js"></script>
+  </body>
 </html>

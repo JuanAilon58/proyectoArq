@@ -1,83 +1,154 @@
-/* TechAlbum — js/comparator.js | Bandeja de comparación guiada (máx. 3) */
+/* Selección compatible de 2–3 fichas. */
 window.TechAlbum = window.TechAlbum || {};
 (function (TA) {
   "use strict";
-  var KEY = "techalbum_compare_v1";
-  var MAX = 3;
-
+  var KEY = "techalbum_compare_v2",
+    MAX = 3,
+    memory = [],
+    storageFailed = false;
+  function normalize(raw) {
+    if (!Array.isArray(raw)) return [];
+    var ids = [];
+    raw.forEach(function (value) {
+      var id = Number(value),
+        p = TA.store.getById(id);
+      if (
+        !p ||
+        !TA.store.hasAlternatives(p) ||
+        !TA.store.comparisonMeta(p).key ||
+        ids.indexOf(id) !== -1 ||
+        ids.length >= MAX
+      )
+        return;
+      if (!ids.length || TA.store.compatibleWith(TA.store.getById(ids[0]), p))
+        ids.push(id);
+    });
+    return ids;
+  }
   function load() {
+    if (storageFailed) return memory.slice();
     try {
-      var raw = localStorage.getItem(KEY);
-      var arr = raw ? JSON.parse(raw) : [];
-      var valid = arr.map(Number).filter(function (id) { return TA.store.getById(id); }).slice(0, MAX);
-      return valid.filter(function (id, index) {
-        return index === 0 || TA.store.compatibleWith(TA.store.getById(valid[0]), TA.store.getById(id));
-      });
-    } catch (e) { return []; }
+      return normalize(JSON.parse(localStorage.getItem(KEY) || "[]"));
+    } catch (e) {
+      return memory.slice();
+    }
+  }
+  function list() {
+    return load().map(TA.store.getById);
+  }
+  function contains(id) {
+    return load().indexOf(Number(id)) !== -1;
   }
   function save(ids) {
-    try { localStorage.setItem(KEY, JSON.stringify(ids)); } catch (e) { /* almacenamiento no disponible */ }
-    if (typeof document !== "undefined") updatePill();
+    memory = normalize(ids);
+    try {
+      localStorage.setItem(KEY, JSON.stringify(memory));
+    } catch (e) {
+      storageFailed = true;
+    }
+    if (typeof document !== "undefined") {
+      updatePill();
+      refreshButtons();
+    }
+    if (typeof window.dispatchEvent === "function")
+      window.dispatchEvent(
+        new CustomEvent("techalbum:compare-change", {
+          detail: { ids: memory.slice() },
+        }),
+      );
   }
-  function list() { return load().map(function (id) { return TA.store.getById(id); }).filter(Boolean); }
-  function contains(id) { return load().indexOf(Number(id)) !== -1; }
   function add(id) {
     id = Number(id);
-    var ids = load();
-    if (ids.indexOf(id) !== -1) return { ok: true, ids: ids, existed: true };
-    if (ids.length >= MAX) return { ok: false, reason: "max", ids: ids };
-    var product = TA.store.getById(id);
-    if (!product) return { ok: false, reason: "not-found", ids: ids };
-    var selected = list();
-    if (selected.length && !TA.store.compatibleWith(selected[0], product)) {
-      return { ok: false, reason: "incompatible", ids: ids, required: TA.store.comparisonMeta(selected[0]) };
-    }
+    var p = TA.store.getById(id),
+      ids = load();
+    if (!p) return { ok: false, reason: "not-found" };
+    if (!TA.store.hasAlternatives(p))
+      return { ok: false, reason: "no-alternative" };
+    if (contains(id)) return { ok: true, existed: true, ids: ids };
+    if (ids.length >= MAX) return { ok: false, reason: "max" };
+    if (
+      !TA.store.comparisonMeta(p).key ||
+      (ids.length && !TA.store.compatibleWith(TA.store.getById(ids[0]), p))
+    )
+      return { ok: false, reason: "incompatible" };
     ids.push(id);
     save(ids);
     return { ok: true, ids: ids };
   }
   function remove(id) {
-    id = Number(id);
-    save(load().filter(function (x) { return x !== id; }));
+    save(
+      load().filter(function (value) {
+        return value !== Number(id);
+      }),
+    );
   }
-  function clear() { save([]); }
-  function updatePill() {
-    var els = document.querySelectorAll("[data-compare-count]");
-    var n = load().length;
-    els.forEach(function (el) { el.textContent = String(n); });
+  function clear() {
+    save([]);
   }
-  function toggle(id, btn) {
-    var res;
-    if (contains(id)) { remove(id); res = { added: false }; }
-    else {
-      res = add(id);
-      if (!res.ok && res.reason === "max") {
-        alert("Puedes comparar hasta " + MAX + " productos. Quita uno para agregar otro.");
-        return res;
-      }
-      if (!res.ok && res.reason === "incompatible") {
-        alert("Elige productos de la misma subcategoría y gama para obtener una comparación justa.");
-        return res;
-      }
-      res.added = true;
+  function replace(ids) {
+    var clean = normalize(ids);
+    save(clean);
+    return { ok: clean.length === ids.length, ids: clean };
+  }
+  function toggle(id) {
+    if (contains(id)) {
+      remove(id);
+      return { ok: true, added: false };
     }
-    updatePill();
-    refreshButtons();
-    return res;
+    var result = add(id);
+    if (!result.ok)
+      window.dispatchEvent(
+        new CustomEvent("techalbum:compare-error", { detail: result }),
+      );
+    else result.added = true;
+    return result;
+  }
+  function updatePill() {
+    document.querySelectorAll("[data-compare-count]").forEach(function (el) {
+      el.textContent = load().length;
+    });
+    if (TA.ui)
+      document.querySelectorAll(".compare-link").forEach(function (el) {
+        el.href = TA.ui.page("comparar") + "?ids=" + load().join(",");
+      });
   }
   function refreshButtons() {
     document.querySelectorAll("[data-compare-btn]").forEach(function (btn) {
-      var id = Number(btn.getAttribute("data-compare-btn"));
-      var active = contains(id);
-      btn.setAttribute("aria-pressed", active ? "true" : "false");
+      var active = contains(btn.dataset.compareBtn);
+      btn.setAttribute("aria-pressed", String(active));
       var label = btn.querySelector("[data-compare-label]");
-      if (label) label.textContent = active ? "En comparador ✓" : "Comparar";
-      btn.classList.toggle("btn-primary", active);
+      if (label)
+        label.textContent = active
+          ? "Seleccionado"
+          : TA.store.hasAlternatives(TA.store.getById(btn.dataset.compareBtn))
+            ? "Comparar"
+            : "Solo consulta";
     });
   }
+  function importFromUrl(search) {
+    var params = new URLSearchParams(search),
+      raw = params.get("ids"),
+      one = params.get("producto");
+    if (raw != null) return replace(raw.split(",").filter(Boolean));
+    if (one) return replace([one]);
+    return { ok: true, ids: load() };
+  }
+  function shareUrl() {
+    var base = TA.ui ? TA.ui.page("comparar") : "comparar.html";
+    return new URL(base + "?ids=" + load().join(","), location.href).href;
+  }
   TA.comparator = {
-    MAX: MAX, list: list, add: add, remove: remove,
-    clear: clear, contains: contains, toggle: toggle,
-    updatePill: updatePill, refreshButtons: refreshButtons
+    MAX: MAX,
+    list: list,
+    contains: contains,
+    add: add,
+    remove: remove,
+    clear: clear,
+    replace: replace,
+    toggle: toggle,
+    updatePill: updatePill,
+    refreshButtons: refreshButtons,
+    importFromUrl: importFromUrl,
+    shareUrl: shareUrl,
   };
 })(window.TechAlbum);
