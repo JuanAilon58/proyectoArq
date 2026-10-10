@@ -235,48 +235,76 @@ window.TechAlbum = window.TechAlbum || {};
       saved.checked = !!state.saved;
       var c = state.cat ? S.categoryById(state.cat) : null;
       document.getElementById("catalogTitle").textContent = c
-        ? c.label
-        : state.group || "Abre una nueva sección.";
+        ? "Comparativas de " + c.label.toLowerCase()
+        : state.group
+          ? "Comparativas · " + state.group
+          : "Abre una nueva sección.";
       document.getElementById("catalogDescription").textContent = c
-        ? c.desc
+        ? c.desc +
+          " Explora las parejas A/B y abre la tabla completa para ver todas sus diferencias."
         : "Explora por categoría, afina por tipo y gama, y guarda las fichas que quieres volver a consultar.";
       document.title =
         (c ? c.label : state.group || "El álbum") + " — Álbum Tecnológico";
     }
     function render() {
+      var comparisonView = !!(state.cat || state.group);
+      var candidates = scope().filter(function (p) {
+        return (
+          (!state.type || p.comparisonGroup === state.type) &&
+          (!state.range || p.range === state.range) &&
+          (!state.status || p.dataStatus === "verified")
+        );
+      });
       var items = ranked(
-        scope().filter(function (p) {
+        candidates.filter(function (p) {
           return (
-            (!state.type || p.comparisonGroup === state.type) &&
-            (!state.range || p.range === state.range) &&
             (!state.brand || p.brand === state.brand) &&
-            (!state.status || p.dataStatus === "verified") &&
             (!state.saved || U.isSaved(p.id)) &&
             TA.search.matches(p, state.q)
           );
         }),
       );
+      var pairs = comparisonView ? S.comparisonPairs(items, candidates) : [];
       document.getElementById("catalogCount").textContent =
+        (comparisonView
+          ? pairs.length +
+            (pairs.length === 1 ? " comparativa · " : " comparativas · ")
+          : "") +
         items.length +
-        " fichas · " +
+        (items.length === 1
+          ? " ficha encontrada · "
+          : " fichas encontradas · ") +
         items.filter(function (p) {
           return p.dataStatus === "verified";
         }).length +
         " con fuentes verificadas";
-      TA.catalog.renderInto(host, items.slice(0, limit));
-      if (!items.length)
+      host.classList.toggle("category-comparisons", comparisonView);
+      document.body.dataset.catalogView = comparisonView ? "comparisons" : "products";
+      if (comparisonView)
+        TA.catalog.renderComparisons(host, pairs.slice(0, limit));
+      else TA.catalog.renderInto(host, items.slice(0, limit));
+      document.getElementById("comparisonFilterHint").hidden = !comparisonView;
+      if (!items.length || (comparisonView && !pairs.length))
         host.innerHTML = U.empty(
-          state.saved
-            ? "Aún no hay fichas guardadas aquí"
-            : "No encontramos esas fichas",
-          state.saved
-            ? "Guarda una ficha con el marcador o amplía los filtros."
-            : "Prueba otra búsqueda o restablece los filtros.",
+          comparisonView && items.length
+            ? "No hay una pareja con estos filtros"
+            : state.saved
+              ? "Aún no hay fichas guardadas aquí"
+              : "No encontramos esas fichas",
+          comparisonView && items.length
+            ? "Amplía el tipo, la gama o el estado de la fuente para encontrar otra alternativa."
+            : state.saved
+              ? "Guarda una ficha con el marcador o amplía los filtros."
+              : "Prueba otra búsqueda o restablece los filtros.",
           '<button class="btn" type="button" id="emptyReset">Restablecer filtros</button>',
         );
       var emptyReset = document.getElementById("emptyReset");
       if (emptyReset) emptyReset.addEventListener("click", reset);
-      document.getElementById("loadMore").hidden = items.length <= limit;
+      document.getElementById("loadMore").hidden =
+        (comparisonView ? pairs.length : items.length) <= limit;
+      document.getElementById("loadMore").textContent = comparisonView
+        ? "Mostrar más comparativas"
+        : "Mostrar más fichas";
       var labels = {
         q: "Búsqueda: " + state.q,
         type: type.selectedOptions[0].textContent,

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-10T00:43:51.552Z",
+  "generatedAt": "2026-10-10T01:04:51Z",
   "title": "Design System: Álbum Tecnológico",
   "extensions": {
     "colorMeta": {
@@ -711,7 +711,7 @@
   ],
   "narrative": {
     "northStar": "El álbum de consulta",
-    "overview": "Una lectura editorial cálida donde títulos, fotografías y fichas ayudan a comprender diferencias. La identidad existente se extiende con verde profundo, papel crema y terracota; la composición deja espacio para leer mientras los controles mantienen una densidad práctica.\n\nNewsreader da voz a los títulos y Manrope sostiene datos, navegación y acciones. Las fotografías locales lideran las fichas: su relación con el modelo queda explícita, y autor, fuente y licencia acompañan las imágenes cuando existe atribución. El emblema académico permanece discreto en el pie.\n\nEl comparador tiene un mundo propio fijado por la imagen del usuario: campo oscuro frío, títulos Manrope compactos, productos A azul y B violeta y ventajas verdes. Su material es la fotografía grande frente a frente; mantiene los dos productos y las dos columnas de datos visibles también en móvil. La identidad editorial continúa en las demás rutas.",
+    "overview": "Una lectura editorial cálida donde títulos, fotografías y fichas ayudan a comprender diferencias. La identidad existente se extiende con verde profundo, papel crema y terracota; la composición deja espacio para leer mientras los controles mantienen una densidad práctica.\n\nNewsreader da voz a los títulos y Manrope sostiene datos, navegación y acciones. Las fotografías locales lideran las fichas: su relación con el modelo queda explícita, y autor, fuente y licencia acompañan las imágenes cuando existe atribución. El emblema académico permanece discreto en el pie.\n\nEl comparador tiene un mundo propio fijado por la imagen del usuario: campo oscuro frío, títulos Manrope compactos, productos A azul y B violeta y ventajas verdes. Su material es la fotografía grande frente a frente; mantiene los dos productos y las dos columnas de datos visibles también en móvil. Las vistas previas A/B de categoría reutilizan estos roles dentro del álbum; el marco de las rutas de consulta conserva la identidad editorial y sus temas.",
     "keyCharacteristics": [
       "Títulos serif amplios y datos en sans serif.",
       "Papel cálido, verde profundo y énfasis terracota.",
@@ -728,7 +728,7 @@
       },
       {
         "name": "The Scoped Comparison Rule",
-        "body": "El comparador conserva su mundo oscuro A/B; las demás rutas mantienen la identidad editorial y sus temas.",
+        "body": "El comparador y las vistas previas A/B de categoría conservan los roles del mundo oscuro; el marco del álbum y las demás superficies de consulta mantienen la identidad editorial y sus temas.",
         "section": "colors"
       },
       {
@@ -738,7 +738,7 @@
       },
       {
         "name": "The Two Voices Rule",
-        "body": "Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles; el comparador usa Manrope también en los títulos.",
+        "body": "Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles; el comparador y sus vistas previas A/B usan Manrope también en los títulos.",
         "section": "typography"
       },
       {

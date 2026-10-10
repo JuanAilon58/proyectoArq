@@ -11,6 +11,7 @@ El catálogo contiene **198 productos en 50 subcategorías**: 32 fichas contrast
 - URLs que conservan filtros y regreso desde la ficha a la sección consultada. Paginación progresiva de 24 fichas para evitar renderizar todo el catálogo.
 - Smartphones por gama, mostrando todos los resultados; archivo académico opcional.
 - Cada tarjeta y ficha abre **Ver comparativa** con una alternativa; ningún producto queda limitado a solo consulta.
+- Entrar en una categoría o subcategoría muestra directamente sus parejas A/B, con fotos, tres especificaciones, ventajas y acceso a la comparativa completa. El listado general conserva fichas individuales. Los filtros de tipo, gama y fuentes se aplican a ambos lados; búsqueda, marca y guardados encuentran una ficha junto a su alternativa.
 - Comparador oscuro según la referencia del usuario: dos grandes fotos, etiquetas A/B, VS central, marcas, modelos, precios, conteo de ventajas, tabla y recomendación final. Ambos productos y valores permanecen visibles en móvil.
 - Selectores A/B y un índice con los 198 productos de las 50 subcategorías. Persistencia local, opción de mostrar solo diferencias, enlace compartible e impresión.
 - Glosario y metodología en `pages/guia.html`. Guardados locales sin cuentas.

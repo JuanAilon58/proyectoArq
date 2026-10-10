@@ -32,6 +32,7 @@ Se consulta en computadora o teléfono durante investigación, tareas o evaluaci
 - Ventajas derivadas de las mismas filas resaltadas. Criterios explícitos de capacidad, frecuencia, velocidades declaradas y funciones incluidas; no se puntúan GHz, núcleos, megapíxeles, mAh, longitud o color como calidad global. El veredicto siempre muestra contexto; las fichas académicas se identifican y los tipos diferentes no generan ganador.
 - Fotografías locales: modelo exacto con licencia y crédito cuando se dispone de ella; otras identificadas como ilustrativas.
 - Persistencia local, enlaces compartibles de comparación e impresión, sin registro.
+- Las categorías muestran sus comparativas A/B desde la entrada, con vista previa de especificaciones y enlace al resultado completo. El álbum general mantiene la consulta de fichas individuales.
 - Node se utiliza únicamente para desarrollo, generación de HTML y validación. No hay dependencias en producción.
 
 ## Brand Commitments

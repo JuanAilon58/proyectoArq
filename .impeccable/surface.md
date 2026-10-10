@@ -14,6 +14,8 @@ Lectura editorial cálida, verde profundo y acentos terracota. Newsreader aporta
 
 Abrir el índice, elegir una subcategoría, precisar tipo y gama, leer una ficha y comparar alternativas. Fuentes y revisión dentro de la ficha; glosario y metodología desde navegación y pie.
 
+Al entrar en una categoría o subcategoría aparecen directamente sus comparativas A/B: dos productos y fotografías identificadas, tres filas de especificaciones, conteos de la ficha completa y enlace al resultado completo. El listado general conserva las fichas individuales. Búsqueda, marca y guardados encuentran una ficha con su rival; tipo, gama y estado de fuente delimitan ambos lados. No se duplican parejas A/B invertidas y ningún producto queda fuera de las parejas de su subcategoría sin filtros. La bandeja fija se oculta en esta vista para dejar libre el acceso a cada resultado.
+
 ## FIRST VIEWPORT
 
 Portada dividida entre título y fotografía de contactos de CPU, con un recuadro de lectura superpuesto. En móvil el título precede a la imagen, con dos líneas principales y acciones visibles. Las pantallas de consulta tienen título, contexto y controles antes de las fichas.

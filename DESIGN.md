@@ -215,7 +215,7 @@ Una lectura editorial cálida donde títulos, fotografías y fichas ayudan a com
 
 Newsreader da voz a los títulos y Manrope sostiene datos, navegación y acciones. Las fotografías locales lideran las fichas: su relación con el modelo queda explícita, y autor, fuente y licencia acompañan las imágenes cuando existe atribución. El emblema académico permanece discreto en el pie.
 
-El comparador tiene un mundo propio fijado por la imagen del usuario: campo oscuro frío, títulos Manrope compactos, productos A azul y B violeta y ventajas verdes. Su material es la fotografía grande frente a frente; mantiene los dos productos y las dos columnas de datos visibles también en móvil. La identidad editorial continúa en las demás rutas.
+El comparador tiene un mundo propio fijado por la imagen del usuario: campo oscuro frío, títulos Manrope compactos, productos A azul y B violeta y ventajas verdes. Su material es la fotografía grande frente a frente; mantiene los dos productos y las dos columnas de datos visibles también en móvil. Las vistas previas A/B de categoría reutilizan estos roles dentro del álbum; el marco de las rutas de consulta conserva la identidad editorial y sus temas.
 
 **Key Characteristics:**
 
@@ -254,7 +254,7 @@ La paleta combina la calma del papel crema con el verde de lectura y una terraco
 
 Las claves terminadas en `-dark` registran los valores de `body[data-theme="dark"]`; no son una segunda identidad. La implementación cambia las variables semánticas del mismo nombre. Las etiquetas y controles superpuestos a fotografía conservan papel claro y verde para seguir siendo legibles sobre una imagen.
 
-Las claves `duel-*` corresponden exclusivamente a `body[data-page="compare"]`, que conserva su campo oscuro en pantalla independientemente del tema global. duel-bg, duel-panel, duel-soft, duel-card y duel-photo delimitan fondo, controles, fichas y fotografía. duel-ink y duel-muted sostienen lectura y metadatos; duel-line separa filas y duel-control-border delimita controles. duel-a y duel-b identifican los lados; duel-best señala la ventaja documentada, siempre con texto accesible. duel-verdict distingue el cierre de la tabla.
+Las claves `duel-*` describen el comparador completo y los roles compartidos por las vistas previas A/B de categoría. Ambas superficies conservan su campo oscuro independientemente del tema global; las vistas previas mantienen estos roles dentro del marco editorial del álbum. duel-bg, duel-panel, duel-soft, duel-card y duel-photo delimitan fondo, controles, fichas y fotografía. duel-ink y duel-muted sostienen lectura y metadatos; duel-line separa filas y duel-control-border delimita controles. duel-a y duel-b identifican los lados; duel-best señala la ventaja documentada, siempre con texto accesible. duel-verdict distingue el cierre de la tabla completa.
 
 Las rampas de ocho tonos del sidecar se derivan en OKLCH para visualizar cada color en el panel. Son metadatos ilustrativos; no agregan colores normativos a la interfaz.
 
@@ -262,7 +262,7 @@ Las rampas de ocho tonos del sidecar se derivan en OKLCH para visualizar cada co
 
 **The Semantic Theme Rule.** Cambiar el tema conserva la función de cada color: fondo, lectura, selección, foco y metadatos mantienen su jerarquía.
 
-**The Scoped Comparison Rule.** El comparador conserva su mundo oscuro A/B; las demás rutas mantienen la identidad editorial y sus temas.
+**The Scoped Comparison Rule.** El comparador y las vistas previas A/B de categoría conservan los roles del mundo oscuro; el marco del álbum y las demás superficies de consulta mantienen la identidad editorial y sus temas.
 
 **The Control Border Rule.** Usar control-border para límites interactivos y line para divisores de contenido; el estado seleccionado añade relleno y texto contrastados.
 
@@ -286,7 +286,7 @@ Los títulos equilibran saltos mediante `text-wrap: balance`; el cuerpo conserva
 
 ### Named Rules
 
-**The Two Voices Rule.** Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles; el comparador usa Manrope también en los títulos.
+**The Two Voices Rule.** Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles; el comparador y sus vistas previas A/B usan Manrope también en los títulos.
 
 **The Legible Metadata Rule.** Mantener (11px) como mínimo funcional y conservar la diferencia entre texto principal y secundario en ambos temas.
 
@@ -301,6 +301,8 @@ La ficha usa dos columnas iguales separadas por (70px), con fotografía fija dur
 El comparador centra un contenedor de hasta (1016px), con padding lateral (28px) y dos tarjetas separadas por una columna VS de (76px). Sus fotos ocupan (306px) de altura. Bajo (650px), el padding pasa a (16px), el VS a (24px) y las fotos a (180px); ambas tarjetas permanecen juntas. La tabla ocupa todo el ancho con columnas fijas de característica, A, B y estado, sin exigir desplazamiento horizontal para ver ambos valores. La característica ocupa (21%), o (28%) en móvil; el estado (4%). Selectores e índice completo siguen al veredicto. La impresión conserva el par y la tabla, elimina controles e índice y vuelve a papel blanco.
 
 **The Simultaneous Values Rule.** Mantener juntos A/B y sus dos valores en cada fila, también en móvil.
+
+Las vistas previas A/B de categoría forman una columna con separación (28px). Cada pareja conserva sus dos productos alrededor de un VS de (48px), o (24px) bajo (580px); las fotografías pasan de (175px) a (150px). La tabla compacta mantiene característica, A y B simultáneos, con (28%) del ancho para la característica.
 
 ## Elevation & Depth
 
@@ -367,6 +369,12 @@ La bandeja admite dos productos y se oculta en el comparador, al igual que la ca
 El comparador empieza con vuelta al catálogo, contexto de subcategoría y fotografías enfrentadas. Cada tarjeta identifica A/B, marca, modelo, precio o estado pendiente, relación de la imagen con el modelo y fuentes. El resumen muestra los conteos que producen las mismas filas de la tabla. Las filas alternan fondo y conservan encabezados semánticos; una ventaja combina verde, texto y marcador A/B. Iguales, diferencias sin ganador y datos ausentes tienen marcadores y nombres distintos. El veredicto usa un panel oscuro con trofeo SVG, criterio, contexto y limitación de evidencia. No atribuye ganador entre funciones distintas.
 
 Título principal del comparador (30px), o (25px) en móvil; modelo y veredicto (14px), modelo móvil (12px). Valores de tabla (12px), o (11px) en móvil, monoespaciados y tabulares. Controles conservan foco azul visible heredado del rol accent del comparador.
+
+### Category A/B preview
+
+La vista previa reutiliza fondo duel-bg, encabezado y enlace duel-card, fotografía duel-photo, borde duel-line y radio duel-panel. Los lados usan duel-a y duel-b; una ventaja combina duel-best con el texto Ventaja A/B. Los modelos usan Manrope y los valores monoespaciados conservan cifras tabulares. El enlace de apertura tiene una altura mínima de (44px), cambia a duel-soft con texto duel-ink en hover y mantiene foco visible azul.
+
+Cada pareja muestra fotografías identificadas, hasta tres filas de especificaciones y conteos derivados de la tabla completa, rotulados como tales. El enlace abre la comparación completa de esa pareja. Este componente conserva ambos valores en móvil y se integra en el catálogo editorial; las fichas individuales del álbum general mantienen su tratamiento existente.
 
 ### Motion and accessibility
 

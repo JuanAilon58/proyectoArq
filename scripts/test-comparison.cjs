@@ -95,6 +95,51 @@ for (const p of S.products()) {
   );
 }
 assert.equal(S.comparisonIds(S.getById(69))[1], 231, "SATA sugiere otro SATA");
+for (const category of S.categories()) {
+  const items = S.products().filter((p) => p.category === category.id);
+  const pairs = S.comparisonPairs(items, items);
+  const represented = new Set(pairs.flat().map((p) => p.id));
+  assert.ok(
+    items.every((p) => represented.has(p.id)),
+    "Todas las fichas aparecen en las parejas de " + category.id,
+  );
+  assert.ok(
+    pairs.every((items) => S.compatibleWith(...items)),
+    "Parejas compatibles por subcategoría y gama",
+  );
+  assert.equal(
+    new Set(
+      pairs.map((items) =>
+        items
+          .map((p) => p.id)
+          .sort((a, b) => a - b)
+          .join(","),
+      ),
+    ).size,
+    pairs.length,
+    "Sin parejas A/B duplicadas",
+  );
+}
+const verifiedCPU = S.products().filter(
+  (p) => p.category === "procesadores" && p.dataStatus === "verified",
+);
+assert.ok(S.comparisonPairs(verifiedCPU, verifiedCPU).length > 0);
+assert.ok(
+  S.comparisonPairs(verifiedCPU, verifiedCPU)
+    .flat()
+    .every((p) => p.dataStatus === "verified"),
+  "Filtro de fuentes se aplica a ambos lados",
+);
+assert.deepEqual(
+  Array.from(S.comparisonPairs(pair([69]), pair([69, 231]))[0], (p) => p.id),
+  [69, 231],
+  "Buscar un producto muestra también su alternativa",
+);
+assert.equal(
+  S.comparisonPairs(pair([69]), pair([69])).length,
+  0,
+  "Un filtro sin rival no fabrica una comparativa",
+);
 const sataRows = M.rows(pair([69, 231]));
 assert.equal(sataRows.find((r) => r.label === "Seguro metálico").best, 0);
 assert.equal(sataRows.find((r) => r.label === "Velocidad").state, "equal");

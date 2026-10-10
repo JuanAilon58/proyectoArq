@@ -117,6 +117,141 @@ window.TechAlbum = window.TechAlbum || {};
         );
     bindCompareButtons(el);
   }
+  function comparisonHTML(items) {
+    var S = TA.store,
+      M = TA.duelModel;
+    var rows = M.rows(items),
+      summary = M.summary(items, rows);
+    var href =
+      U.page("comparar") +
+      "?ids=" +
+      items
+        .map(function (p) {
+          return p.id;
+        })
+        .join(",");
+    var label = items
+      .map(function (p) {
+        return p.brand + " " + p.model;
+      })
+      .join(" frente a ");
+    var specs = rows
+      .filter(function (r) {
+        return !r.price;
+      })
+      .slice(0, 3);
+    return (
+      '<article class="category-duel" aria-label="' +
+      esc(label) +
+      '">' +
+      '<div class="category-duel-products">' +
+      items
+        .map(function (p, side) {
+          return (
+            (side
+              ? '<span class="category-duel-vs" aria-label="frente a">VS</span>'
+              : "") +
+            '<div class="category-duel-product category-duel-side-' +
+            side +
+            '">' +
+            '<a class="category-duel-photo" href="' +
+            href +
+            '" aria-label="Ver comparativa de ' +
+            esc(label) +
+            '">' +
+            '<img src="' +
+            esc(U.asset(p.image)) +
+            '" alt="' +
+            esc(
+              p.imageKind === "exact"
+                ? p.brand + " " + p.model
+                : "Imagen ilustrativa de " + S.categoryById(p.category).label,
+            ) +
+            '" width="800" height="533" loading="lazy" data-cat="' +
+            esc(p.category) +
+            '" onerror="TechAlbum.store.imgFallback(this)">' +
+            '<span class="category-duel-tag">PRODUCTO ' +
+            (side ? "B" : "A") +
+            "</span>" +
+            '<span class="category-duel-image-kind">' +
+            (p.imageKind === "exact"
+              ? "Foto del modelo"
+              : "Imagen ilustrativa") +
+            "</span></a>" +
+            '<div class="category-duel-product-copy"><span class="category-duel-brand">' +
+            esc(p.brand) +
+            "</span>" +
+            '<h3><a href="' +
+            U.page("producto") +
+            "?id=" +
+            p.id +
+            '">' +
+            esc(p.model) +
+            "</a></h3>" +
+            '<p class="category-duel-price">' +
+            esc(S.formatPrice(p.price)) +
+            "</p>" +
+            '<span class="category-duel-status">' +
+            esc(
+              p.dataStatus === "verified"
+                ? "Fuente verificada"
+                : "Ficha académica",
+            ) +
+            "</span></div></div>"
+          );
+        })
+        .join("") +
+      "</div>" +
+      '<div class="category-duel-data"><table><caption class="visually-hidden">Especificaciones de ' +
+      esc(label) +
+      '</caption><thead><tr><th scope="col">Característica</th><th scope="col">Producto A</th><th scope="col">Producto B</th></tr></thead><tbody>' +
+      specs
+        .map(function (r) {
+          return (
+            '<tr><th scope="row">' +
+            esc(r.label) +
+            "</th>" +
+            r.values
+              .map(function (value, side) {
+                return (
+                  "<td" +
+                  (r.best === side ? ' class="category-duel-best"' : "") +
+                  ">" +
+                  esc(value) +
+                  (r.best === side
+                    ? "<small>Ventaja " + (side ? "B" : "A") + "</small>"
+                    : "") +
+                  "</td>"
+                );
+              })
+              .join("") +
+            "</tr>"
+          );
+        })
+        .join("") +
+      "</tbody></table>" +
+      '<p class="category-duel-counts">Ventajas en la ficha completa: <span>A · ' +
+      summary.counts[0] +
+      "</span><span>B · " +
+      summary.counts[1] +
+      "</span></p>" +
+      '<p class="category-duel-result">' +
+      esc(summary.headline) +
+      "</p>" +
+      (!summary.verified
+        ? '<p class="category-duel-caveat">Datos académicos pendientes de verificación.</p>'
+        : "") +
+      '<a class="category-duel-open" href="' +
+      href +
+      '">Ver comparativa completa ' +
+      U.icon("arrow") +
+      "</a></div></article>"
+    );
+  }
+  function renderComparisons(el, pairs) {
+    if (!el) return;
+    el.innerHTML = pairs.map(comparisonHTML).join("");
+  }
   function categoryCards(el) {
     if (!el) return;
     el.innerHTML = TA.store
@@ -141,6 +276,7 @@ window.TechAlbum = window.TechAlbum || {};
   TA.catalog = {
     cardHTML: cardHTML,
     renderInto: renderInto,
+    renderComparisons: renderComparisons,
     bindCompareButtons: bindCompareButtons,
     categoryCards: categoryCards,
     esc: esc,

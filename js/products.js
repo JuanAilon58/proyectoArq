@@ -115,8 +115,8 @@ window.TechAlbum = window.TechAlbum || {};
       })
     );
   }
-  function alternatives(p) {
-    return products()
+  function alternatives(p, candidates) {
+    return (candidates || products())
       .filter(function (other) {
         return p && other.id !== p.id && compatibleWith(p, other);
       })
@@ -134,6 +134,23 @@ window.TechAlbum = window.TechAlbum || {};
   function comparisonIds(p) {
     var other = alternatives(p)[0];
     return p ? [p.id].concat(other ? [other.id] : []) : [];
+  }
+  function comparisonPairs(items, candidates) {
+    var seen = {},
+      result = [];
+    items.forEach(function (p) {
+      var other = alternatives(p, candidates)[0];
+      if (!other) return;
+      var key = [p.id, other.id]
+        .sort(function (a, b) {
+          return a - b;
+        })
+        .join(",");
+      if (seen[key]) return;
+      seen[key] = true;
+      result.push([p, other]);
+    });
+    return result;
   }
   function stars(rating) {
     var r = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
@@ -213,6 +230,7 @@ window.TechAlbum = window.TechAlbum || {};
     hasAlternatives: hasAlternatives,
     alternatives: alternatives,
     comparisonIds: comparisonIds,
+    comparisonPairs: comparisonPairs,
     recommendedFor: recommendedFor,
     imgFallback: imgFallback,
     PLACEHOLDER: PLACEHOLDER,
