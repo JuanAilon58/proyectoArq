@@ -14,6 +14,11 @@ window.TechAlbum = window.TechAlbum || {};
     check: '<path d="m5 12 4 4L19 6"/>',
     search: '<circle cx="10" cy="10" r="6"/><path d="m15 15 5 5"/>',
     external: '<path d="M13 5h6v6m0-6-9 9M10 5H5v14h14v-9"/>',
+    trophy:
+      '<path d="M8 3h8v6a4 4 0 0 1-8 0V3Zm0 2H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4m-4 2v5m-5 3h10m-9-3h8"/>',
+    table:
+      '<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/>',
+    swap: '<path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4"/>',
   };
   function esc(s) {
     return String(s == null ? "" : s)

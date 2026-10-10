@@ -953,9 +953,105 @@
       return p.id === 138;
     })[0].image;
   });
+  // La pareja SATA usa variantes exactas y fotografías de los fabricantes.
+  var sataSources = {
+    sabrent: "https://sabrent.com/products/cb-sfk3",
+    startech: "https://media.startech.com/cms/pdfs/sata12_datasheet.pdf",
+  };
+  var sabrent = DB.PRODUCTS.filter(function (p) {
+    return p.id === 69;
+  })[0];
+  Object.assign(sabrent, {
+    model: "SATA III CB-SFK3 · pack de 3",
+    price: null,
+    priceStatus: "pending",
+    dataStatus: "verified",
+    demo: false,
+    verifiedAt: "2026-10-09",
+    lifecycle: "current",
+    specifications: {
+      Velocidad: "6 Gbps",
+      Longitud: "50.8 cm (20 pulgadas)",
+      Conector: "Recto + recto · SATA de 7 pines",
+      "Seguro metálico": "Sí",
+      Cantidad: "3 cables",
+      Color: "Negro",
+      Uso: "Datos para HDD, SSD y unidades ópticas SATA",
+    },
+    highlights: [
+      "Seguro metálico en los conectores",
+      "Pack de tres cables de 20 pulgadas",
+    ],
+    sources: [{ label: "Sabrent · ficha CB-SFK3", url: sataSources.sabrent }],
+    reference:
+      "Cable de datos SATA III; la alimentación de la unidad se conecta por separado.",
+    limitations: ["Precio y disponibilidad local pendientes de verificación."],
+    image: "assets/images/verified/sabrent-sata-cb-sfk3.png",
+    imageKind: "exact",
+    imageCredit: {
+      file: "sabrent-sata-cb-sfk3.png",
+      author: "Sabrent",
+      source: sataSources.sabrent,
+      license: "Imagen del fabricante · derechos reservados",
+      licenseUrl: sataSources.sabrent,
+    },
+  });
+  DB.PRODUCTS.push({
+    id: 231,
+    category: "cables",
+    brand: "StarTech",
+    model: "SATA III SATA12 · 30.5 cm",
+    range: "media",
+    comparisonGroup: "sata-cable",
+    comparisonLabel: "Cables SATA",
+    price: null,
+    currency: "GTQ",
+    priceStatus: "pending",
+    dataStatus: "verified",
+    demo: false,
+    verifiedAt: "2026-10-09",
+    releaseYear: null,
+    lifecycle: "current",
+    metrics: {},
+    specifications: {
+      Velocidad: "6 Gbps",
+      Longitud: "30.5 cm (12 pulgadas)",
+      Conector: "Recto + recto · SATA de 7 pines",
+      "Seguro metálico": "No",
+      Cantidad: "1 cable",
+      Material: "PVC",
+      Color: "Rojo",
+      Uso: "Datos para HDD, SSD y unidades ópticas SATA",
+    },
+    highlights: [
+      "Cable corto para gabinetes compactos",
+      "Conectores de perfil bajo",
+    ],
+    sources: [
+      { label: "StarTech · ficha técnica SATA12", url: sataSources.startech },
+    ],
+    reference:
+      "Cable SATA de datos de 12 pulgadas. La longitud menor puede facilitar el orden en gabinetes compactos.",
+    limitations: ["Precio y disponibilidad local pendientes de verificación."],
+    image: "assets/images/verified/startech-sata12.jpg",
+    imageKind: "exact",
+    imageCredit: {
+      file: "startech-sata12.jpg",
+      author: "StarTech",
+      source: "https://www.startech.com/en-jp/cables/sata12",
+      license: "Imagen del fabricante · derechos reservados",
+      licenseUrl: "https://www.startech.com/en-jp/cables/sata12",
+    },
+  });
+  DB.IMAGE_CREDITS.push(
+    sabrent.imageCredit,
+    DB.PRODUCTS[DB.PRODUCTS.length - 1].imageCredit,
+  );
   DB.REVISION = {
     date: "2026-10-09",
     label: "Edición 2026",
-    verifiedProducts: additions.length,
+    verifiedProducts: DB.PRODUCTS.filter(function (p) {
+      return p.dataStatus === "verified";
+    }).length,
   };
 })(window.TECHALBUM_DATA);

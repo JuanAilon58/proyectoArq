@@ -40,6 +40,7 @@ module.exports = function load(extra = {}) {
     "js/products.js",
     "js/search.js",
     "js/recommendation.js",
+    "js/comparison-model.js",
     "js/comparator.js",
   ])
     vm.runInContext(fs.readFileSync(path.join(root, file), "utf8"), context, {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta
       name="description"
-      content="Compara dos o tres productos del mismo tipo y gama, destaca diferencias y consulta conclusiones con evidencia."
+      content="Comparativa A contra B para todos los productos del álbum: fotos, especificaciones, ventajas y veredicto."
     />
     <meta name="theme-color" content="#173e35" />
     <title>Comparador — Álbum Tecnológico</title>
@@ -31,6 +31,7 @@
     <link rel="stylesheet" href="../css/style.css" />
     <link rel="stylesheet" href="../css/components.css" />
     <link rel="stylesheet" href="../css/responsive.css" />
+    <link rel="stylesheet" href="../css/comparison.css" />
   </head>
   <body data-page="compare">
     <script>
@@ -107,67 +108,119 @@
       </div>
     </header>
     <main class="container" id="contenido">
-      <section class="page-intro">
-        <h1>Las diferencias, frente a frente.</h1>
-        <p>
-          Dos o tres fichas del mismo tipo y gama. Lee qué cambia entre ellas y
-          qué significa para el uso que tienes en mente.
+      <div class="duel-topbar">
+        <a id="duelBack" class="duel-back" href="catalogo.html"
+          ><svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M20 12H4m6-6-6 6 6 6" /></svg
+          >Volver al catálogo</a
+        >
+        <a class="duel-change-link" href="#chooseProducts">Cambiar productos</a>
+      </div>
+      <section class="duel-heading" aria-labelledby="duelTitle">
+        <div class="duel-heading-line">
+          <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 4v16M16 4v16M4 8h8m0 8h8" />
+          </svg>
+          <div>
+            <h1 id="duelTitle">Comparativa de productos</h1>
+            <div class="duel-heading-meta">
+              <span id="duelGroup">Álbum Tecnológico</span
+              ><span id="duelIds"></span>
+            </div>
+          </div>
+        </div>
+        <p id="duelDescription">
+          Dos opciones de una misma subcategoría, frente a frente.
         </p>
       </section>
-      <section class="compare-workbench" aria-labelledby="selectionTitle">
-        <div class="section-heading">
-          <h2 id="selectionTitle">
-            Tu selección <span class="tabular" id="trayCount">0/3</span>
-          </h2>
-          <button type="button" class="text-button" id="clearTray">
-            Reiniciar selección
-          </button>
+      <div
+        id="duelLive"
+        class="visually-hidden"
+        role="status"
+        aria-live="polite"
+      ></div>
+      <section id="duelCards" class="duel-cards" aria-label="Productos A y B">
+        <p>Cargando productos…</p>
+      </section>
+      <section class="duel-specs" aria-label="Especificaciones comparadas">
+        <div id="duelSummary" class="duel-summary"></div>
+        <div class="duel-table-toolbar">
+          <label
+            ><input type="checkbox" id="duelDifferences" />Solo
+            diferencias</label
+          >
+          <div>
+            <button type="button" id="shareDuel">Copiar enlace</button
+            ><button type="button" id="printDuel">Imprimir</button>
+          </div>
         </div>
-        <p class="comparison-context" id="comparisonContext">
-          El primer producto define el tipo y la gama de la comparación.
-        </p>
-        <div class="compare-tray" id="tray"></div>
-        <form class="toolbar compare-search" id="compareForm">
-          <div class="field search-field">
-            <label for="addQ">Buscar un modelo</label
-            ><input
-              type="search"
-              id="addQ"
-              placeholder="Marca, modelo o característica"
-            />
+        <div class="duel-table-wrap">
+          <table id="duelTable" class="duel-table"></table>
+        </div>
+        <div
+          id="duelLegend"
+          class="duel-legend"
+          aria-label="Leyenda de resultados"
+        ></div>
+        <div id="duelShareFallback" class="duel-share-fallback" hidden></div>
+      </section>
+      <div id="duelVerdict"></div>
+      <section
+        id="chooseProducts"
+        class="duel-chooser"
+        aria-labelledby="chooserTitle"
+      >
+        <h2 id="chooserTitle">Cambia la comparativa</h2>
+        <p id="duelPoolCount"></p>
+        <div class="duel-chooser-grid">
+          <div class="field">
+            <label for="duelCategory">Categoría / subcategoría</label
+            ><select id="duelCategory"></select>
+          </div>
+          <div class="field" id="duelRangeField" hidden>
+            <label for="duelRange">Gama de smartphones</label
+            ><select id="duelRange">
+              <option value="baja">Baja</option>
+              <option value="media">Media</option>
+              <option value="alta">Alta</option>
+            </select>
           </div>
           <div class="field">
-            <label for="addSelect">Opciones compatibles</label
-            ><select id="addSelect"></select>
+            <label for="productA" class="side-0">Producto A</label
+            ><select id="productA"></select>
           </div>
-          <button class="btn btn-primary" id="addBtn" type="submit">
-            Añadir ficha
-          </button>
-        </form>
-      </section>
-      <section
-        id="compareZone"
-        class="comparison-result"
-        aria-labelledby="resultTitle"
-      ></section>
-      <div id="verdictZone"></div>
-      <section class="section guided-pairs" aria-labelledby="pairsTitle">
-        <div class="section-heading">
-          <div>
-            <h2 id="pairsTitle">Una buena comparación para empezar.</h2>
-            <p>
-              Selecciones con fuentes verificadas y alternativas de distintas
-              marcas.
-            </p>
+          <div class="field">
+            <label for="productB" class="side-1">Producto B</label
+            ><select id="productB"></select>
           </div>
         </div>
-        <div id="suggestedPairs" class="pair-list"></div>
+        <div class="duel-chooser-actions">
+          <button type="button" id="swapDuel" class="duel-back">
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 8h16m-4-4 4 4-4 4M20 16H4m4-4-4 4 4 4" /></svg
+            >Intercambiar A y B</button
+          ><a href="#duelTitle" class="duel-back"
+            >Ver resultado de la comparativa</a
+          >
+        </div>
       </section>
-      <p class="notice">
-        La comparación describe diferencias documentadas. Los precios
-        académicos, los GHz y los megapíxeles no se convierten en un puntaje de
-        rendimiento.
-      </p>
+      <section class="duel-all" aria-labelledby="directoryTitle">
+        <div class="duel-directory-heading">
+          <div>
+            <h2 id="directoryTitle">Todos los productos tienen comparativa</h2>
+            <p id="duelDirectoryCount"></p>
+          </div>
+          <div class="field">
+            <label for="duelSearch">Buscar producto</label
+            ><input
+              type="search"
+              id="duelSearch"
+              placeholder="Marca, modelo o subcategoría"
+            />
+          </div>
+        </div>
+        <div id="duelDirectory" class="duel-directory"></div>
+      </section>
       <noscript
         ><p class="notice">
           Activa JavaScript para explorar las fichas y usar el comparador. La
@@ -221,9 +274,11 @@
     <script src="../js/products.js"></script>
     <script src="../js/ui.js"></script>
     <script src="../js/recommendation.js"></script>
+    <script src="../js/comparison-model.js"></script>
     <script src="../js/comparator.js"></script>
     <script src="../js/catalog.js"></script>
     <script src="../js/search.js"></script>
+    <script src="../js/duel.js"></script>
     <script src="../js/app.js"></script>
     <script src="../js/pages.js"></script>
   </body>

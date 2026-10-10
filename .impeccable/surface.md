@@ -1,5 +1,7 @@
 # Dirección de esta implementación
 
+La portada, el catálogo y la guía conservan esta dirección. **El comparador fue rechazado por el usuario y reconstruido según su imagen A/B**; su contrato vinculante está en [comparison.md](comparison.md) y prevalece sobre cualquier descripción editorial de esta superficie.
+
 ## THESIS
 
 Álbum de consulta donde explorar una ficha y contrastarla con opciones equivalentes es la tarea principal. Se conserva la identidad cromática y la esencia del proyecto; se mejora su composición y sus controles con el plan que el usuario autorizó implementar.
@@ -22,7 +24,7 @@ Extensión de la identidad existente y de la composición propuesta en el plan a
 
 ## Cobertura
 
-Seis rutas, claro/oscuro, índice, filtros, fichas, smartphones, comparador, guardados, enlace compartible, impresión y guía. 197 productos / 50 subcategorías / 30 fichas oficiales verificadas. Fotografías restantes y precios locales pendientes se indican expresamente.
+Seis rutas, índice, filtros, fichas, smartphones, comparador A/B, guardados, enlace compartible, impresión y guía. 198 productos / 50 subcategorías / 32 fichas oficiales verificadas. Todas las fichas abren una comparativa. Claro/oscuro en el álbum y superficie oscura fijada por el usuario en el comparador. Fotografías restantes y precios locales pendientes se indican expresamente.
 
 ## Detector
 

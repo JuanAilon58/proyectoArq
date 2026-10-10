@@ -73,15 +73,15 @@ window.TechAlbum = window.TechAlbum || {};
       '<span class="price-caption">' +
       esc(U.priceCaption(p)) +
       "</span></p>" +
-      (TA.store.hasAlternatives(p)
-        ? '<button type="button" class="compare-button" data-compare-btn="' +
-          p.id +
-          '" aria-label="Comparar ' +
-          esc(p.brand + " " + p.model) +
-          '" aria-pressed="false">' +
-          U.icon("compare") +
-          "<span data-compare-label>Comparar</span></button>"
-        : '<span class="badge" title="Aún no hay otra ficha del mismo tipo y gama">Solo consulta</span>') +
+      '<a class="compare-button" href="' +
+      U.page("comparar") +
+      "?producto=" +
+      p.id +
+      '" aria-label="Ver comparativa de ' +
+      esc(p.brand + " " + p.model) +
+      '">' +
+      U.icon("compare") +
+      "<span>Ver comparativa</span></a>" +
       "</div></div></article>"
     );
   }

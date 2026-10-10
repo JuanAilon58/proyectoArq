@@ -97,10 +97,9 @@ window.TechAlbum = window.TechAlbum || {};
       type: p.comparisonLabel || group,
       comparisonGroup: group,
       range: range,
-      key:
-        p.category && group && range
-          ? [p.category, group, range].join("|")
-          : null,
+      key: p.category
+        ? [p.category, p.category === "smartphones" ? range : "all"].join("|")
+        : null,
     };
   }
   function compatibleWith(first, candidate) {
@@ -115,6 +114,26 @@ window.TechAlbum = window.TechAlbum || {};
         return other.id !== p.id && compatibleWith(p, other);
       })
     );
+  }
+  function alternatives(p) {
+    return products()
+      .filter(function (other) {
+        return p && other.id !== p.id && compatibleWith(p, other);
+      })
+      .sort(function (a, b) {
+        return (
+          (b.comparisonGroup === p.comparisonGroup) -
+            (a.comparisonGroup === p.comparisonGroup) ||
+          (b.range === p.range) - (a.range === p.range) ||
+          (b.brand !== p.brand) - (a.brand !== p.brand) ||
+          (b.dataStatus === "verified") - (a.dataStatus === "verified") ||
+          a.id - b.id
+        );
+      });
+  }
+  function comparisonIds(p) {
+    var other = alternatives(p)[0];
+    return p ? [p.id].concat(other ? [other.id] : []) : [];
   }
   function stars(rating) {
     var r = Math.max(0, Math.min(5, Math.round(Number(rating) || 0)));
@@ -192,6 +211,8 @@ window.TechAlbum = window.TechAlbum || {};
     compatibleWith: compatibleWith,
     stars: stars,
     hasAlternatives: hasAlternatives,
+    alternatives: alternatives,
+    comparisonIds: comparisonIds,
     recommendedFor: recommendedFor,
     imgFallback: imgFallback,
     PLACEHOLDER: PLACEHOLDER,

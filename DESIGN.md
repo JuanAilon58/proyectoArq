@@ -1,6 +1,6 @@
 ---
 name: Álbum Tecnológico
-description: Identidad editorial cálida para explorar y comparar tecnología con contexto.
+description: Álbum editorial de consulta y comparativa oscura A/B de productos tecnológicos.
 colors:
   bg: "#f5f2e9"
   panel: "#fffdf6"
@@ -24,7 +24,31 @@ colors:
   forest-dark: "#203e32"
   control-border-dark: "#7a9182"
   forest-muted: "#d2dfd2"
+  duel-bg: "#141821"
+  duel-panel: "#1a202b"
+  duel-soft: "#1e2531"
+  duel-ink: "#edf1f7"
+  duel-muted: "#a4afbf"
+  duel-line: "#303745"
+  duel-control-border: "#62708a"
+  duel-a: "#79a7ff"
+  duel-b: "#c5a3ff"
+  duel-best: "#37eda9"
+  duel-card: "#181d26"
+  duel-photo: "#0e121a"
+  duel-verdict: "#1b202c"
 typography:
+  duel-heading:
+    fontFamily: "Manrope, Segoe UI, sans-serif"
+    fontSize: "30px"
+    fontWeight: 800
+    lineHeight: 1.2
+    letterSpacing: "-0.025em"
+  duel-data:
+    fontFamily: "ui-monospace, Consolas, monospace"
+    fontSize: "12px"
+    fontWeight: 400
+    lineHeight: 1.6
   display:
     fontFamily: "Newsreader, Georgia, serif"
     fontSize: "clamp(2.8rem, 6.5vw, 5.8rem)"
@@ -65,6 +89,9 @@ rounded:
   media: "8px"
   dock: "10px"
   circle: "50%"
+  duel-card: "18px"
+  duel-panel: "12px"
+  duel-tag: "14px"
 spacing:
   inline: "6px"
   icon: "8px"
@@ -80,6 +107,26 @@ spacing:
   section: "88px"
   section-mobile: "65px"
 components:
+  duel-card:
+    backgroundColor: "{colors.duel-card}"
+    textColor: "{colors.duel-ink}"
+    rounded: "{rounded.duel-card}"
+    padding: "16px 18px 10px"
+  duel-summary:
+    backgroundColor: "{colors.duel-card}"
+    textColor: "{colors.duel-muted}"
+    rounded: "{rounded.duel-panel}"
+    padding: "16px 20px"
+  duel-table-row:
+    backgroundColor: "{colors.duel-bg}"
+    textColor: "{colors.duel-ink}"
+    typography: "{typography.duel-data}"
+    padding: "12px 14px"
+  duel-verdict:
+    backgroundColor: "{colors.duel-verdict}"
+    textColor: "{colors.duel-ink}"
+    rounded: "{rounded.duel-card}"
+    padding: "25px 28px"
   button-primary:
     backgroundColor: "{colors.ink}"
     textColor: "{colors.bg}"
@@ -168,6 +215,8 @@ Una lectura editorial cálida donde títulos, fotografías y fichas ayudan a com
 
 Newsreader da voz a los títulos y Manrope sostiene datos, navegación y acciones. Las fotografías locales lideran las fichas: su relación con el modelo queda explícita, y autor, fuente y licencia acompañan las imágenes cuando existe atribución. El emblema académico permanece discreto en el pie.
 
+El comparador tiene un mundo propio fijado por la imagen del usuario: campo oscuro frío, títulos Manrope compactos, productos A azul y B violeta y ventajas verdes. Su material es la fotografía grande frente a frente; mantiene los dos productos y las dos columnas de datos visibles también en móvil. La identidad editorial continúa en las demás rutas.
+
 **Key Characteristics:**
 
 - Títulos serif amplios y datos en sans serif.
@@ -175,8 +224,9 @@ Newsreader da voz a los títulos y Manrope sostiene datos, navegación y accione
 - Superficies delimitadas por líneas y cambios de tono.
 - Fotografía identificada, con contexto y atribución.
 - Jerarquía consistente entre temas claro y oscuro.
+- Comparativa oscura A/B con fotografía protagonista, VS y valores simultáneos.
 
-Fuente de verdad: `css/style.css`, `css/components.css` y `css/responsive.css`. El frontmatter registra valores implementados; la portada y el recorrido concreto se describen en `.impeccable/surface.md`.
+Fuente de verdad: `css/style.css`, `css/components.css`, `css/responsive.css` y `css/comparison.css`. El frontmatter registra valores implementados; los recorridos se describen en `.impeccable/surface.md` y `.impeccable/comparison.md`.
 
 ## Colors
 
@@ -204,11 +254,15 @@ La paleta combina la calma del papel crema con el verde de lectura y una terraco
 
 Las claves terminadas en `-dark` registran los valores de `body[data-theme="dark"]`; no son una segunda identidad. La implementación cambia las variables semánticas del mismo nombre. Las etiquetas y controles superpuestos a fotografía conservan papel claro y verde para seguir siendo legibles sobre una imagen.
 
+Las claves `duel-*` corresponden exclusivamente a `body[data-page="compare"]`, que conserva su campo oscuro en pantalla independientemente del tema global. duel-bg, duel-panel, duel-soft, duel-card y duel-photo delimitan fondo, controles, fichas y fotografía. duel-ink y duel-muted sostienen lectura y metadatos; duel-line separa filas y duel-control-border delimita controles. duel-a y duel-b identifican los lados; duel-best señala la ventaja documentada, siempre con texto accesible. duel-verdict distingue el cierre de la tabla.
+
 Las rampas de ocho tonos del sidecar se derivan en OKLCH para visualizar cada color en el panel. Son metadatos ilustrativos; no agregan colores normativos a la interfaz.
 
 ### Named Rules
 
 **The Semantic Theme Rule.** Cambiar el tema conserva la función de cada color: fondo, lectura, selección, foco y metadatos mantienen su jerarquía.
+
+**The Scoped Comparison Rule.** El comparador conserva su mundo oscuro A/B; las demás rutas mantienen la identidad editorial y sus temas.
 
 **The Control Border Rule.** Usar control-border para límites interactivos y line para divisores de contenido; el estado seleccionado añade relleno y texto contrastados.
 
@@ -217,7 +271,7 @@ Las rampas de ocho tonos del sidecar se derivan en OKLCH para visualizar cada co
 **Display Font:** Newsreader, con Georgia y serif como alternativas.
 **Body Font:** Manrope, con Segoe UI y sans serif como alternativas.
 
-Las dos familias variables se sirven localmente en WOFF2 con `font-display: swap`. El contraste serif/sans distingue la lectura editorial de los datos sin introducir una tercera voz.
+Las dos familias variables se sirven localmente en WOFF2 con `font-display: swap`. El contraste serif/sans distingue la lectura editorial de los datos. En el comparador todos los títulos y controles usan Manrope; ui-monospace y Consolas se reservan a precios y valores comparables.
 
 ### Hierarchy
 
@@ -232,7 +286,7 @@ Los títulos equilibran saltos mediante `text-wrap: balance`; el cuerpo conserva
 
 ### Named Rules
 
-**The Two Voices Rule.** Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles.
+**The Two Voices Rule.** Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles; el comparador usa Manrope también en los títulos.
 
 **The Legible Metadata Rule.** Mantener (11px) como mínimo funcional y conservar la diferencia entre texto principal y secundario en ambos temas.
 
@@ -244,7 +298,9 @@ Las grillas de productos parten de tres columnas con separación (32px vertical 
 
 La ficha usa dos columnas iguales separadas por (70px), con fotografía fija durante lectura en escritorio; bajo (580px) se apila. La guía combina índice de (260px) y texto; bajo (800px) su índice fluye horizontalmente sobre el contenido. Las barras de filtros envuelven filas; en móvil la búsqueda ocupa una fila y los selects se reparten la siguiente.
 
-El comparador conserva tres huecos y una tabla horizontal desplazable. La tabla mide al menos (650px), o (570px) bajo (580px); el primer encabezado y la fila superior permanecen visibles. Bajo (800px) una indicación explícita anuncia el desplazamiento lateral. La impresión retira los controles, elimina posiciones fijas y vuelve a papel blanco.
+El comparador centra un contenedor de hasta (1016px), con padding lateral (28px) y dos tarjetas separadas por una columna VS de (76px). Sus fotos ocupan (306px) de altura. Bajo (650px), el padding pasa a (16px), el VS a (24px) y las fotos a (180px); ambas tarjetas permanecen juntas. La tabla ocupa todo el ancho con columnas fijas de característica, A, B y estado, sin exigir desplazamiento horizontal para ver ambos valores. La característica ocupa (21%), o (28%) en móvil; el estado (4%). Selectores e índice completo siguen al veredicto. La impresión conserva el par y la tabla, elimina controles e índice y vuelve a papel blanco.
+
+**The Simultaneous Values Rule.** Mantener juntos A/B y sus dos valores en cada fila, también en móvil.
 
 ## Elevation & Depth
 
@@ -264,6 +320,8 @@ El contenido ordinario usa superficie, separación y reglas finas; las tarjetas 
 ## Shapes
 
 Bordes discretos y esquinas suavizadas organizan el contenido. Las etiquetas usan badge, los campos y controles compactos control, las acciones button, las fotografías media y la bandeja dock. Los botones de icono y guardado son circulares. El índice editorial forma una retícula continua de celdas con reglas compartidas; no necesita cajas elevadas.
+
+En el comparador, tarjeta y veredicto usan duel-card, mientras resumen y tabla usan duel-panel; bajo (650px), tarjeta y veredicto también usan duel-panel. Los rótulos A/B emplean duel-tag y VS es circular. La profundidad se logra con bordes y tonos oscuros, sin sombra elevada en las tarjetas.
 
 Los iconos son SVG de trazo, con `currentColor`, sin relleno, extremos y uniones redondeados y grosor (1.6). El tamaño general es (20px); las variaciones compactas acompañan etiquetas, enlaces y acciones de tarjeta.
 
@@ -300,11 +358,15 @@ Campos de búsqueda y selects usan panel, ink, borde control-border, radio contr
 
 Cabecera fija con fondo bg y regla line. Los enlaces Manrope de (13px) y peso (700) pasan de muted a ink; la página actual suma el subrayado accent y `aria-current`. Bajo (800px) el menú se abre desde un botón de icono y los enlaces envuelven filas. La cabecera pasa de (88px) a (74px). El enlace de salto aparece al recibir foco.
 
-### Comparison dock and table
+### Comparison dock and A/B surface
 
 La bandeja verde conserva el número de seleccionados y la acción de comparar. En escritorio muestra miniaturas textuales y controles de retirada; en móvil prioriza resumen y acción. Tiene ancho máximo (850px), posición fija centrada, radio dock y separación del borde inferior de (20px), o (12px) bajo (800px).
 
-La tabla usa encabezados semánticos, reglas line y fondos soft/panel; las diferencias se señalan con panel. La conclusión verde emplea texto contrastado y grupos de criterios separados por una regla translúcida. El mensaje de desplazamiento móvil usa texto e icono.
+La bandeja admite dos productos y se oculta en el comparador, al igual que la cabecera global. El acceso desde cada tarjeta y detalle es un enlace directo Ver comparativa con alternativa sugerida.
+
+El comparador empieza con vuelta al catálogo, contexto de subcategoría y fotografías enfrentadas. Cada tarjeta identifica A/B, marca, modelo, precio o estado pendiente, relación de la imagen con el modelo y fuentes. El resumen muestra los conteos que producen las mismas filas de la tabla. Las filas alternan fondo y conservan encabezados semánticos; una ventaja combina verde, texto y marcador A/B. Iguales, diferencias sin ganador y datos ausentes tienen marcadores y nombres distintos. El veredicto usa un panel oscuro con trofeo SVG, criterio, contexto y limitación de evidencia. No atribuye ganador entre funciones distintas.
+
+Título principal del comparador (30px), o (25px) en móvil; modelo y veredicto (14px), modelo móvil (12px). Valores de tabla (12px), o (11px) en móvil, monoespaciados y tabulares. Controles conservan foco azul visible heredado del rol accent del comparador.
 
 ### Motion and accessibility
 
@@ -315,12 +377,12 @@ El foco visible se aplica a enlaces, botones, campos, selects, summaries y eleme
 ### Do:
 
 - **Do** conservar los roles semánticos de color y verificar la lectura en claro y oscuro.
-- **Do** usar Newsreader para títulos y Manrope para datos y controles.
+- **Do** usar Newsreader para títulos editoriales y Manrope para datos, controles y títulos del comparador.
 - **Do** mantener un mínimo funcional de 11px, foco visible y bordes interactivos control-border.
 - **Do** identificar la fotografía como del modelo o ilustrativa y mostrar su atribución disponible.
 - **Do** distinguir tipo, gama y estado de la fuente mediante texto explícito.
 - **Do** conservar movimiento breve, información accesible sin hover y la alternativa de movimiento reducido.
-- **Do** permitir desplazamiento horizontal de la tabla móvil con encabezados y ayuda visibles.
+- **Do** conservar ambos productos y sus columnas visibles en la comparativa móvil.
 
 ### Don't:
 
@@ -329,6 +391,7 @@ El foco visible se aplica a enlaces, botones, campos, selects, summaries y eleme
 - **Don't** presentar una fotografía ilustrativa como prueba del aspecto de un modelo exacto.
 - **Don't** comunicar selección, verificación o gama únicamente mediante color.
 - **Don't** reducir textos funcionales por debajo del mínimo registrado para ganar densidad.
-- **Don't** sustituir las variables semánticas por colores locales que rompan el doble tema.
+- **Don't** sustituir las variables semánticas por colores locales que rompan el tema de su superficie.
+- **Don't** aplicar títulos serif, fondo crema o un tercer espacio a la comparativa A/B fijada por el usuario.
 
 No canonizado: las declaraciones de sombra del recuadro y la primera versión de `uncover` están sobreescritas en el CSS; se documenta el resultado final plano y la entrada por saturación, sin promover las reglas inactivas.

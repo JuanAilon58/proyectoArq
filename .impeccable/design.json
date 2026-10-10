@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-09T22:04:08.325Z",
+  "generatedAt": "2026-10-10T00:43:51.552Z",
   "title": "Design System: Álbum Tecnológico",
   "extensions": {
     "colorMeta": {
@@ -333,6 +333,188 @@
           "oklch(83.57% 0.02241 145.38)",
           "oklch(95.00% 0.02241 145.38)"
         ]
+      },
+      "duel-bg": {
+        "role": "neutral",
+        "displayName": "Campo oscuro",
+        "tonalRamp": [
+          "oklch(15.00% 0.01896 266.07)",
+          "oklch(26.43% 0.01896 266.07)",
+          "oklch(37.86% 0.01896 266.07)",
+          "oklch(49.29% 0.01896 266.07)",
+          "oklch(60.71% 0.01896 266.07)",
+          "oklch(72.14% 0.01896 266.07)",
+          "oklch(83.57% 0.01896 266.07)",
+          "oklch(95.00% 0.01896 266.07)"
+        ]
+      },
+      "duel-panel": {
+        "role": "neutral",
+        "displayName": "Panel oscuro",
+        "tonalRamp": [
+          "oklch(15.00% 0.02293 262.40)",
+          "oklch(26.43% 0.02293 262.40)",
+          "oklch(37.86% 0.02293 262.40)",
+          "oklch(49.29% 0.02293 262.40)",
+          "oklch(60.71% 0.02293 262.40)",
+          "oklch(72.14% 0.02293 262.40)",
+          "oklch(83.57% 0.02293 262.40)",
+          "oklch(95.00% 0.02293 262.40)"
+        ]
+      },
+      "duel-soft": {
+        "role": "neutral",
+        "displayName": "Control oscuro",
+        "tonalRamp": [
+          "oklch(15.00% 0.02477 261.10)",
+          "oklch(26.43% 0.02477 261.10)",
+          "oklch(37.86% 0.02477 261.10)",
+          "oklch(49.29% 0.02477 261.10)",
+          "oklch(60.71% 0.02477 261.10)",
+          "oklch(72.14% 0.02477 261.10)",
+          "oklch(83.57% 0.02477 261.10)",
+          "oklch(95.00% 0.02477 261.10)"
+        ]
+      },
+      "duel-ink": {
+        "role": "neutral",
+        "displayName": "Texto de comparación",
+        "tonalRamp": [
+          "oklch(15.00% 0.00912 258.34)",
+          "oklch(26.43% 0.00912 258.34)",
+          "oklch(37.86% 0.00912 258.34)",
+          "oklch(49.29% 0.00912 258.34)",
+          "oklch(60.71% 0.00912 258.34)",
+          "oklch(72.14% 0.00912 258.34)",
+          "oklch(83.57% 0.00912 258.34)",
+          "oklch(95.00% 0.00912 258.34)"
+        ]
+      },
+      "duel-muted": {
+        "role": "neutral",
+        "displayName": "Metadatos de comparación",
+        "tonalRamp": [
+          "oklch(15.00% 0.02613 257.66)",
+          "oklch(26.43% 0.02613 257.66)",
+          "oklch(37.86% 0.02613 257.66)",
+          "oklch(49.29% 0.02613 257.66)",
+          "oklch(60.71% 0.02613 257.66)",
+          "oklch(72.14% 0.02613 257.66)",
+          "oklch(83.57% 0.02613 257.66)",
+          "oklch(95.00% 0.02613 257.66)"
+        ]
+      },
+      "duel-line": {
+        "role": "neutral",
+        "displayName": "Divisor de comparación",
+        "tonalRamp": [
+          "oklch(15.00% 0.02655 264.12)",
+          "oklch(26.43% 0.02655 264.12)",
+          "oklch(37.86% 0.02655 264.12)",
+          "oklch(49.29% 0.02655 264.12)",
+          "oklch(60.71% 0.02655 264.12)",
+          "oklch(72.14% 0.02655 264.12)",
+          "oklch(83.57% 0.02655 264.12)",
+          "oklch(95.00% 0.02655 264.12)"
+        ]
+      },
+      "duel-control-border": {
+        "role": "neutral",
+        "displayName": "Borde interactivo de comparación",
+        "tonalRamp": [
+          "oklch(15.00% 0.04419 262.72)",
+          "oklch(26.43% 0.04419 262.72)",
+          "oklch(37.86% 0.04419 262.72)",
+          "oklch(49.29% 0.04419 262.72)",
+          "oklch(60.71% 0.04419 262.72)",
+          "oklch(72.14% 0.04419 262.72)",
+          "oklch(83.57% 0.04419 262.72)",
+          "oklch(95.00% 0.04419 262.72)"
+        ]
+      },
+      "duel-a": {
+        "role": "primary",
+        "displayName": "Producto A",
+        "tonalRamp": [
+          "oklch(15.00% 0.13777 262.50)",
+          "oklch(26.43% 0.13777 262.50)",
+          "oklch(37.86% 0.13777 262.50)",
+          "oklch(49.29% 0.13777 262.50)",
+          "oklch(60.71% 0.13777 262.50)",
+          "oklch(72.14% 0.13777 262.50)",
+          "oklch(83.57% 0.13777 262.50)",
+          "oklch(95.00% 0.13777 262.50)"
+        ]
+      },
+      "duel-b": {
+        "role": "secondary",
+        "displayName": "Producto B",
+        "tonalRamp": [
+          "oklch(15.00% 0.13232 300.37)",
+          "oklch(26.43% 0.13232 300.37)",
+          "oklch(37.86% 0.13232 300.37)",
+          "oklch(49.29% 0.13232 300.37)",
+          "oklch(60.71% 0.13232 300.37)",
+          "oklch(72.14% 0.13232 300.37)",
+          "oklch(83.57% 0.13232 300.37)",
+          "oklch(95.00% 0.13232 300.37)"
+        ]
+      },
+      "duel-best": {
+        "role": "tertiary",
+        "displayName": "Ventaja documentada",
+        "tonalRamp": [
+          "oklch(15.00% 0.17144 162.31)",
+          "oklch(26.43% 0.17144 162.31)",
+          "oklch(37.86% 0.17144 162.31)",
+          "oklch(49.29% 0.17144 162.31)",
+          "oklch(60.71% 0.17144 162.31)",
+          "oklch(72.14% 0.17144 162.31)",
+          "oklch(83.57% 0.17144 162.31)",
+          "oklch(95.00% 0.17144 162.31)"
+        ]
+      },
+      "duel-card": {
+        "role": "neutral",
+        "displayName": "Tarjeta enfrentada",
+        "tonalRamp": [
+          "oklch(15.00% 0.01906 262.11)",
+          "oklch(26.43% 0.01906 262.11)",
+          "oklch(37.86% 0.01906 262.11)",
+          "oklch(49.29% 0.01906 262.11)",
+          "oklch(60.71% 0.01906 262.11)",
+          "oklch(72.14% 0.01906 262.11)",
+          "oklch(83.57% 0.01906 262.11)",
+          "oklch(95.00% 0.01906 262.11)"
+        ]
+      },
+      "duel-photo": {
+        "role": "neutral",
+        "displayName": "Placa de fotografía",
+        "tonalRamp": [
+          "oklch(15.00% 0.01771 263.98)",
+          "oklch(26.43% 0.01771 263.98)",
+          "oklch(37.86% 0.01771 263.98)",
+          "oklch(49.29% 0.01771 263.98)",
+          "oklch(60.71% 0.01771 263.98)",
+          "oklch(72.14% 0.01771 263.98)",
+          "oklch(83.57% 0.01771 263.98)",
+          "oklch(95.00% 0.01771 263.98)"
+        ]
+      },
+      "duel-verdict": {
+        "role": "neutral",
+        "displayName": "Panel de veredicto",
+        "tonalRamp": [
+          "oklch(15.00% 0.02418 267.02)",
+          "oklch(26.43% 0.02418 267.02)",
+          "oklch(37.86% 0.02418 267.02)",
+          "oklch(49.29% 0.02418 267.02)",
+          "oklch(60.71% 0.02418 267.02)",
+          "oklch(72.14% 0.02418 267.02)",
+          "oklch(83.57% 0.02418 267.02)",
+          "oklch(95.00% 0.02418 267.02)"
+        ]
       }
     },
     "typographyMeta": {
@@ -359,6 +541,14 @@
       "button": {
         "displayName": "Acción principal",
         "purpose": "Acciones de navegación y consulta."
+      },
+      "duel-heading": {
+        "displayName": "Título de comparativa",
+        "purpose": "Manrope compacto, 30px en escritorio y 25px bajo 650px."
+      },
+      "duel-data": {
+        "displayName": "Valores comparables",
+        "purpose": "Monoespaciada y cifras tabulares; 12px en escritorio y 11px en móvil."
       }
     },
     "shadows": [
@@ -431,6 +621,10 @@
       {
         "name": "mobile",
         "value": "580px"
+      },
+      {
+        "name": "comparison-mobile",
+        "value": "650px"
       }
     ]
   },
@@ -475,14 +669,6 @@
       "css": ".ds-filter{display:inline-flex;align-items:center;gap:8px;background:var(--soft);color:var(--ink);font-family:var(--font);font-size:11px;padding:6px 10px;border:0;border-radius:4px;cursor:pointer;}.ds-filter:hover{color:var(--ink);}.ds-filter .ds-icon{width:13px;height:13px;}.ds-filter:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}.ds-icon{display:block;flex-shrink:0;width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}"
     },
     {
-      "name": "Estado de fuente verificada",
-      "kind": "chip",
-      "refersTo": "badge-verified",
-      "description": "Etiqueta informativa con palabra y punto; no es un botón.",
-      "html": "<span class=\"ds-verified\"><span class=\"ds-dot\" aria-hidden=\"true\"></span>Fuente verificada</span>",
-      "css": ".ds-verified{display:inline-flex;align-items:center;gap:5px;font-family:var(--font);font-size:11px;font-weight:750;line-height:1.3;padding:5px 8px;background:var(--forest);color:var(--on-forest);border-radius:4px;}.ds-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}"
-    },
-    {
       "name": "Ficha de producto",
       "kind": "card",
       "refersTo": "product-media",
@@ -491,44 +677,58 @@
       "css": ".ds-card{min-width:0;width:280px;color:var(--ink);font-family:var(--font);font-size:15px;line-height:1.65;}.ds-card-media{position:relative;overflow:hidden;background:var(--soft);aspect-ratio:1.45;border-radius:8px;}.ds-card-media>a{display:block;width:100%;height:100%;}.ds-card-media img{width:100%;height:100%;object-fit:contain;padding:12px;transition:transform .45s var(--ease);}.ds-card-media>a:hover img{transform:scale(1.035);}.ds-image-label{position:absolute;bottom:10px;left:10px;font-size:11px;background:#fffdf6ed;color:#173e35;padding:4px 7px;border-radius:3px;pointer-events:none;}.ds-save{position:absolute;right:10px;top:10px;border:0;background:#fffdf6;color:#173e35;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;cursor:pointer;}.ds-save[aria-pressed=\"true\"]{background:#173e35;color:#fffdf6;}.ds-save:hover{color:#173e35;}.ds-save .ds-icon{width:16px;height:16px;}.ds-card-body{padding-top:16px;}.ds-card-top{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px;}.ds-brand{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.075em;color:var(--muted);}.ds-card-verified{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:750;line-height:1.3;padding:5px 8px;background:var(--forest);color:var(--on-forest);border-radius:4px;}.ds-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}.ds-model{margin:0;font-size:18px;line-height:1.35;letter-spacing:-.02em;font-weight:750;}.ds-model a{color:inherit;text-decoration:none;}.ds-model a:hover{text-decoration:underline;}.ds-card-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px;}.ds-card-badge,.ds-card-year{font-size:11px;font-weight:750;line-height:1.3;padding:5px 8px;background:var(--soft);border-radius:4px;}.ds-card-year{background:var(--accent-soft);color:var(--accent);}.ds-card-bottom{display:flex;justify-content:space-between;align-items:end;gap:12px;margin-top:17px;padding-top:14px;border-top:1px solid var(--line);}.ds-price{margin:0;font-size:15px;font-weight:750;font-variant-numeric:tabular-nums;}.ds-price small{display:block;font-size:11px;color:var(--muted);font-weight:500;}.ds-credit{margin:12px 0 0;font-size:11px;color:var(--muted);}.ds-credit a{color:inherit;text-underline-offset:4px;}.ds-card a:focus-visible,.ds-save:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}.ds-icon{display:block;flex-shrink:0;width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}@media(prefers-reduced-motion:reduce){.ds-primary,.ds-secondary,.ds-card-media img{transition:none!important;animation:none!important;}}"
     },
     {
-      "name": "Selector de gama",
-      "kind": "button",
-      "refersTo": "range-control",
-      "description": "Gama seleccionada con relleno de tinta y aria-pressed.",
-      "html": "<div class=\"ds-ranges\" role=\"group\" aria-label=\"Gama\"><button class=\"ds-range\" type=\"button\" aria-pressed=\"false\">Todas</button><button class=\"ds-range\" type=\"button\" aria-pressed=\"true\">Gama media</button></div>",
-      "css": ".ds-ranges{display:flex;gap:8px;flex-wrap:wrap;}.ds-range{border:1px solid var(--control-border);border-radius:5px;background:transparent;color:var(--ink);padding:10px 17px;font-family:var(--font);font-size:12px;font-weight:700;cursor:pointer;}.ds-range[aria-pressed=\"true\"]{background:var(--ink);color:var(--bg);border-color:var(--ink);}.ds-range:hover{font-weight:700;}.ds-range:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}@media(max-width:580px){.ds-range{padding:9px 12px;font-size:11px;min-height:44px;}}"
-    },
-    {
-      "name": "Selección para comparar",
-      "kind": "button",
-      "refersTo": "compare-button",
-      "description": "Acción de tarjeta con selección textual y aria-pressed.",
-      "html": "<button class=\"ds-compare\" type=\"button\" aria-pressed=\"true\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 4v16M16 4v16M4 8h8m0 8h8\"/></svg>Seleccionado</button>",
-      "css": ".ds-compare{display:flex;gap:5px;align-items:center;background:transparent;color:var(--ink);border:1px solid var(--control-border);border-radius:5px;padding:9px 10px;font-family:var(--font);font-size:11px;font-weight:700;white-space:nowrap;min-height:38px;cursor:pointer;}.ds-compare:hover{background:var(--soft);}.ds-compare[aria-pressed=\"true\"]{background:var(--forest);color:var(--on-forest);border-color:var(--forest);}.ds-compare .ds-icon{width:15px;height:15px;}.ds-compare:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}.ds-icon{display:block;flex-shrink:0;width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}@media(max-width:580px){.ds-compare{padding:8px;min-height:44px;width:100%;justify-content:center;}}"
-    },
-    {
       "name": "Bandeja de comparación",
       "kind": "custom",
       "refersTo": "compare-dock",
       "description": "Resumen persistente y acción sobre verde; muestra local sin posición fija para el panel.",
-      "html": "<div class=\"ds-dock\"><div class=\"ds-dock-copy\"><strong>2 productos</strong><small>Mismo tipo y gama</small></div><div class=\"ds-dock-items\"><span class=\"ds-dock-item\">Galaxy A57 5G <button type=\"button\" aria-label=\"Quitar Galaxy A57 5G\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 6 12 12M6 18 18 6\"/></svg></button></span></div><a class=\"ds-dock-btn\" href=\"#comparador\">Comparar <svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"/></svg></a></div>",
+      "html": "<div class=\"ds-dock\"><div class=\"ds-dock-copy\"><strong>2 productos</strong><small>Misma subcategoría</small></div><div class=\"ds-dock-items\"><span class=\"ds-dock-item\">Galaxy A57 5G <button type=\"button\" aria-label=\"Quitar Galaxy A57 5G\"><svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m6 6 12 12M6 18 18 6\"/></svg></button></span></div><a class=\"ds-dock-btn\" href=\"#comparador\">Comparar <svg class=\"ds-icon\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M4 12h16m-6-6 6 6-6 6\"/></svg></a></div>",
       "css": ".ds-dock{width:min(850px,calc(100% - 32px));padding:13px 18px;background:var(--forest);color:var(--on-forest);border-radius:10px;box-shadow:0 15px 40px -16px #0007;display:flex;align-items:center;gap:18px;font-family:var(--font);line-height:1.65;}.ds-dock-copy{min-width:130px;}.ds-dock-copy strong{font-size:12px;display:block;}.ds-dock-copy small{font-size:11px;color:#d2dfd2;}.ds-dock-items{display:flex;gap:8px;flex:1;min-width:0;}.ds-dock-item{display:flex;align-items:center;gap:8px;min-width:0;background:#ffffff14;padding:7px 9px;border-radius:5px;font-size:11px;}.ds-dock-item button{border:0;background:transparent;color:inherit;padding:3px;cursor:pointer;}.ds-dock-item .ds-icon{width:12px;height:12px;}.ds-dock-btn{display:inline-flex;justify-content:center;align-items:center;gap:10px;background:var(--on-forest);color:var(--forest);border:0;min-height:37px;font-size:11px;padding:10px 13px;border-radius:6px;text-decoration:none;font-weight:750;line-height:1.3;transition:background .18s,color .18s,transform .18s;}.ds-dock-btn:hover{background:var(--soft);}.ds-dock-btn:active{transform:translateY(1px);}.ds-dock-btn:focus-visible,.ds-dock-item button:focus-visible{outline:3px solid var(--accent);outline-offset:4px;}.ds-icon{display:block;flex-shrink:0;width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}@media(max-width:800px){.ds-dock{gap:10px;padding:12px;}.ds-dock-items{display:none;}.ds-dock-copy{flex:1;}}@media(prefers-reduced-motion:reduce){.ds-dock-btn{transition:none!important;}}"
+    },
+    {
+      "name": "Resumen de ventajas A/B",
+      "kind": "custom",
+      "refersTo": "duel-summary",
+      "description": "Conteos de las mismas filas enfrentados sobre un panel oscuro.",
+      "html": "<section class=\"ds-duel-summary\"><div class=\"ds-duel-a\"><span>SABRENT</span><strong>1 ventaja</strong></div><h2><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><rect x=\"3\" y=\"3\" width=\"18\" height=\"18\" rx=\"2\"/><path d=\"M3 9h18M9 9v12\"/></svg>ESPECIFICACIONES</h2><div class=\"ds-duel-b\"><span>STARTECH</span><strong>0 ventajas</strong></div></section>",
+      "css": ".ds-duel-summary{display:grid;grid-template-columns:1fr auto 1fr;gap:16px;align-items:center;padding:16px 20px;background:#181d26;color:#a4afbf;border:1px solid #303745;border-radius:12px;font-family:var(--font,Manrope,\"Segoe UI\",sans-serif)}.ds-duel-summary span{font-size:11px;font-weight:750;letter-spacing:.06em}.ds-duel-summary strong{display:block;font:600 14px/1.5 ui-monospace,Consolas,monospace;margin-top:3px}.ds-duel-summary h2{display:flex;align-items:center;gap:9px;font-size:12px;letter-spacing:.04em}.ds-duel-summary svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.ds-duel-a strong{color:#79a7ff}.ds-duel-b{text-align:right}.ds-duel-b strong{color:#c5a3ff}@media(max-width:650px){.ds-duel-summary{grid-template-columns:1fr 1fr;padding:13px 12px;gap:10px}.ds-duel-summary h2{grid-column:1/-1;grid-row:1;justify-content:center}}"
+    },
+    {
+      "name": "Fila de comparación A/B",
+      "kind": "custom",
+      "refersTo": "duel-table-row",
+      "description": "Característica y ambos valores simultáneos; ventaja con texto y color.",
+      "html": "<div class=\"ds-duel-row\"><table><caption class=\"ds-duel-caption\">Comparativa A contra B</caption><colgroup><col class=\"ds-duel-label\"><col><col><col class=\"ds-duel-state\"></colgroup><thead><tr><th scope=\"col\">Característica</th><th scope=\"col\">A · Sabrent</th><th scope=\"col\">B · StarTech</th><th scope=\"col\"><span class=\"ds-duel-caption\">Resultado</span></th></tr></thead><tbody><tr><th scope=\"row\">SEGURO METÁLICO</th><td class=\"ds-duel-best\">Sí <small>Ventaja A</small></td><td>No</td><td><span class=\"ds-duel-dot\" aria-label=\"Ventaja del producto A\"></span></td></tr></tbody></table></div>",
+      "css": ".ds-duel-row{background:#141821;color:#edf1f7;border:1px solid #303745;border-radius:12px;overflow:hidden;font-family:var(--font,Manrope,\"Segoe UI\",sans-serif)}.ds-duel-row table{width:100%;table-layout:fixed;border-collapse:collapse;text-align:left}.ds-duel-label{width:21%}.ds-duel-state{width:4%}.ds-duel-row th,.ds-duel-row td{border-bottom:1px solid #303745;padding:12px 14px;overflow-wrap:anywhere}.ds-duel-row th{font-size:11px;color:#a4afbf;font-weight:750}.ds-duel-row thead{background:#1e2430}.ds-duel-row td{font:12px/1.6 ui-monospace,Consolas,monospace;font-variant-numeric:tabular-nums}.ds-duel-row tbody tr:last-child>*{border:0}.ds-duel-row .ds-duel-best{color:#37eda9}.ds-duel-row small{display:block;font:11px/1.5 var(--font,Manrope,\"Segoe UI\",sans-serif);margin-top:3px}.ds-duel-row td:last-child{padding-inline:3px;text-align:center}.ds-duel-dot{display:inline-block;width:10px;height:10px;border-radius:50%;background:#79a7ff}.ds-duel-caption{position:absolute;width:1px;height:1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}@media(max-width:650px){.ds-duel-label{width:28%}.ds-duel-row th,.ds-duel-row td{padding:10px 7px}.ds-duel-row td{font-size:11px}.ds-duel-dot{width:8px;height:8px}}"
+    },
+    {
+      "name": "Veredicto de comparación",
+      "kind": "custom",
+      "refersTo": "duel-verdict",
+      "description": "Cierre oscuro con criterio explícito y limitación de evidencia.",
+      "html": "<section class=\"ds-duel-verdict\"><svg class=\"ds-duel-trophy\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M8 3h8v6a4 4 0 0 1-8 0V3ZM8 5H4v2a4 4 0 0 0 4 4m8-6h4v2a4 4 0 0 1-4 4M12 13v5m-4 3h8m-6-3h4v3\"/></svg><div><h2>Recomendación final</h2><strong>Sabrent es la opción recomendada si priorizas seguro metálico.</strong><h3>Veredicto</h3><p>Confirma el conector y la función antes de elegir.</p><p>La recomendación se limita a las ventajas de esta tabla.</p><details><summary>Cómo contamos las ventajas</summary><p>Los conteos corresponden a las filas con ventaja evaluable.</p></details></div></section>",
+      "css": ".ds-duel-verdict{display:grid;grid-template-columns:35px minmax(0,1fr);gap:18px;padding:25px 28px;border:1px solid #303745;border-radius:18px;background:#1b202c;color:#edf1f7;font-family:var(--font,Manrope,\"Segoe UI\",sans-serif)}.ds-duel-trophy{width:29px;height:29px;margin-top:5px;color:#ffc65c;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.ds-duel-verdict h2{color:#37eda9;font-size:14px;font-weight:750;margin:0 0 7px}.ds-duel-verdict strong{font-size:14px;font-weight:750}.ds-duel-verdict h3{font-size:14px;margin:18px 0 8px}.ds-duel-verdict p{color:#a4afbf;font-size:12px;line-height:1.75}.ds-duel-verdict details{color:#a4afbf;margin-top:18px;font-size:12px}.ds-duel-verdict summary{cursor:pointer;text-decoration:underline;text-underline-offset:4px}.ds-duel-verdict summary:hover{color:#edf1f7}.ds-duel-verdict summary:focus-visible{outline:3px solid #79a7ff;outline-offset:4px}@media(max-width:650px){.ds-duel-verdict{padding:20px 16px;gap:12px;grid-template-columns:22px minmax(0,1fr);border-radius:12px}.ds-duel-trophy{width:22px;height:22px}}"
     }
   ],
   "narrative": {
     "northStar": "El álbum de consulta",
-    "overview": "Una lectura editorial cálida donde títulos, fotografías y fichas ayudan a comprender diferencias. La identidad existente se extiende con verde profundo, papel crema y terracota; la composición deja espacio para leer mientras los controles mantienen una densidad práctica.\n\nNewsreader da voz a los títulos y Manrope sostiene datos, navegación y acciones. Las fotografías locales lideran las fichas: su relación con el modelo queda explícita, y autor, fuente y licencia acompañan las imágenes cuando existe atribución. El emblema académico permanece discreto en el pie.",
+    "overview": "Una lectura editorial cálida donde títulos, fotografías y fichas ayudan a comprender diferencias. La identidad existente se extiende con verde profundo, papel crema y terracota; la composición deja espacio para leer mientras los controles mantienen una densidad práctica.\n\nNewsreader da voz a los títulos y Manrope sostiene datos, navegación y acciones. Las fotografías locales lideran las fichas: su relación con el modelo queda explícita, y autor, fuente y licencia acompañan las imágenes cuando existe atribución. El emblema académico permanece discreto en el pie.\n\nEl comparador tiene un mundo propio fijado por la imagen del usuario: campo oscuro frío, títulos Manrope compactos, productos A azul y B violeta y ventajas verdes. Su material es la fotografía grande frente a frente; mantiene los dos productos y las dos columnas de datos visibles también en móvil. La identidad editorial continúa en las demás rutas.",
     "keyCharacteristics": [
       "Títulos serif amplios y datos en sans serif.",
       "Papel cálido, verde profundo y énfasis terracota.",
       "Superficies delimitadas por líneas y cambios de tono.",
       "Fotografía identificada, con contexto y atribución.",
-      "Jerarquía consistente entre temas claro y oscuro."
+      "Jerarquía consistente entre temas claro y oscuro.",
+      "Comparativa oscura A/B con fotografía protagonista, VS y valores simultáneos."
     ],
     "rules": [
       {
         "name": "The Semantic Theme Rule",
         "body": "Cambiar el tema conserva la función de cada color: fondo, lectura, selección, foco y metadatos mantienen su jerarquía.",
+        "section": "colors"
+      },
+      {
+        "name": "The Scoped Comparison Rule",
+        "body": "El comparador conserva su mundo oscuro A/B; las demás rutas mantienen la identidad editorial y sus temas.",
         "section": "colors"
       },
       {
@@ -538,13 +738,18 @@
       },
       {
         "name": "The Two Voices Rule",
-        "body": "Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles.",
+        "body": "Reservar Newsreader para títulos de lectura y Manrope para información, navegación y controles; el comparador usa Manrope también en los títulos.",
         "section": "typography"
       },
       {
         "name": "The Legible Metadata Rule",
         "body": "Mantener (11px) como mínimo funcional y conservar la diferencia entre texto principal y secundario en ambos temas.",
         "section": "typography"
+      },
+      {
+        "name": "The Simultaneous Values Rule",
+        "body": "Mantener juntos A/B y sus dos valores en cada fila, también en móvil.",
+        "section": "layout"
       },
       {
         "name": "The Reading Surface Rule",
@@ -554,12 +759,12 @@
     ],
     "dos": [
       "**Do** conservar los roles semánticos de color y verificar la lectura en claro y oscuro.",
-      "**Do** usar Newsreader para títulos y Manrope para datos y controles.",
+      "**Do** usar Newsreader para títulos editoriales y Manrope para datos, controles y títulos del comparador.",
       "**Do** mantener un mínimo funcional de 11px, foco visible y bordes interactivos control-border.",
       "**Do** identificar la fotografía como del modelo o ilustrativa y mostrar su atribución disponible.",
       "**Do** distinguir tipo, gama y estado de la fuente mediante texto explícito.",
       "**Do** conservar movimiento breve, información accesible sin hover y la alternativa de movimiento reducido.",
-      "**Do** permitir desplazamiento horizontal de la tabla móvil con encabezados y ayuda visibles."
+      "**Do** conservar ambos productos y sus columnas visibles en la comparativa móvil."
     ],
     "donts": [
       "**Don't** convertir metadatos en títulos o usar mayúsculas de marca como estilo general de lectura.",
@@ -567,7 +772,8 @@
       "**Don't** presentar una fotografía ilustrativa como prueba del aspecto de un modelo exacto.",
       "**Don't** comunicar selección, verificación o gama únicamente mediante color.",
       "**Don't** reducir textos funcionales por debajo del mínimo registrado para ganar densidad.",
-      "**Don't** sustituir las variables semánticas por colores locales que rompan el doble tema."
+      "**Don't** sustituir las variables semánticas por colores locales que rompan el tema de su superficie.",
+      "**Don't** aplicar títulos serif, fondo crema o un tercer espacio a la comparativa A/B fijada por el usuario."
     ]
   }
 }

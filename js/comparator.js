@@ -1,9 +1,9 @@
-/* Selección compatible de 2–3 fichas. */
+/* Comparativa A contra B dentro de una subcategoría. */
 window.TechAlbum = window.TechAlbum || {};
 (function (TA) {
   "use strict";
   var KEY = "techalbum_compare_v2",
-    MAX = 3,
+    MAX = 2,
     memory = [],
     storageFailed = false;
   function normalize(raw) {
@@ -130,7 +130,7 @@ window.TechAlbum = window.TechAlbum || {};
       raw = params.get("ids"),
       one = params.get("producto");
     if (raw != null) return replace(raw.split(",").filter(Boolean));
-    if (one) return replace([one]);
+    if (one) return replace(TA.store.comparisonIds(TA.store.getById(one)));
     return { ok: true, ids: load() };
   }
   function shareUrl() {

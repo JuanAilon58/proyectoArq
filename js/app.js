@@ -67,7 +67,7 @@
       el.innerHTML =
         '<div class="dock-copy"><strong>' +
         items.length +
-        " de 3 fichas seleccionadas</strong><small>" +
+        " de 2 productos seleccionados</strong><small>" +
         U.esc(info.subcategory + " · " + TA.store.rangeLabel(info.range)) +
         "</small></div>" +
         '<div class="dock-items">' +
@@ -115,12 +115,11 @@
     });
     window.addEventListener("techalbum:compare-error", function (event) {
       var messages = {
-        max: "La bandeja admite hasta tres fichas. Quita una para añadir otra.",
+        max: "La comparativa enfrenta dos productos. Cambia A o B para elegir otro.",
         incompatible:
-          "Esta ficha tiene otro tipo o gama. Reinicia la selección o elige una alternativa compatible.",
+          "Elige productos de la misma subcategoría. Los smartphones se comparan dentro de su gama.",
         "not-found": "No encontramos esa ficha. Vuelve al álbum y elige otra.",
-        "no-alternative":
-          "Esta ficha es solo de consulta: aún no hay otra opción del mismo tipo y gama.",
+        "no-alternative": "Todavía no hay otro producto en esta subcategoría.",
       };
       U.toast(messages[event.detail.reason] || "No se pudo añadir esa ficha.");
     });
